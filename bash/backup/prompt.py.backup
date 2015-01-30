@@ -1,0 +1,186 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""This file is supposed to print the PS1 of the bash terminal to the stdout.
+"""
+import os
+import sys
+import subprocess
+
+PROMPT_FORMAT = "{dir}{git}\n{symbol} "
+COMMIT_HASH_LENGTH = 20
+# Symbols
+SYMBOLS = {
+    "user": ">",
+    "root": "#",
+
+    "detached": ":",
+
+    "ahead": "↑",
+    "behind": "↓",
+}
+
+# Colors
+COLORS = dict(
+    # Prompt color and information
+    user=dict(
+        success=dict(fg=35, reverse=True),
+        errored=dict(fg="red", reverse=True),
+    ),
+    root=dict(
+        success=dict(fg="green", bold=True),
+        errored=dict(fg="red", bold=True),
+    ),
+
+    history=dict(fg=141, reverse=True),
+    directory=dict(fg=68, reverse=True),
+
+    ahead=dict(fg="green", bg=254),
+    behind=dict(fg="yellow", bg=254),
+    branch=dict(fg=142, bg=254),
+    detached=dict(fg=142, bg=254),
+)
+
+def colorize(text, fg=None, bg=None, bold=False, underline=False, reverse=False):
+    """Add the ANSI escape codes to color text with the color specified.
+
+    If either `fg` and `bg` are integers, they are used as 256 color values.
+    """
+    parameters = []
+    color_map = {
+        color: code
+        for code, color in enumerate(
+            "black red green yellow blue magenta cyan white".split()
+        )
+    }
+    if bold:
+        parameters.append(1)
+    if underline:
+        parameters.append(4)
+    if reverse:
+        parameters.append(7)
+    if fg:
+        if isinstance(fg, int):
+            parameters.extend([38, 5, fg])
+        else:
+            parameters.append(color_map[fg] + 30)
+    if bg:
+        if isinstance(bg, int):
+            parameters.extend([48, 5, bg])
+        else:
+            parameters.append(color_map[bg] + 40)
+
+    return "\[\033[{0}m\]{1}\[\033[0m\]".format(";".join(map(str, parameters)), text)
+
+
+def git_info():
+    """Return a formatted string containing information related to git.
+    """
+    def in_repo():
+        pipe = subprocess.Popen(
+            ["git", "rev-parse", "--is-inside-work-tree"],
+            stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT
+        )
+        pipe.communicate()
+        return pipe.returncode == 0
+
+    def branch_info():
+        """Information about the current local branch
+        """
+        # What does HEAD refer to?
+        try:
+            HEAD_ref = subprocess.check_output(
+                ["git", "symbolic-ref", "HEAD"],
+                stderr=subprocess.DEVNULL, universal_newlines=True
+            ).strip()
+        except subprocess.CalledProcessError:
+            HEAD_ref = ""
+
+        if HEAD_ref.startswith("refs/heads/"):  # Attached HEAD.
+            branch_name = HEAD_ref[11:]
+            upstream = upstream_info(branch_name)
+            c_branch = colorize(" " + branch_name + " ", **COLORS["branch"])
+            if upstream:
+                return c_branch + upstream
+            return c_branch
+        else:  # Detached HEAD, Show the commit hash.
+            commit_hash = subprocess.check_output(
+                ["git", "rev-parse", "--short=" + str(COMMIT_HASH_LENGTH), "HEAD"],
+                stderr=subprocess.DEVNULL, universal_newlines=True
+            ).strip()
+            return colorize(
+                " " + SYMBOLS["detached"] + commit_hash + " ",
+                **COLORS["detached"]
+            )
+
+    def upstream_info(branch_name):
+        """Information about the upstream branch
+        """
+        try:
+            # Get the upstream if it exists.
+            upstream = subprocess.check_output(
+                ["git", "rev-parse", "--abbrev-ref", branch_name + "@{upstream}"],
+                stderr=subprocess.DEVNULL, universal_newlines=True
+            ).strip()
+        except subprocess.CalledProcessError:
+            return
+        else:
+            divergence = subprocess.check_output(
+                ["git", "rev-list", "--count", "--left-right", upstream + "...HEAD"],
+                stderr=subprocess.DEVNULL, universal_newlines=True
+            )
+            ahead, behind = map(int, divergence.split())
+            retval = ""
+            if ahead:
+                retval += colorize(
+                    " " + SYMBOLS["ahead"] + str(ahead), **COLORS["ahead"]
+                )
+            if behind:
+                retval += colorize(
+                    " " + SYMBOLS["behind"] + str(behind), **COLORS["behind"]
+                )
+            if retval:
+                retval = retval.replace(" ", "", 1) # Remove the first space
+        return retval
+
+
+    if in_repo():
+        return branch_info()
+    return ""
+
+
+def directory_info():
+    """Return basic information about current directory
+    """
+    return "{}{}".format(
+        colorize(" \\# ", **COLORS["history"]),
+        colorize(" \\w ", **COLORS["directory"])
+    )
+
+
+def prompt_symbol():
+    # Use slices, just in case argument may not have been provided.
+    success = sys.argv[1:2] == ["0"]
+    uid = os.geteuid()
+
+    root = uid == 0
+    key = "root" if root else "user"
+
+    color_map = COLORS[key]
+    symbol = SYMBOLS[key]
+
+    if success:
+        color = color_map["success"]
+    else:
+        color = color_map["errored"]
+
+    return colorize(" {} ".format(symbol), **color)
+
+
+def main():
+    print(PROMPT_FORMAT.format(
+        dir=directory_info(), git=git_info(), symbol=prompt_symbol()
+    ))
+
+
+if __name__ == "__main__":
+    main()
