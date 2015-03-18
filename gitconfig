@@ -1,0 +1,36 @@
+[user]
+    email = pradyunsg@gmail.com
+    name = Pradyun
+
+[alias]
+	co = checkout
+    conflicts = diff --name-only --diff-filter=U
+    st = status
+
+[apply]
+    whitespace = error
+
+[commit]
+    template = /home/pradyun/.git-config/commit-template
+
+[core]
+    autocrlf = input
+    editor = subl -w -n
+    whitespace = trailing-space,tab-in-indent,cr-at-eol
+
+[diff]
+    algorithm = patience
+
+[gui]
+    editor = subl -w -n
+    fontdiff = -family \"Source Code Pro\" -size -12 -weight normal -slant roman -underline 0 -overstrike 0
+    historybrowser = gitg
+
+[help]
+    autocorrect = 20
+
+[merge]
+    tool = meld
+
+[push]
+    default = simple
