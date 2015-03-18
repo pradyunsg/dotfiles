@@ -9,6 +9,7 @@ import subprocess
 SYMBOLS = {
     "user": ">",
     "root": "#",
+
     "history": "!",
     "command_no": "#",
 
@@ -18,11 +19,11 @@ SYMBOLS = {
     "detached": ":",
 
     "dirty": "✘",
+    # "dirty": "",
     "clean": "✔",
 
     "modified": "≠",
     "deleted": "-",
-    "untracked": "+",
     "unmerged": "!",
 }
 
@@ -45,7 +46,7 @@ def get_output(command, **kwargs):
     with subprocess.Popen(cmd, stdout=subprocess.PIPE, **kwargs) as process:
         try:
             output, _ = process.communicate()
-        except:
+        except Exception:
             process.kill()
             process.wait()
             raise
@@ -58,9 +59,11 @@ def get_output(command, **kwargs):
 class ANSIOutput(object):
     """Wrapper for text output for printing with ANSI support
     """
-    def __init__(self):
+
+    def __init__(self, stream=sys.stdout):
         super(ANSIOutput, self).__init__()
         self._stack = []
+        self.stream = stream
 
     def __call__(self, **kwargs):
         self.start(**kwargs)
@@ -104,13 +107,13 @@ class ANSIOutput(object):
 
     def stop(self):
         self.write("\[\033[0m\]")
-        args = self._stack.pop(-1)
+        self._stack.pop(-1)
         # Re-start the previous escape code!
         if self._stack:
             self.write(self._escape_code(**self._stack[-1]))
 
     def write(self, text):
-        sys.stdout.write(text)
+        self.stream.write(text)
 
 
 #------------------------------------------------------------------------------
@@ -133,19 +136,18 @@ class Git(object):
         di = {}
         if not self.in_repo():
             return di
-        self.parse_head()
 
-        # Head information
-        di["attached"] = self.attached
-        if self.attached:
+        di["attached"] = self.is_head_attached()
+        if di["attached"]:
             # Branch information
             branch_name, upstream_info = self.branch_info()
             di["branch_name"] = branch_name
             # Upstream information
-            upstream, (ahead, behind) = upstream_info
-            di["upstream"] = upstream
-            di["ahead"] = ahead
-            di["behind"] = behind
+            if upstream_info is not None:
+                upstream, (ahead, behind) = upstream_info
+                di["upstream"] = upstream
+                di["ahead"] = ahead
+                di["behind"] = behind
         else:
             # Detached HEAD, only commit hash
             di["commit_hash"] = self.detached_hash()
@@ -155,15 +157,14 @@ class Git(object):
         di["modified"] = working[0]
         di["deleted"] = working[1]
         di["unmerged"] = working[2]
-        di["untracked"] = working[3]
         di["dirty"] = bool(sum(working))
         return di
 
-    def parse_head(self):
+    def is_head_attached(self):
         """Parse the symbolic ref to figure out what we are need to refer to.
         """
         self._HEAD = get_output("git symbolic-ref HEAD")
-        self.attached = self._HEAD.startswith("refs/heads/")
+        return self._HEAD.startswith("refs/heads/")
 
     # HEAD Information
     def detached_hash(self):
@@ -186,8 +187,10 @@ class Git(object):
         upstream = get_output(
             "git rev-parse --abbrev-ref {}@{{upstream}}".format(branch_name)
         )
-        if not upstream:  # There is no upstream, there can't be divergence
-            return upstream, (0, 0)
+        # There is no upstream, there can't be divergence.
+        # The 2nd condition is for empty repositories.
+        if not upstream or upstream == branch_name + "@{upstream}":
+            return None, (0, 0)
         else:  # There is upstream. Check for divergence.
             divergence = get_output(
                 "git rev-list --count --left-right {}...HEAD".format(upstream)
@@ -198,11 +201,11 @@ class Git(object):
     def working_dir_info(self):
         def count_files(opt):
             return len(get_output("git ls-files -" + opt).splitlines())
+        # print(get_output("git ls-files -o"))
         modified = count_files("m")
         deleted = count_files("d")
         unmerged = count_files("u")
-        untracked = count_files("o")
-        return modified, deleted, unmerged, untracked
+        return modified, deleted, unmerged
 
 
 class General(object):
@@ -229,7 +232,6 @@ class VirtualEnv(object):
             name = os.path.basename(name)
         di["name"] = name
         return di
-
 
 
 #------------------------------------------------------------------------------
@@ -271,10 +273,8 @@ def print_formatted_prompt(general, git, venv):
     else:
         prompt_colors = dict(bg=1)
 
-
     with ansi(**prompt_colors):
         ansi.write(pad(prompt_symbol))
-
 
     ansi.write(" ")
 
@@ -282,7 +282,7 @@ def print_formatted_prompt(general, git, venv):
 def print_formatted_git(
         attached=None, commit_hash="",
         branch_name="", upstream="", ahead=None, behind=None,
-        modified=0, deleted=0, unmerged=0, untracked=0, dirty=True
+        modified=0, deleted=0, unmerged=0, dirty=True
     ):
 
     # Not in a git repo!
@@ -327,11 +327,6 @@ def print_formatted_git(
                     ansi.write(" ")
                     ansi.write(SYMBOLS["deleted"])
                     ansi.write(str(deleted))
-            if untracked or True:
-                with ansi(fg=244, bg=254):
-                    ansi.write(" ")
-                    ansi.write(SYMBOLS["untracked"])
-                    ansi.write(str(untracked))
             if unmerged or True:
                 with ansi(fg=244, bg=254):
                     ansi.write(" ")

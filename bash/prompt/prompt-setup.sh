@@ -9,4 +9,4 @@ function has_jobs() {
     fi
 }
 
-PROMPT_COMMAND="PS1=\$(python3.4 ~/.bash/python/prompt.py \$? \$(has_jobs))"
+PROMPT_COMMAND="PS1=\$(python3.4 ~/.bash/prompt/prompt.py \$? \$(has_jobs))"

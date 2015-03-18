@@ -1,0 +1,500 @@
+sudo apt install python3-pyqt5
+python3
+nautilus .
+nautilus /usr/lib/python3/dist-packages/PyQt5
+ln --help
+cd ~/.venvwrap/venvs/ide/lib/python3.4/site-packages/
+ln /usr/lib/python3/dist-packages/PyQt5
+ln -s /usr/lib/python3/dist-packages/PyQt5
+workon ide
+python
+workon ide
+qmlscene ./play-ground/view.qml
+sudo apt-get update
+sudo apt update
+sudo apt-get install qt5-default
+sudo apt-get install qmlscene
+qmlscene ./play-ground/view.qml
+sudo apt-get install qml
+qml
+qml --help
+man qml
+software-center qml
+qml ./play-ground/view.qml
+qmlscene ./play-ground/view.qml
+python setup.py develop
+cd doc
+cd ..
+nautilus .
+sphinx-quickstart
+cd doc
+make html
+pip install sphinx_rtd_theme
+make html
+firefox ./build/html/index.html
+make html
+pip install alabaster
+make html
+pip install alabaster
+make html
+pip uninstall *
+pip uninstall alabaster
+pip uninstall sphinx-rtd-theme
+pip freeze
+make html
+g++ -o /tmp/chinmay.cpp /tmp/chinmay
+g++ -o /tmp/chinmay /tmp/chinmay.cpp
+g++ -o /tmp/chinmay /tmp/chinmay && /tmp/chinamy
+g++ -o /tmp/chinmay /tmp/chinmay.cpp && /tmp/chinamy
+g++ -o /tmp/chinmay /tmp/chinmay.cpp && /tmp/chinmay 
+g++ -h
+g++ --help
+g++ --version
+g++ --version
+workon ide
+pip install sphinx_py3doc_enhanced_theme
+pip install /home/pradyun/.cache/pip/https%3A%2F%2Fpypi.python.org%2Fpackages%2F2.7%2Fs%2Fsphinx_py3doc_enhanced_theme%2Fsphinx_py3doc_enhanced_theme-1.0.0-py2.py3-none-any.whl
+pip st
+pip freeze
+cd doc
+make html
+g++ --help
+g++ --version
+g++ --version
+workon ide
+pip install sphinx_py3doc_enhanced_theme
+pip install /home/pradyun/.cache/pip/https%3A%2F%2Fpypi.python.org%2Fpackages%2F2.7%2Fs%2Fsphinx_py3doc_enhanced_theme%2Fsphinx_py3doc_enhanced_theme-1.0.0-py2.py3-none-any.whl
+pip st
+pip freeze
+cd doc
+make html
+g++ /home/pradyun/Programming/DELETE-ME/chinmay.cpp
+./a.out
+reset
+sh
+echo "\n\n\n\n\n\n\n\n"; g++ /home/pradyun/Programming/DELETE-ME/chinmay.cpp && ./a.out
+echo -e "\n\n\n\n\n\n\n\n"; g++ /home/pradyun/Programming/DELETE-ME/chinmay.cpp && ./a.out
+g++ /home/pradyun/Programming/DELETE-ME/chinmay.cpp && ./a.out
+cloc /home/pradyun/Dropbox/School/XI C 06 Pradyun Gedam/Project/lib
+cloc "/home/pradyun/Dropbox/School/XI C 06 Pradyun Gedam/Project/lib"
+cloc "/home/pradyun/Dropbox/School/XI C 06 Pradyun Gedam/Project/src"
+259 + 98
+python -c "print(259 + 98)"
+git gui
+Debug
+git remote add github git@github.com:pradyun/school-project.git
+git push github master 
+git flow init
+git push github master develop
+python
+python3
+v4lctl bright 75%
+python
+python3
+v4lctl bright 75%
+cd /tmp
+git clone git@github.com:pradyun/mkdocs.git
+cd mkdocs
+git checkout patch-1 
+git branch issue-339
+git branch -D patch1
+git checkout issue-339 
+git branch -D patch-1 
+git checkout master 
+git push origin issue-339 
+git push origin :patch-1 
+subl -n .
+workon ide
+cd docs/
+cd ..
+mkdocs setup.py 
+mkdocs serve
+sudo apt remove atom
+sudo add-apt-repository ppa:webupd8team/atom
+sudo apt update
+apt-upgrade
+sudo apt install atom
+atom
+python3
+v4lctl bright 75%
+workon ide
+make
+cd doc
+nautilus
+cd docs
+make html
+pip install mkdocs
+cd ..
+la
+mkdocs new Omega
+mkdocs serve
+mkdocs serve
+cd /tmp/tipo-root/
+celar
+bash RunMe.sh 
+nautilus .
+sudo bash RunMe.sh 
+cd /tmp
+python ./bash_b.py 
+python ./bash_b.py ./tipo-root/RunMe.sh 
+fastboot devices 
+sudo fastboot devices
+sudo fastboot -i 0x0fce oem unlock 0x931DE44AF666EAE6
+workon ide
+mkdocs serve
+sudo apt update
+apt-upgrade
+atom
+python3
+v4lctl bright 75%
+workon ide
+make
+cd doc
+nautilus
+cd docs
+make html
+pip install mkdocs
+cd ..
+la
+mkdocs new Omega
+mkdocs serve
+mkdocs serve
+cd /tmp/tipo-root/
+celar
+bash RunMe.sh 
+nautilus .
+sudo bash RunMe.sh 
+cd /tmp
+python ./bash_b.py 
+python ./bash_b.py ./tipo-root/RunMe.sh 
+fastboot devices 
+sudo fastboot devices
+sudo fastboot -i 0x0fce oem unlock 0x931DE44AF666EAE6
+workon ide
+mkdocs serve
+cd "/home/pradyun/.config/sublime-text-3/Packages/Color Scheme - Rainbow/"
+clea
+git stash save -u --all "Stash local changes"
+git flow init
+git flow feature start "rewrite"
+git stash apply
+sudo apt install atom
+atom --version
+git cola
+git flow feature
+git stash --all -u
+git flow feature finish
+git k
+git rebase ffee50^
+git stash -u -a
+git rebase develop^^
+git rebase -i develop^^
+gitk
+git stash pop 
+rm -rf **/.fuse_hidden*
+rm -rf **.fuse_hidden*
+rm -rf .fuse_hidden*
+rm .fuse_hidden000001c100000007 
+rm **/.fuse_hidden*
+gst
+rm -f **/.fuse_hidden*
+ls **/.fuse_hidden*
+git oush
+git remote set-url origin git@github.com:pradyun/Sublime-Rainbow-ColorScheme.git
+git push --set-upstream origin develop master 
+git push --set-upstream origin develop master  -f
+git push origin develop master
+git flow release 
+git flow release start
+git st
+git stash save -u "Dark theme"
+git stash show
+git stash list
+git push
+git flow release start 0.3.0
+git push develop master
+git push origin develop master 
+git push --alll
+git flow hotfix start 
+git flow hotfix start fix-readme
+git flow hotfix finish 'fix-readme'
+gitk --all
+git push --all
+git push --all --tags
+git push --tags --all
+git push --tags
+git flow
+git flow feature new
+re_config 
+git flow feature start --help
+git flow feature start dark-theme
+git stash pop
+git gui
+git checkout develop
+bash --help
+bash --rcfile none
+v4lctl bright 75%
+re_config 
+git flow feature start --help
+git flow feature start dark-theme
+git stash pop
+git gui
+git checkout develop
+workon ide
+find . -name "*.md" -exec rename 's/\.md$/.markdown/' '{}' \;
+mkdocs serve
+sphinx-quickstart 
+sphinx --help
+sphinx-autogen --help
+sphinx-build --help
+pip install sphinx-autobuild
+pip install sphinx-bootstrap-theme
+reset
+ffcast
+ffmpeg2theora 
+ffmpeg
+sudo apt-get install imagemagick mplayer gtk-recordmydesktop
+sudo apt-get install recordmydesktop
+sudo apt-get install gtk-recordmydesktop
+sphinx-autobuild docs/source docs/build/html
+ffmpeg
+sudo apt-get install imagemagick mplayer gtk-recordmydesktop
+sudo apt-get install recordmydesktop
+sudo apt-get install gtk-recordmydesktop
+workon ide
+sphinx-autobuild docs docs/build/html
+cd docs
+sphinx-autobuild docs/source docs/build/html
+sphinx-autobuild source build/html
+pip install PygoBJECT
+sudo apt install python3-gobject-dev
+sudo apt install python3-gobject
+sudo apt install python3-gi
+pip install gi
+pip uninstall requests gi
+/usr/bin/python3
+pushd /usr/lib/python3/dist-packages/
+popd
+cd `which python`
+cd `which python`/..
+cd $(basename `which python`)
+cd $(basename $(which python))
+cd $(dirname $(which python))
+cd ..
+cd lib
+cd python3.4/
+ln /usr/lib/python3/dist-packages/gi ./gi
+ln -s /usr/lib/python3/dist-packages/gi ./gi
+cd gi
+cd gi
+workon ide
+python
+sphinx-autobuild source build/html
+cd docs
+echo "sphinx-autobuild source build/html" >> ./serve-docs.sh
+chmod +x ./serve-docs.sh 
+sudo apt-get install atom
+./serve-docs.sh 
+ide
+workon ide
+./docs/serve-docs.sh
+deactivate 
+cd 
+v4lctl bright 75%
+ln -s /usr/lib/python3/dist-packages/gi ./gi
+cd gi
+cd gi
+python
+sphinx-autobuild source build/html
+cd docs
+echo "sphinx-autobuild source build/html" >> ./serve-docs.sh
+chmod +x ./serve-docs.sh 
+sudo apt-get install atom
+./serve-docs.sh 
+cd /tmp
+git clone git@github.com:pradyun/anaconda.git
+cd anaconda/
+git checkout patch-1 
+git branch cleanup-readme
+git checkout cleanup-readme 
+git branch -D patch-1 
+git push origin :patch-1
+subl .
+git commit --ammend
+git pull # Anaconda
+Anaconda turns your Sublime Text 3 into a full featured Python IDE. Read the plugin documentation on [http://damnwidget.github.io/anaconda](http://damnwidget.github.io/anaconda).
+[![Build Status](https://www.gitbook.io/button/status/book/damnwidget/anacondast3-developers-documentation)](https://www.gitbook.io/book/damnwidget/anacondast3-developers-documentation/activity)
+## Getting Started
+git co master -f
+git stash
+git stash pop
+git stash pop -f
+git merge
+git mergetool
+git st
+git co master '
+'
+git co master
+git branch -b master-copy
+git branch master-copy
+git co master-copy 
+git pull merge cleanup-readme
+git merge cleanup-readme
+git pull https://github.com/DamnWidget/anaconda/
+git checkout master
+git branch :master-copy
+git branch -d master-copy
+git branch -D master-copy
+git co cleanup-readme 
+git push
+git push --set-upstream origin cleanup-readme 
+workon ide
+git gui
+./docs/serve-docs.sh 
+git gui
+./docs/serve-docs.sh 
+cd /tmp
+cd /home/pradyun/Programming/IDE/docs/source/_static/
+convert favicon.svg favicon.ico
+convert --help
+convert --help | less -R
+convert favicon.svg -background "#FFFFFFFF" favicon.ico
+convert favicon.svg -background "#000000FF" favicon.ico
+convert favicon.svg -background "#00000000" favicon.ico
+convert favicon.svg -alpha on favicon.ico
+convert favicon.svg -alpha On favicon.ico
+convert favicon.svg -alpha Transparent favicon.ico
+convert favicon.svg -alpha Extract favicon.ico
+convert favicon.svg -alpha Shape favicon.ico
+convert favicon.svg -alpha C
+convert favicon.svg -alpha Associate favicon.ico
+convert favicon.svg -alpha Background favicon.ico
+convert favicon.svg -alpha Copy favicon.ico
+convert favicon.svg favicon-temp.ico && convert favicon-temp.ico -transparent white favicon.ico
+g++ chinmay.cpp && ./a.out
+convert favicon.svg -alpha Copy favicon.ico
+convert favicon.svg -background rgba(0,0,0,0) favicon-temp.ico
+convert favicon.svg -background "rgba(0,0,0,0)" favicon-temp.ico
+convert favicon.svg -background "rgba(1,1,1,0)" favicon-temp.ico
+convert favicon.svg -background "rgba(255,255,255,0)" favicon-temp.ico
+convert favicon.svg -background "rgba(255,255,255,0)" favicon.ico
+convert favicon.svg -background "rgba(255,255,255,1)" favicon.ico
+convert favicon.svg favicon-temp.ico && convert favicon-temp.ico -transparent white favicon.ico
+convert favicon.svg -transparent white favicon.ico
+convert favicon.svg -alpha Extract favicon.ico
+convert favicon.svg -alpha Extract favicon.png
+convert favicon.svg -alpha Copy favicon.png
+convert favicon.svg -transparent white favicon.png
+convert favicon.svg -alpha 1 favicon.png
+convert favicon.svg -background none favicon.png
+convert --version
+sudo apt-get install imagemagick
+cd ../../../..
+cd DELETE-ME/
+./chinmay 
+subl ./chinmay.cpp 
+subl -n ./chinmay.cpp 
+reset
+g++ ./chinmay.cpp && ./a.out
+PS1=\$
+sh
+bash --help
+bash -norc
+bash --help
+bash -norc
+cd docs/_s
+cd docs/source/_static/
+convert favicon.svg -background none favicon.png
+convert favicon.svg -alpha on favicon.png
+convert favicon.svg -background none -alpha on favicon.png
+convert favicon.svg -background none -alpha Set favicon.png
+convert favicon.svg -background none -alpha Copy favicon.png
+convert favicon.svg -background black -alpha Extract favicon.png
+convert favicon.svg -background black -alpha Copy favicon.png
+convert favicon.svg -background black  favicon.png
+convert favicon.svg -alpha On favicon.png
+inkscape favicon.svg
+git gui
+workon ide
+./docs/serve-docs.sh 
+workon tower-defense
+deactivate 
+deactivate 
+ls ~/Applications/AAA_Tor/tor-browser_en-US/Browser/
+ping 10.181.6.250
+logout
+ping 10.181.6.250
+workon ide
+./docs/serve-docs.sh 
+workon tower-defense
+deactivate 
+ifconfig
+ping 10.181.6.1
+ping 10.181.6.8
+ping 10.181.6.250
+sudo apt-get upgrade
+cd Programming
+cd Web
+md chinmay
+cd chinmay/
+hyde
+mktmpenv 
+deactivate 
+deactivate 
+ls ~/Applications/AAA_Tor/tor-browser_en-US/Browser/
+ping 10.181.6.250
+logout
+ping 10.181.6.250
+workon ide
+./docs/serve-docs.sh 
+workon tower-defense
+deactivate 
+ifconfig
+ping 10.181.6.1
+ping 10.181.6.8
+ping 10.181.6.250
+sudo apt-get upgrade
+sudo app upgrade
+sudo apt update 
+sudo apt upgrade 
+apt-upgrade-full 
+apt-update 
+cd code
+cd ~/code/work
+cd code/projects/py2c/
+./dev_tools/cleanup.py 
+./dev_tools/cleanup.py --help
+./dev_tools/cleanup.py
+./dev_tools/cleanup.py --
+./dev_tools/cleanup.py -n -a
+./dev_tools/cleanup.py -h
+./dev_tools/cleanup.py -n
+nautilus -q
+echo "enabled=False" > ~/.config/user-dirs.conf
+subl ~/.config/user-dirs.dirs 
+nautilus -q && nautilus
+nautilus
+subl ~/.config/user-dirs.dirs 
+nautilus -q && nautilus
+nautilus
+dotfiles -m 
+dotfiles -m --help
+dotfiles -m ~/code/dotfiles
+dotfiles -R ~/code/dotfiles/
+dotfiles 
+ignore = [
+dotfiles -l
+dotfiles --help
+dotfiles -s
+dotfiles -s -d
+dotfiles
+pip3 install pymunk
+pip3 install -U pymunk
+dotfiles
+pip3 install pymunk
+pip3 install -U pymunk
+CLEAR
+r-rc
+-reload
+_reload_bashrc 
+reload_bashrc 

@@ -1,0 +1,8 @@
+# If not interactive or requested, don't bother setting things up!
+
+THIS_DIR=$(dirname ${BASH_SOURCE[0]});
+
+for f in $THIS_DIR/**/*.sh; do
+    echo -n .
+    source $f
+done

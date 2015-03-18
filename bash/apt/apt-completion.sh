@@ -1,6 +1,6 @@
 #!/bin/bash
-# Debian apt(8) completion                             -*- shell-script -*-
 
+# Debian apt(8) completion
 _apt()
 {
     local cur prev words cword
