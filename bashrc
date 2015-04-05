@@ -2,8 +2,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # If not running interactively or not requested to, don't do anything
-([[ "$-" != *i* ]] || [[ "$SETUP_ENV-" == "-" ]]) && return
-
+[[ "$-" != *i* ]] && return
 
 # Call the actual bashrc
 source "$HOME/.bash/bashrc"
