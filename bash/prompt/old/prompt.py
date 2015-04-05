@@ -15,7 +15,7 @@ SYMBOLS = {
 
     "ahead": "↑",
     "behind": "↓",
-    "upstream": " → ",
+    "upstream": "→",
     "detached": ":",
 
     "dirty": "✘",
