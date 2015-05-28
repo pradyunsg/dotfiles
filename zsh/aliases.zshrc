@@ -17,6 +17,7 @@ alias egrep='egrep --color=auto'
 # Shorthands
 alias md='echo "Using alias for mkdir" && mkdir'
 alias la='ls -A'
+alias nau='nautilus'
 
 # Better safe than sorry!
 alias rm='rm -I --preserve-root'
