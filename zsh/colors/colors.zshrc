@@ -1,1 +1,1 @@
-eval $(dircolors ~/.zsh/colors/solarized-dark.dircolors)
+eval $(dircolors ~/.zsh/colors/ls-colors.dircolors)
