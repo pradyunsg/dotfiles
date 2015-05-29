@@ -1,3 +1,26 @@
-[BUGFIX|TESTS|MISC|CI|PACKAGING|REDESIGN|GIT|<component-in-caps>] <summary>
 
-<description>
+#-----------------------------------------------------------------------
+# [COMPONENT-1, COMPONENT-2] :optional_emoji: Summary text
+#
+# Description of the commit.
+#-----------------------------------------------------------------------
+# Do describe
+#  - why the change was made (unless obvious)
+#  - what the change does
+#
+# Do NOT describe
+#  - how the change was made (it is visible in the change-set)
+#  - what the change is (it too is visible in the change-set)
+#-----------------------------------------------------------------------
+# Recommended Emojis:
+#    :package:            Releases/Version Bumps
+#    :mega:               Announcements
+#    :pencil2:            Work In Progress
+#    :memo:               Documentation related
+#    :information_source: Extra information
+#    :lipstick:           Minor aesthetic change
+#    :new:                Added Something new
+#    :wrench:             Attempt to fix something
+#    :fire:               Removal of component
+#    :racehorse:          Speed related changes
+#-----------------------------------------------------------------------
