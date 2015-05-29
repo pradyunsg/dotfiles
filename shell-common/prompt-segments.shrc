@@ -1,0 +1,137 @@
+# Information shown:
+#   - User name
+#   - Name of virtualenv
+#   - Number of background jobs (if any)
+#   - Current directory
+#   - Git (if in git repository)
+#     - Branch name or (if detached) commit hash
+#     - Deviation from tracking branch and amount of divergence (if deviated)
+#     - Shows counts of modified, deleted, untracked and unmerged files
+#   - A '⚡' (if root user)
+#   + New line
+#   - Prompt (red or green based on last-command's exit code)
+
+#------------------------------------------------------------------------------
+# Git
+#------------------------------------------------------------------------------
+_prompt_segment_git() {
+    # # Verify that we have git
+    # command -v git >/dev/null 2>&1 || return
+
+    # Only add information if we are in a repository
+    git rev-parse --is-inside-work-tree > /dev/null 2>&1 || return
+
+    # HEAD related information
+    git_HEAD_ref=$(git symbolic-ref HEAD 2> /dev/null)
+    if [[ $git_HEAD_ref == "refs/heads/"* ]]; then
+        git_head_status="$(_prompt_git_branch_upstream_info)"
+    else
+        git_head_status="$(_prompt_git_detached_HEAD_info)"
+    fi
+
+    # Working Directory information
+    git_working_dir_status="$(_prompt_git_working_dir_info)"
+    git_segment_text="$git_head_status"
+    if [[ -n $git_working_dir_status ]]; then
+        git_segment_text+="$git_working_dir_status"
+    fi
+    # Return the text for the git segments
+    _prompt_write "$git_segment_text"
+}
+
+_prompt_git_working_dir_info() {
+    deleted=$(git ls-files -d | wc -l)
+    modified=$(git ls-files -m | wc -l)
+    unmerged=$(git ls-files -u | wc -l)
+    untracked=$(git ls-files -o | wc -l)
+
+    retval=
+    if (( ${untracked} > 0 )); then
+        colorize_text ${_PROMPT_TEXT_COLOR[git_untracked_file]} "${_PROMPT_SYMBOLS[git_untracked_file]}${untracked} "
+    fi
+    if (( ${unmerged} > 0 )); then
+        colorize_text ${_PROMPT_TEXT_COLOR[git_unmerged_file]} "${_PROMPT_SYMBOLS[git_unmerged_file]}${unmerged} "
+    fi
+    if (( ${modified} > 0 )); then
+        colorize_text ${_PROMPT_TEXT_COLOR[git_modified_file]} "${_PROMPT_SYMBOLS[git_modified_file]}${modified} "
+    fi
+    if (( ${deleted} > 0 )); then
+        colorize_text ${_PROMPT_TEXT_COLOR[git_deleted_file]} "${_PROMPT_SYMBOLS[git_deleted_file]}${deleted} "
+    fi
+}
+
+_prompt_git_detached_HEAD_info() {
+    # Get the commit hash
+    git_hash="$(git rev-parse --short=20 HEAD)"
+    # Return the hash
+    _prompt_write "$(colorize_text ${_PROMPT_TEXT_COLOR[git_hash]} " ${_PROMPT_SYMBOLS[git_hash_prefix]}$git_hash ")"
+}
+
+_prompt_git_branch_upstream_info() {
+    # Get branch name, upstream name
+    git_HEAD_ref="$(git symbolic-ref HEAD)"
+    git_branch_name="${git_HEAD_ref:11}"
+
+    git_upstream_name="$(git rev-parse --abbrev-ref "@{upstream}" 2>/dev/null)"
+
+    # Figure out divergence information.
+    if [[ $? == 0 ]]; then
+        temp="$(git rev-list --count --left-right "$git_upstream_name...HEAD")"
+        behind=$(echo -n $temp | cut -f1)
+        ahead=$(echo -n $temp | cut -f2)
+    fi
+
+    # Return the collected information, in a properly formatted manner.
+
+    # Branch name
+    _prompt_write " "
+    _prompt_write "$(colorize_text ${_PROMPT_TEXT_COLOR[git_branch_name_prefix]} "${_PROMPT_SYMBOLS[git_branch_name_prefix]}")"
+    _prompt_write " "
+    _prompt_write "$(colorize_text ${_PROMPT_TEXT_COLOR[git_branch_name]} "$git_branch_name")"
+    if [[ -n $git_upstream_name ]]; then
+        _prompt_write " "
+        # Upstream name
+        _prompt_write "$(colorize_text ${_PROMPT_TEXT_COLOR[git_upstream_pointer]} "${_PROMPT_SYMBOLS[git_upstream_pointer]}")"
+        _prompt_write " "
+        _prompt_write "$(colorize_text ${_PROMPT_TEXT_COLOR[git_upstream_name]} "$git_upstream_name")"
+        # Divergence text
+        git_divergence=
+        if (( ahead > 0 )); then
+            git_divergence+=" $(colorize_text ${_PROMPT_TEXT_COLOR[git_deviation_ahead]} "${_PROMPT_SYMBOLS[git_deviation_ahead]}$ahead")"
+        fi
+        if (( behind > 0 )); then
+            git_divergence+=" $(colorize_text ${_PROMPT_TEXT_COLOR[git_deviation_behind]} "${_PROMPT_SYMBOLS[git_deviation_behind]}$behind")"
+        fi
+        _prompt_write $git_divergence
+    fi
+    _prompt_write " "
+}
+
+#------------------------------------------------------------------------------
+# Virtual Environment
+#------------------------------------------------------------------------------
+_prompt_segment_virtualenv() {
+    venv_name=$(basename "$VIRTUAL_ENV")
+    if [[ -n $venv_name ]]; then
+        colorize_text ${_PROMPT_TEXT_COLOR[virtualenv_name]} " $venv_name "
+    fi
+}
+# Because I just integrated it into the prompt!!
+VIRTUAL_ENV_DISABLE_PROMPT=1
+
+#------------------------------------------------------------------------------
+# Background Jobs
+#------------------------------------------------------------------------------
+_prompt_segment_background_job_count() {
+    job_count=$(jobs -rp | wc -l)
+    if [[ $job_count != '0' ]]; then
+        colorize_text ${_PROMPT_TEXT_COLOR[background_job_count]} " ${_PROMPT_SYMBOLS[background_job_count]}$job_count "
+    fi
+}
+
+#------------------------------------------------------------------------------
+# Shell-Specific
+#------------------------------------------------------------------------------
+# Current Directory
+# Current User
+# Segment order (because loop semantics vary)

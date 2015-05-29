@@ -1,0 +1,32 @@
+
+# Because local binaries matter
+export PATH=$PATH:/home/pradyun/.local/bin
+
+# -----------------------------------------------------------------------------
+# Python
+# -----------------------------------------------------------------------------
+# pip
+export PIP_DOWNLOAD_CACHE=$HOME/.cache/pip
+
+# virtualenvwrapper
+export WORKON_HOME=$HOME/.venvwrap/venvs
+export PROJECT_HOME=$HOME/.venvwrap/projects
+
+command -v virtualenvwrapper.sh >/dev/null 2>&1 && source virtualenvwrapper.sh
+
+# -----------------------------------------------------------------------------
+# Go
+# -----------------------------------------------------------------------------
+export GOPATH=~/code/go
+
+# -----------------------------------------------------------------------------
+# Travis
+# -----------------------------------------------------------------------------
+[ -f /home/pradyun/.travis/travis.sh ] && source /home/pradyun/.travis/travis.sh
+
+# -----------------------------------------------------------------------------
+# Heroku
+# -----------------------------------------------------------------------------
+export PATH="/usr/local/heroku/bin:$PATH"
+
+

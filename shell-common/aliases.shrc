@@ -1,0 +1,30 @@
+
+# Because I'm always improving this.
+alias _reload_rc='source ~/.shrc'
+
+#------------------------------------------------------------------------------
+# UNIX tools
+#------------------------------------------------------------------------------
+# Be colorful!
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Shorthands
+alias md='echo "Using alias for mkdir" && mkdir'
+alias la='ls -A'
+alias nau='nautilus'
+
+alias apt-update="echo 'Updating cache...' && sudo apt update > /dev/null"
+alias apt-upgrade="sudo apt upgrade"
+alias apt-upgrade-full="sudo apt full-upgrade"
+
+# Better safe than sorry!
+alias rm='rm -I --preserve-root'
+
+#------------------------------------------------------------------------------
+# Git
+#------------------------------------------------------------------------------
+alias gd="git diff"
+alias gst="git status"

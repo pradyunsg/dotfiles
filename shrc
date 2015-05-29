@@ -1,0 +1,24 @@
+CURRENT_SHELL=$(ps -o comm= -p $$)
+
+# # If not running interactively or not requested to, don't do anything
+# [[ "$-" != *i* ]] && return
+
+_overlap_log() {
+    # Clear line and return to start.
+    echo -ne "\e[2K\r"
+    echo -n $@
+}
+
+# Source shell-specific files
+for shell_rc in ~/.shell-${CURRENT_SHELL}/*.${CURRENT_SHELL}rc; do
+    echo "Sourcing $shell_rc"
+    source $shell_rc
+done
+
+# Source common files
+for common_rc in ~/.shell-common/*.shrc; do
+    echo "Sourcing $common_rc"
+    source $common_rc
+done
+
+echo
