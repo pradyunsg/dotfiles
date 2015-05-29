@@ -1,36 +1,37 @@
 [user]
-    email = pradyunsg@gmail.com
-    name = Pradyun
+	email = pradyunsg@gmail.com
+	name = Pradyun
 
 [alias]
 	co = checkout
-    conflicts = diff --name-only --diff-filter=U
-    st = status
+	conflicts = diff --name-only --diff-filter=U
+	st = status
 
 [apply]
-    whitespace = error
+	whitespace = error
 
 [commit]
-    template = /home/pradyun/.git-config/commit-template
+	template = /home/pradyun/.git-config/commit-template
 
 [core]
-    autocrlf = input
-    editor = subl -w -n
-    whitespace = trailing-space,tab-in-indent,cr-at-eol
+	autocrlf = input
+	editor = subl -w -n
+	whitespace = trailing-space,tab-in-indent,cr-at-eol
 
 [diff]
-    algorithm = patience
+	algorithm = patience
+	tool = xxdiff
 
 [gui]
-    editor = subl -w -n
-    fontdiff = -family \"Source Code Pro\" -size -12 -weight normal -slant roman -underline 0 -overstrike 0
-    historybrowser = gitg
+	editor = subl -w -n
+	fontdiff = -family \"Source Code Pro\" -size -12 -weight normal -slant roman -underline 0 -overstrike 0
+	historybrowser = gitg
 
 [help]
-    autocorrect = 20
+	autocorrect = 20
 
 [merge]
-    tool = meld
+	tool = meld
 
 [push]
-    default = simple
+	default = simple
