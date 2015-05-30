@@ -1,7 +1,9 @@
 [dotfiles]
 repository = ~/code/dotfiles
 ignore = [
-    '.git*',
+    '.git',
+    '.gitignore',
+    '.gitmodules',
     'git-test-repos',
     'dotfiles.sublime-*'
     ]
