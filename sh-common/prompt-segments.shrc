@@ -43,7 +43,7 @@ _prompt_git_working_dir_info() {
     deleted=$(git ls-files -d | wc -l)
     modified=$(git ls-files -m | wc -l)
     unmerged=$(git ls-files -u | wc -l)
-    untracked=$(git ls-files -o | wc -l)
+    untracked=$(git ls-files -o --exclude-standard | wc -l)
 
     retval=
     if (( ${untracked} > 0 )); then
