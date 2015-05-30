@@ -13,4 +13,4 @@ export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups:erasedups
 export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls:clear'
 
 # Export hostory to a different file
-export HISTFILE="${HOME}/.shell-common/history/$CURRENT_SHELL.history.txt"
+export HISTFILE="${HOME}/.sh-common/history/$CURRENT_SHELL.history.txt"

@@ -1,0 +1,3 @@
+
+DIRCOLORS_FILE=$HOME/.sh-common/dircolors/solarized-universal.dircolors
+eval $(dircolors $DIRCOLORS_FILE)

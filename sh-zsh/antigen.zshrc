@@ -20,7 +20,7 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 _overlap_log "Sourcing antigen.zsh"
-source ~/.shell-zsh/antigen/antigen.zsh
+source ~/.sh-zsh/antigen/antigen.zsh
 
 _overlap_log "Enabling oh-my-zsh..."
 antigen use oh-my-zsh

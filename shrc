@@ -10,13 +10,13 @@ _overlap_log() {
 }
 
 # Source shell-specific files
-for shell_rc in ~/.shell-${CURRENT_SHELL}/*.${CURRENT_SHELL}rc; do
+for shell_rc in ~/.sh-${CURRENT_SHELL}/*.${CURRENT_SHELL}rc; do
     echo "Sourcing $shell_rc"
     source $shell_rc
 done
 
 # Source common files
-for common_rc in ~/.shell-common/*.shrc; do
+for common_rc in ~/.sh-common/*.shrc; do
     echo "Sourcing $common_rc"
     source $common_rc
 done
