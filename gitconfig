@@ -3,9 +3,15 @@
 	name = Pradyun
 
 [alias]
-	co = checkout
-	conflicts = diff --name-only --diff-filter=U
-	st = status
+	b = branch -v                 # branch with latest commit summary
+	l = log --graph --date=short  # log
+	r = remote -v                 # show remotes (verbose)
+	s = status                    # status
+	st = status                   # status
+
+	amend = commit --amend        # amend your last commit
+	co = checkout                 # checkout
+	nb = checkout -b              # new branch
 
 [apply]
 	whitespace = error
