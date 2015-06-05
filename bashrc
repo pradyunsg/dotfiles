@@ -1,2 +1,2 @@
 
-source ~/.shrc
+source ~/.sh-common/shrc

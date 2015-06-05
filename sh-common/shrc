@@ -1,7 +1,7 @@
 CURRENT_SHELL=$(ps -o comm= -p $$)
 
-# # If not running interactively or not requested to, don't do anything
-# [[ "$-" != *i* ]] && return
+# If not running interactively or not requested to, don't do anything
+[[ "$-" != *i* ]] && [[ -z $SETUP_SHELL ]] && return
 
 _overlap_log() {
     # Clear line and return to start.
