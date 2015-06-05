@@ -1,6 +1,8 @@
 
+# -----------------------------------------------------------------------------
 # Because local binaries matter
-export PATH=$PATH:/home/pradyun/.local/bin
+# -----------------------------------------------------------------------------
+export PATH=$PATH:/home/pradyun/.bin:/home/pradyun/.local/bin
 
 # -----------------------------------------------------------------------------
 # Python
@@ -28,5 +30,3 @@ export GOPATH=~/code/go
 # Heroku
 # -----------------------------------------------------------------------------
 export PATH="/usr/local/heroku/bin:$PATH"
-
-

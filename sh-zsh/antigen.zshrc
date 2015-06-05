@@ -5,6 +5,7 @@ antigen_default_bundles+='pip'
 antigen_default_bundles+='command-not-found'
 
 antigen_third_party_bundles=()
+antigen_third_party_bundles+='Tarrasch/zsh-autoenv'
 antigen_third_party_bundles+='zsh-users/zsh-syntax-highlighting'  # Keep last
 
 ## Theme
