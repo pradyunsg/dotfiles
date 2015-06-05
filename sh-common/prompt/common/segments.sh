@@ -7,7 +7,7 @@ _prompt_segment_fg() {
 _prompt_segment_bg() {
     _prompt_write ${_PROMPT_SEGMENT_BG[$1]}
 }
-source ~/.sh-common/prompt/powerline-common/colors.sh
+# source ~/.sh-common/prompt/powerline-common/colors.sh
 
 # -----------------------------------------------------------------------------
 # Segment Drawing
@@ -26,7 +26,7 @@ _prompt_start_new_left_segment() {
 
     _prompt_color_fg_start $(_prompt_segment_fg $2)
     _prompt_color_bg_start $(_prompt_segment_bg $2)
-    _prompt_write "$3"
+    _prompt_write $3
 }
 
 # End the prompt, by closing the open segment
@@ -62,8 +62,8 @@ _prompt_segment_git() {
     fi
 
     # Working Directory information
-    git_working_dir_status="$(_prompt_git_working_dir_info)"
     git_segment_text="$git_head_status"
+    git_working_dir_status="$(_prompt_git_working_dir_info)"
     if [[ -n $git_working_dir_status ]]; then
         git_segment_text+="$git_working_dir_status"
     fi
@@ -80,19 +80,19 @@ _prompt_git_working_dir_info() {
     retval=
     if (( ${untracked} > 0 )); then
         _prompt_color_fg_start $(_prompt_segment_fg git_untracked_file)
-        _prompt_write "${_PROMPT_SYMBOLS[git_untracked_file]}${untracked} "
+        _prompt_write "${untracked}${_PROMPT_SYMBOLS[git_untracked_file]} "
     fi
     if (( ${unmerged} > 0 )); then
         _prompt_color_fg_start $(_prompt_segment_fg git_unmerged_file)
-        _prompt_write "${_PROMPT_SYMBOLS[git_unmerged_file]}${unmerged} "
+        _prompt_write "${unmerged}${_PROMPT_SYMBOLS[git_unmerged_file]} "
     fi
     if (( ${modified} > 0 )); then
         _prompt_color_fg_start $(_prompt_segment_fg git_modified_file)
-        _prompt_write "${_PROMPT_SYMBOLS[git_modified_file]}${modified} "
+        _prompt_write "${modified}${_PROMPT_SYMBOLS[git_modified_file]} "
     fi
     if (( ${deleted} > 0 )); then
         _prompt_color_fg_start $(_prompt_segment_fg git_deleted_file)
-        _prompt_write "${_PROMPT_SYMBOLS[git_deleted_file]}${deleted} "
+        _prompt_write "${deleted}${_PROMPT_SYMBOLS[git_deleted_file]} "
     fi
 }
 

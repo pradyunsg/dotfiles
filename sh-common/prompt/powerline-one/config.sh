@@ -21,12 +21,13 @@ _PROMPT_SYMBOLS[git_modified_file]="✎"
 _PROMPT_SYMBOLS[git_unmerged_file]="×"
 _PROMPT_SYMBOLS[git_untracked_file]="?"
 
-_PROMPT_SYMBOLS[input]="❯"
+# _PROMPT_SYMBOLS[input]="❯"
+_PROMPT_SYMBOLS[input]="⮀"
 
 # -----------------------------------------------------------------------------
 
 declare -A _PROMPT_SEGMENT_BG
-_PROMPT_SEGMENT_BG[user_name]="232"
+_PROMPT_SEGMENT_BG[user_name]="234"
 _PROMPT_SEGMENT_BG[virtualenv]="26"
 _PROMPT_SEGMENT_BG[background_job_count]="89"
 _PROMPT_SEGMENT_BG[working_directory]="33"

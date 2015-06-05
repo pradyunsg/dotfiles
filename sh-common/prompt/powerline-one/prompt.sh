@@ -1,6 +1,6 @@
 
 # Prompt Segment functions
-source ~/.sh-common/prompt/powerline-common/segments.sh
+source ~/.sh-common/prompt/common/segments.sh
 # Prompt configuration
 source ~/.sh-common/prompt/powerline-one/config.sh
 
