@@ -1,9 +1,9 @@
 #!/usr/bin/python3.4
 """A bright scheme ideal for slightly transparent dark backgound terminals.
 """
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Configuration
-#------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 terminals = """
     Eterm ansi dvtm dtterm cygwin console fbterm kterm jfbterm mlterm vt100
     cons25 con132x25 con132x30 con132x43 con132x60

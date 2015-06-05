@@ -1,9 +1,9 @@
 
-#-----------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # [COMPONENT-1, COMPONENT-2] :optional_emoji: Summary text
 #
 # Description of the commit.
-#-----------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # Do describe
 #  - why the change was made (unless obvious)
 #  - what the change does
@@ -11,7 +11,7 @@
 # Do NOT describe
 #  - how the change was made (it is visible in the change-set)
 #  - what the change is (it too is visible in the change-set)
-#-----------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # Recommended Emojis:
 #    :package:            Releases/Version Bumps
 #    :mega:               Announcements
@@ -23,4 +23,4 @@
 #    :wrench:             Attempt to fix something
 #    :fire:               Removal of component
 #    :racehorse:          Speed related changes
-#-----------------------------------------------------------------------
+# ----------------------------------------------------------------------
