@@ -1,6 +1,6 @@
 
 # Because I'm always improving this.
-alias _reload_rc='source ~/.\${SHELL}rc'
+alias reload_shell="source ~/.\${CURRENT_SHELL}rc"
 
 # -----------------------------------------------------------------------------
 # UNIX tools
@@ -13,7 +13,7 @@ alias egrep='egrep --color=auto'
 
 # Shorthands
 alias md='echo "Using alias for mkdir" && mkdir'
-alias la='ls -A'
+alias la='ls -a'
 alias nau='nautilus'
 
 alias apt-update="echo 'Updating cache...' && sudo apt update > /dev/null"
@@ -26,8 +26,7 @@ alias rm='rm -I --preserve-root'
 # -----------------------------------------------------------------------------
 # Git
 # -----------------------------------------------------------------------------
-alias gd="git diff"
-alias gst="git status"
+alias gst="git st"
 
 # -----------------------------------------------------------------------------
 # Make copy-paste easier
