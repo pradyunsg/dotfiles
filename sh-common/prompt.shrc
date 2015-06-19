@@ -1,5 +1,8 @@
-PROMPT_THEME=powerline-one
+# CONFIG:: Set the prompt
+PROMPT_THEME=powerline-basic
 
-# Source the prompt
-echo "Activating PROMPT: ${PROMPT_THEME}"
-source ~/.sh-common/prompt/${PROMPT_THEME}/prompt.sh
+if [ -z "$DO_NOT_SET_PROMPT" ]; then
+    # Source the prompt
+    echo "Activating PROMPT: ${PROMPT_THEME}"
+    source ~/.sh-common/prompt/${PROMPT_THEME}/prompt.sh
+fi

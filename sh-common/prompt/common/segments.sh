@@ -7,7 +7,6 @@ _prompt_segment_fg() {
 _prompt_segment_bg() {
     _prompt_write ${_PROMPT_SEGMENT_BG[$1]}
 }
-# source ~/.sh-common/prompt/powerline-common/colors.sh
 
 # -----------------------------------------------------------------------------
 # Segment Drawing
@@ -76,8 +75,12 @@ _prompt_git_working_dir_info() {
     modified=$(git ls-files -m | wc -l)
     unmerged=$(git ls-files -u | wc -l)
     untracked=$(git ls-files -o --exclude-standard | wc -l)
+    staged=$(git diff --cached --numstat | wc -l)
 
-    retval=
+    if (( ${staged} > 0 )); then
+        _prompt_color_fg_start $(_prompt_segment_fg git_staged_file)
+        _prompt_write "${staged}${_PROMPT_SYMBOLS[git_staged_file]} "
+    fi
     if (( ${untracked} > 0 )); then
         _prompt_color_fg_start $(_prompt_segment_fg git_untracked_file)
         _prompt_write "${untracked}${_PROMPT_SYMBOLS[git_untracked_file]} "
@@ -93,6 +96,10 @@ _prompt_git_working_dir_info() {
     if (( ${deleted} > 0 )); then
         _prompt_color_fg_start $(_prompt_segment_fg git_deleted_file)
         _prompt_write "${deleted}${_PROMPT_SYMBOLS[git_deleted_file]} "
+    fi
+    if (( ${deleted} + ${modified} + ${unmerged} + ${untracked} + ${staged} == 0 )); then
+        _prompt_color_fg_start $(_prompt_segment_fg git_repo_clean)
+        _prompt_write "${_PROMPT_SYMBOLS[git_repo_clean]} "
     fi
 }
 

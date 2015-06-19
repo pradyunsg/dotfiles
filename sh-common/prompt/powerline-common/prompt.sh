@@ -1,8 +1,6 @@
 
 # Prompt Segment functions
 source ~/.sh-common/prompt/common/segments.sh
-# Prompt configuration
-source ~/.sh-common/prompt/powerline-one/config.sh
 
 # -----------------------------------------------------------------------------
 # Input "prompt" symbol

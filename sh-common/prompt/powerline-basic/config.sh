@@ -1,8 +1,8 @@
 
-# Defines the stuff that the prompt uses to display itself. These values define
-# how the prompt looks.
-
-# -----------------------------------------------------------------------------
+# =============================================================================
+# CONFIG:: Define the stuff that the prompt uses to display itself.
+# These values define how the prompt looks.
+# =============================================================================
 
 declare -A _PROMPT_SYMBOLS
 _PROMPT_SYMBOLS[separator]="⮀"
@@ -16,6 +16,9 @@ _PROMPT_SYMBOLS[git_upstream_pointer]="→"
 _PROMPT_SYMBOLS[git_branch_name_prefix]="⭠"
 _PROMPT_SYMBOLS[git_hash_prefix]=":"
 
+_PROMPT_SYMBOLS[git_repo_clean]=""
+
+_PROMPT_SYMBOLS[git_staged_file]="+"
 _PROMPT_SYMBOLS[git_deleted_file]="-"
 _PROMPT_SYMBOLS[git_modified_file]="✎"
 _PROMPT_SYMBOLS[git_unmerged_file]="×"
@@ -57,6 +60,9 @@ _PROMPT_SEGMENT_FG[git_deviation_behind]="88"
 
 _PROMPT_SEGMENT_FG[git_hash]="1"
 
+_PROMPT_SEGMENT_FG[git_repo_clean]="46"
+
+_PROMPT_SEGMENT_FG[git_staged_file]="28"
 _PROMPT_SEGMENT_FG[git_deleted_file]="124"
 _PROMPT_SEGMENT_FG[git_modified_file]="65"
 _PROMPT_SEGMENT_FG[git_unmerged_file]="1"
