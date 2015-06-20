@@ -1,4 +1,0 @@
-source ~/.liquid-prompt/pradyun.liquid-theme
-source ~/.liquid-prompt/pradyun.liquid-behaviour
-
-LP_PS1_FILE=~/.liquid-prompt/pradyun.liquid-ps1
