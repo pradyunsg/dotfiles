@@ -124,13 +124,13 @@ _prompt_segment_virtualenv() {
     fi
 }
 # Because it just got integrated into the prompt!!
-VIRTUAL_ENV_DISABLE_PROMPT=1
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # -----------------------------------------------------------------------------
 # Background Jobs
 # -----------------------------------------------------------------------------
 _prompt_segment_background_job_count() {
-    job_count=$(jobs -rp | wc -l)
+    job_count=$(jobs -r | wc -l)
     if [[ $job_count != '0' ]]; then
         _prompt_color_fg_start $(_prompt_segment_fg background_job_count)
         _prompt_write " ${_PROMPT_SYMBOLS[background_job_count]}$job_count "
@@ -149,6 +149,8 @@ _prompt_segment_working_directory() {
 # User Name
 # -----------------------------------------------------------------------------
 _prompt_segment_user_name() {
-    _prompt_color_fg_start $(_prompt_segment_fg user_name)
-    _prompt_write " ${USER} "
+    if [[ ${USER} != ${DEFAULT_USER} ]]; then
+        _prompt_color_fg_start $(_prompt_segment_fg user_name)
+        _prompt_write " ${USER} "
+    fi
 }
