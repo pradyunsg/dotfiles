@@ -14,3 +14,6 @@ _prompt_color_bg_start() {
 _prompt_color_reset() {
     _prompt_write "%{\e[39;49m%}"
 }
+
+PROMPT_SPECIES=powerline
+PROMPT_SPECIES=awesome
