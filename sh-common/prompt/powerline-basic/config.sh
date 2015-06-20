@@ -5,7 +5,7 @@
 # =============================================================================
 
 declare -A _PROMPT_SYMBOLS
-_PROMPT_SYMBOLS[separator]="⮀"
+_PROMPT_SYMBOLS[left_separator]="⮀"
 
 _PROMPT_SYMBOLS[background_job_count]="⚙"
 
@@ -60,7 +60,7 @@ _PROMPT_SEGMENT_FG[git_deviation_behind]="88"
 
 _PROMPT_SEGMENT_FG[git_hash]="1"
 
-_PROMPT_SEGMENT_FG[git_repo_clean]="46"
+_PROMPT_SEGMENT_FG[git_repo_clean]="28"
 
 _PROMPT_SEGMENT_FG[git_staged_file]="28"
 _PROMPT_SEGMENT_FG[git_deleted_file]="124"

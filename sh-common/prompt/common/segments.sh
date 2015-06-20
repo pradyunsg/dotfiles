@@ -1,47 +1,6 @@
-# -----------------------------------------------------------------------------
-# Segment Coloring
-# -----------------------------------------------------------------------------
-_prompt_segment_fg() {
-    _prompt_write ${_PROMPT_SEGMENT_FG[$1]}
-}
-_prompt_segment_bg() {
-    _prompt_write ${_PROMPT_SEGMENT_BG[$1]}
-}
+# CONFIG:: Set the default user
+DEFAULT_USER=pradyun
 
-# -----------------------------------------------------------------------------
-# Segment Drawing
-# -----------------------------------------------------------------------------
-_prompt_start_new_left_segment() {
-    # $1 -> Previous Segment Name
-    # $2 -> Current Segment Name
-    # $3 -> Segment Text
-
-    # Draw separator
-    if [[ $1 != 'none' ]]; then
-        _prompt_color_fg_start $(_prompt_segment_bg $1)
-        _prompt_color_bg_start $(_prompt_segment_bg $2)
-        _prompt_write "${_PROMPT_SYMBOLS[separator]}"
-    fi
-
-    _prompt_color_fg_start $(_prompt_segment_fg $2)
-    _prompt_color_bg_start $(_prompt_segment_bg $2)
-    _prompt_write $3
-}
-
-# End the prompt, by closing the open segment
-_prompt_end_left_segment() {
-    # $1 -> Segment to close
-    if [[ $1 != 'none' ]]; then
-        _prompt_color_reset
-        _prompt_color_fg_start $(_prompt_segment_bg $1)
-        _prompt_write ${_PROMPT_SYMBOLS[separator]}
-    fi
-    _prompt_color_reset
-}
-
-# =============================================================================
-# Prompt Segments
-# =============================================================================
 # -----------------------------------------------------------------------------
 # Git
 # -----------------------------------------------------------------------------

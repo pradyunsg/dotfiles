@@ -1,8 +1,22 @@
 # CONFIG:: Set the prompt
-PROMPT_THEME=powerline-basic
+if [ -z "${PROMPT_CLASS}" ]; then
+    PROMPT_CLASS=powerline
+fi
+if [ -z "${PROMPT_SPECIES}" ]; then
+    PROMPT_SPECIES=basic
+fi
 
 if [ -z "$DO_NOT_SET_PROMPT" ]; then
-    # Source the prompt
-    echo "Activating PROMPT: ${PROMPT_THEME}"
-    source ~/.sh-common/prompt/${PROMPT_THEME}/prompt.sh
+    for prompt_common in ~/.sh-common/prompt/common/*.sh; do
+        echo "Sourcing $prompt_common"
+        source $prompt_common
+    done
+    for class_common in ~/.sh-common/prompt/${PROMPT_CLASS}-common/*.sh; do
+        echo "Sourcing $class_common"
+        source $class_common
+    done
+
+    echo "Sourcing /home/pradyun/.sh-common/prompt/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh"
+    source ~/.sh-common/prompt/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh
+
 fi
