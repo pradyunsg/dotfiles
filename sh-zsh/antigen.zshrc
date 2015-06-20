@@ -1,4 +1,4 @@
-## Bundles
+# CONFIG:: ZSH Bundles
 antigen_default_bundles=()
 antigen_default_bundles+='git'
 antigen_default_bundles+='pip'
@@ -8,17 +8,15 @@ antigen_third_party_bundles=()
 antigen_third_party_bundles+='Tarrasch/zsh-autoenv'
 antigen_third_party_bundles+='zsh-users/zsh-syntax-highlighting'  # Keep last
 
-## Theme
-# antigen_theme_name="agnoster"
-# antigen_theme_repo="https://gist.github.com/3750104.git"
-
-## Extra configuration variables
+# CONFIG:: Extra ZSH configuration variables
 # How often to auto-update (in days).
 UPDATE_ZSH_DAYS=1
 # Command auto-correction.
 ENABLE_CORRECTION="true"
 # display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
+
+# -----------------------------------------------------------------------------
 
 _overlap_log "Sourcing antigen.zsh"
 source ~/.sh-zsh/antigen/antigen.zsh
@@ -38,11 +36,9 @@ for bundle in $antigen_third_party_bundles; do
     antigen bundle $bundle
 done
 
-if [[ ! -z $antigen_theme_name ]]; then
-    # Load the theme.
-    _overlap_log "Loading oh-my-zsh theme... "
-    antigen theme $antigen_theme_repo $antigen_theme_name
-fi
+# CONFIG:: ZSH theme.
+# _overlap_log "Loading oh-my-zsh theme... "
+# antigen theme bhilburn/powerlevel9k powerlevel9k.zsh-theme
 
 # Tell antigen that you're done.
 _overlap_log "Applying Changes..."
