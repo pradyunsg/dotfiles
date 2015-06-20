@@ -20,6 +20,8 @@ alias apt-update="echo 'Updating cache...' && sudo apt update > /dev/null"
 alias apt-upgrade="sudo apt upgrade"
 alias apt-upgrade-full="sudo apt full-upgrade"
 
+alias display-off="xset dpms force off"
+
 # Better safe than sorry!
 alias rm='rm -I --preserve-root'
 
