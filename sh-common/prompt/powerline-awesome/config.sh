@@ -3,7 +3,7 @@
 # CONFIG:: Define the stuff that the prompt uses to display itself.
 # These values define how the prompt looks.
 # =============================================================================
-PROMPT_ONE_LINE=false
+PROMPT_ONE_LINE=true
 
 # -----------------------------------------------------------------------------
 declare -A _PROMPT_SYMBOLS
