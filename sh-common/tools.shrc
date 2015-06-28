@@ -13,9 +13,6 @@ export AUTOENV_FILE_LEAVE=.env_leave
 # -----------------------------------------------------------------------------
 # Python
 # -----------------------------------------------------------------------------
-# pip
-export PIP_DOWNLOAD_CACHE=$HOME/.cache/pip
-
 # virtualenvwrapper
 export WORKON_HOME=$HOME/.venvwrap/venvs
 export PROJECT_HOME=$HOME/.venvwrap/projects
