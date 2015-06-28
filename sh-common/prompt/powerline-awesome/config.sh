@@ -37,11 +37,11 @@ declare -A _PROMPT_SEGMENT_BG
 _PROMPT_SEGMENT_BG[user_name]="234"
 _PROMPT_SEGMENT_BG[virtualenv]="26"
 _PROMPT_SEGMENT_BG[background_job_count]="89"
-_PROMPT_SEGMENT_BG[working_directory]="33"
+_PROMPT_SEGMENT_BG[working_directory]="24"
 _PROMPT_SEGMENT_BG[git]="250"
 
-_PROMPT_SEGMENT_BG[prompt_success]="64"
-_PROMPT_SEGMENT_BG[prompt_failed]="160"
+_PROMPT_SEGMENT_BG[prompt_success]="2"
+_PROMPT_SEGMENT_BG[prompt_failed]="1"
 _PROMPT_SEGMENT_BG[powerline_bg]="232"
 
 # -----------------------------------------------------------------------------
