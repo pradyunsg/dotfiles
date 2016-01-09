@@ -43,6 +43,3 @@ done
 # Tell antigen that you're done.
 _overlap_log "Applying Changes..."
 antigen apply
-
-# Clear out!
-_overlap_log

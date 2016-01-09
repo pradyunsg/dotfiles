@@ -1,7 +1,7 @@
-CURRENT_SHELL=$(ps -o comm= -p $$)
-
 # If not running interactively or not requested to, don't do anything
 [[ "$-" != *i* ]] && [[ -z $SETUP_SHELL ]] && return
+
+CURRENT_SHELL=$(ps -o comm= -p $$)
 
 _overlap_log() {
     # Clear line and return to start.
@@ -11,14 +11,15 @@ _overlap_log() {
 
 # Source shell-specific files
 for shell_rc in ~/.sh-${CURRENT_SHELL}/*.${CURRENT_SHELL}rc; do
-    echo "Sourcing $shell_rc"
+    _overlap_log "Sourcing $shell_rc"
     source $shell_rc
 done
 
 # Source common files
 for common_rc in ~/.sh-common/*.shrc; do
-    echo "Sourcing $common_rc"
+    _overlap_log "Sourcing $common_rc"
     source $common_rc
 done
 
-echo
+# Clear the last line...
+_overlap_log
