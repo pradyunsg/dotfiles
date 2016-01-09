@@ -16,11 +16,9 @@ alias md='echo "Using alias for mkdir" && mkdir'
 alias la='ls -a'
 alias nau='nautilus'
 
-alias apt-update="echo 'Updating cache...' && sudo apt update > /dev/null"
-alias apt-upgrade="sudo apt upgrade"
-alias apt-upgrade-full="sudo apt full-upgrade"
-
-alias display-off="sleep 0.5; xset dpms force off"
+alias apt-update="echo 'Updating cache...' && sudo apt-get update > /dev/null"
+alias apt-upgrade="sudo apt-get upgrade"
+alias apt-upgrade-full="sudo apt-get dist-upgrade"
 
 # Better safe than sorry!
 alias rm='rm -I --preserve-root'
@@ -31,12 +29,12 @@ alias rm='rm -I --preserve-root'
 alias gst="git st"
 
 # -----------------------------------------------------------------------------
-# Make copy-paste easier
-# -----------------------------------------------------------------------------
-alias $=""
-alias ⮀=""
-
-# -----------------------------------------------------------------------------
 # Because we need inspiration and laughter in life.
 # -----------------------------------------------------------------------------
 alias forsay="fortune | cowsay | lolcat"
+
+# -----------------------------------------------------------------------------
+# virtualenvwrapper shorthands
+# -----------------------------------------------------------------------------
+alias mkvenv="mkvirtualenv"
+alias rmvenv="rmvirtualenv"
