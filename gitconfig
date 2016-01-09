@@ -1,6 +1,6 @@
 [user]
 	email = pradyunsg@gmail.com
-	name = Pradyun
+	name = Pradyun S. Gedam
 
 [alias]
 	b = branch -v                 # branch with latest commit summary
@@ -12,12 +12,13 @@
 	amend = commit --amend        # amend your last commit
 	co = checkout                 # checkout
 	nb = checkout -b              # new branch
+	graph = log --graph --oneline
 
 [apply]
 	whitespace = error
 
 [commit]
-	template = /home/pradyun/.git-config/commit-template
+	template = ~/.git-config/commit-template
 
 [core]
 	autocrlf = input
@@ -29,7 +30,7 @@
 	tool = xxdiff
 
 [gui]
-	editor = subl -w -n
+	editor = subl -w
 	fontdiff = -family \"Source Code Pro\" -size -12 -weight normal -slant roman -underline 0 -overstrike 0
 	historybrowser = gitg
 
