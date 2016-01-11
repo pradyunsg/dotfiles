@@ -5,8 +5,8 @@ DEFAULT_USER=pradyun
 # Git
 # -----------------------------------------------------------------------------
 _prompt_segment_git() {
-    # # Verify that we have git
-    # command -v git >/dev/null 2>&1 || return
+    # Verify that we have git
+    command -v git >/dev/null 2>&1 || return
 
     # Only add information if we are in a repository
     git rev-parse --is-inside-work-tree > /dev/null 2>&1 || return
