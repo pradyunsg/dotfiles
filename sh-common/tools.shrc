@@ -20,14 +20,6 @@ export PROJECT_HOME=$HOME/.venvwrap/projects
 command -v virtualenvwrapper.sh >/dev/null 2>&1 && source virtualenvwrapper.sh
 
 # -----------------------------------------------------------------------------
-# Ruby
-# -----------------------------------------------------------------------------
-# RVM
-export PATH="$PATH:$HOME/.rvm/bin"
-# Load into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-# -----------------------------------------------------------------------------
 # Go
 # -----------------------------------------------------------------------------
 export GOPATH=~/code/go
@@ -41,3 +33,11 @@ export GOPATH=~/code/go
 # Heroku
 # -----------------------------------------------------------------------------
 export PATH="/usr/local/heroku/bin:$PATH"
+# -----------------------------------------------------------------------------
+# Ruby
+# -----------------------------------------------------------------------------
+# NOTE:: Keep this at the end.
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
