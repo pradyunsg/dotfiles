@@ -1,6 +1,6 @@
 # CONFIG:: Set the prompt
 if [ -z "${PROMPT_CLASS}" ]; then
-    PROMPT_CLASS=powerline
+    PROMPT_CLASS=text
 fi
 if [ -z "${PROMPT_SPECIES}" ]; then
     PROMPT_SPECIES=basic
