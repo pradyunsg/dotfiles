@@ -13,4 +13,4 @@ All exposed variables should be named like `_PROMPT_[NAME]`
 Prompts which use the same code should move the common code into a `[prefix]-common` folder and rename themselves to `[prefix]-[name]`. This groups similar prompts by folder name and makes the similarity more visible.
 
 ### Prompt configuration
-If the prompt is configurable, it should contain a `config.sh` file with sane defaults. This file should be sourced from `prompt.sh`.
+If the prompt is configurable, it should contain a `config.sh` file with sane defaults. This file should be sourced from `prompt.sh`. The configuration should be overridden in a "prompt-override.<shell>rc" in the shell-specific locations.
