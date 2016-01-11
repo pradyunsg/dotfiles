@@ -57,7 +57,7 @@ function _prompt_PS1() {
 function _prompt_RPROMPT() {
     previous_right_segment=none
     # CONFIG:: Right prompt segments
-    for right_segment_name in "background_job_count" "virtualenv" "git" "user_name"
+    for right_segment_name in "background_job_count" "virtualenv" "rvm" "git" "user_name"
     do
         right_segment_text=$(_prompt_segment_${right_segment_name})
         if [[ -n $right_segment_text ]]; then

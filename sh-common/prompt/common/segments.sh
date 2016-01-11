@@ -127,6 +127,17 @@ _prompt_segment_virtualenv() {
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # -----------------------------------------------------------------------------
+# Ruby Version Manager
+# -----------------------------------------------------------------------------
+_prompt_segment_rvm() {
+    rvm_text=$(rvm-prompt 2>/dev/null)
+    if [[ -n $rvm_text ]]; then
+        _prompt_color_fg_start $(_prompt_segment_fg rvm)
+        _prompt_write " $rvm_text "
+    fi
+}
+
+# -----------------------------------------------------------------------------
 # Background Jobs
 # -----------------------------------------------------------------------------
 _prompt_segment_background_job_count() {
