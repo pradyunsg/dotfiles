@@ -8,15 +8,15 @@ fi
 
 if [ -z "$DO_NOT_SET_PROMPT" ]; then
     for prompt_common in ~/.sh-common/prompt/common/*.sh; do
-        echo "Sourcing $prompt_common"
+        _overlap_log "Sourcing $prompt_common"
         source $prompt_common
     done
     for class_common in ~/.sh-common/prompt/${PROMPT_CLASS}-common/*.sh; do
-        echo "Sourcing $class_common"
+        _overlap_log "Sourcing $class_common"
         source $class_common
     done
 
-    echo "Sourcing /home/pradyun/.sh-common/prompt/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh"
+    _overlap_log "Sourcing $HOME/.sh-common/prompt/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh"
     source ~/.sh-common/prompt/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh
 
 fi
