@@ -35,8 +35,8 @@ _PROMPT_SYMBOLS[root_input]=" ⚡ "
 # -----------------------------------------------------------------------------
 
 declare -A _PROMPT_SEGMENT_BG
-_PROMPT_SEGMENT_BG[user_name]="234"
-_PROMPT_SEGMENT_BG[virtualenv]="26"
+_PROMPT_SEGMENT_BG[user_name]="208"
+_PROMPT_SEGMENT_BG[virtualenv]="55"
 _PROMPT_SEGMENT_BG[rvm]="40"
 _PROMPT_SEGMENT_BG[background_job_count]="89"
 _PROMPT_SEGMENT_BG[working_directory]="24"
@@ -49,7 +49,7 @@ _PROMPT_SEGMENT_BG[powerline_bg]="232"
 # -----------------------------------------------------------------------------
 
 declare -A _PROMPT_SEGMENT_FG
-_PROMPT_SEGMENT_FG[user_name]="208"
+_PROMPT_SEGMENT_FG[user_name]="234"
 _PROMPT_SEGMENT_FG[virtualenv_name]="255"
 _PROMPT_SEGMENT_FG[rvm]="255"
 _PROMPT_SEGMENT_FG[background_job_count]="255"
