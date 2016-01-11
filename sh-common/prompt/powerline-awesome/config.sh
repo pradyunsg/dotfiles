@@ -27,6 +27,7 @@ _PROMPT_SYMBOLS[git_modified_file]="✎"
 _PROMPT_SYMBOLS[git_unmerged_file]="×"
 _PROMPT_SYMBOLS[git_untracked_file]="?"
 
+_PROMPT_SYMBOLS[working_directory_aliased]="⟴ "
 # _PROMPT_SYMBOLS[input]="❯"
 # _PROMPT_SYMBOLS[input]="⮀"
 _PROMPT_SYMBOLS[root_input]=" ⚡ "

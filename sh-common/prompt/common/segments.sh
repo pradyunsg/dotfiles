@@ -151,9 +151,66 @@ _prompt_segment_background_job_count() {
 # -----------------------------------------------------------------------------
 # Working Directory
 # -----------------------------------------------------------------------------
+_prompt_working_dir_path_components() {
+    # We go up the path. On reaching root or
+    while [[ "$PWD" != "/" ]]; do
+        if [[ "$PWD" == "$HOME" ]]; then
+            echo "~"
+            return
+        fi
+        _file="$PWD/$DIRNAME_FILENAME"
+        if [[ -f "${_file}" ]]; then
+            echo "+${_file}"
+            return
+        else
+            echo "-$(basename ${PWD})"
+        fi
+        builtin cd .. &>/dev/null
+    done
+}
+
+_prompt_substituted_working_dir() {
+    defIFS=$IFS
+    IFS=$(echo -en "\n\b")
+
+    typeset __array_offset
+
+    if [[ -n "${ZSH_VERSION}" ]]; then
+        __array_offset=0
+    else
+        __array_offset=1
+    fi
+
+    typeset target home _file
+    typeset -a _files
+
+    _files=( $(_prompt_working_dir_path_components) )
+
+    _file=${#_files[@]}
+    while (( _file > 0 )); do
+        envfile=${_files[_file-__array_offset]}
+        # autoenv_check_authz_and_run "$envfile"
+        if [[ ${envfile} == "~" ]]; then
+            echo -n "~"
+        elif [[ ${envfile} == +* ]]; then
+            fname="$(echo "${envfile}" | cut -c2-)"
+            echo -n "${_PROMPT_SYMBOLS[working_directory_aliased]}"
+            cat $fname | tr -d "\n"
+        elif [[ ${envfile} == -* ]]; then
+            echo -n "/"
+            echo "${envfile}" | cut -c2- | tr -d "\n"
+        fi
+        : $(( _file -= 1 ))
+    done
+
+    IFS=$defIFS
+}
+
 _prompt_segment_working_directory() {
+    # Allows for assigning a special name to directories.
     _prompt_color_fg_start $(_prompt_segment_fg working_directory)
-    _prompt_write " ${PWD//${HOME}/"~"} "
+
+    _prompt_write " $(_prompt_substituted_working_dir) "
 }
 
 # -----------------------------------------------------------------------------
