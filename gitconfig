@@ -4,10 +4,9 @@
 
 [alias]
 	b = branch -v                 # branch with latest commit summary
-	l = log --graph --date=short  # log
-	r = remote -v                 # show remotes (verbose)
 	s = status -sb                # status
 	st = status -sb               # status
+	lg = log --graph --date=short # log
 
 	amend = commit --amend        # amend your last commit
 	co = checkout                 # checkout
@@ -18,7 +17,7 @@
 	whitespace = error
 
 [commit]
-	template = ~/.git-config/commit-template
+	template = ~/.git-commit-template
 
 [core]
 	autocrlf = input
