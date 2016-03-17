@@ -1,4 +1,2 @@
-git-test-repos
-*.history.txt
-
-*.sublime-workspace
+*history*
+fonts/

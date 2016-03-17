@@ -1,9 +1,12 @@
 [dotfiles]
 repository = ~/code/dotfiles
 ignore = [
+    'new-system-setup',
     '.git',
     '.gitignore',
     '.gitmodules',
-    'git-test-repos',
     'dotfiles.sublime-*'
+    ]
+packages = [
+    'config'
     ]
