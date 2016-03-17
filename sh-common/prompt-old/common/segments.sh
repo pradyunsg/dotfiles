@@ -149,7 +149,7 @@ _prompt_segment_background_job_count() {
 # Working Directory
 # -----------------------------------------------------------------------------
 _prompt_working_dir_path_components() {
-    # We go up the path. On reaching root or
+    # We go up the path. On reaching root, come out...
     while [[ "$PWD" != "/" ]]; do
         if [[ "$PWD" == "$HOME" ]]; then
             echo "~"
@@ -167,6 +167,7 @@ _prompt_working_dir_path_components() {
 }
 
 _prompt_substituted_working_dir() {
+    AUTOENV_DISABLED=1  # speed stuff up.
     defIFS=$IFS
     IFS=$(echo -en "\n\b")
 
@@ -181,7 +182,9 @@ _prompt_substituted_working_dir() {
     typeset target home _file
     typeset -a _files
 
+    # set -x
     _files=( $(_prompt_working_dir_path_components) )
+    # set +x
 
     _file=${#_files[@]}
     while (( _file > 0 )); do
@@ -194,13 +197,14 @@ _prompt_substituted_working_dir() {
             echo -n "${_PROMPT_SYMBOLS[working_directory_aliased]}"
             cat $fname | tr -d "\n"
         elif [[ ${envfile} == -* ]]; then
-            echo -n "/"
+            echo -n "${_PROMPT_SYMBOLS[working_directory_seperator]}"
             echo "${envfile}" | cut -c2- | tr -d "\n"
         fi
         : $(( _file -= 1 ))
     done
 
     IFS=$defIFS
+    AUTOENV_DISABLED=0
 }
 
 _prompt_segment_working_directory() {
@@ -218,4 +222,11 @@ _prompt_segment_user_name() {
         _prompt_color_fg_start $(_prompt_segment_fg user_name)
         _prompt_write " ${USER} "
     fi
+}
+
+_prompt_debug() {
+    cd ~/code/projects/python/Py2C
+    set -x
+    _prompt_working_dir_path_components
+    set +x
 }

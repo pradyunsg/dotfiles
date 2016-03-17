@@ -1,5 +1,5 @@
 # Prompt configuration
-source ~/.sh-common/prompt/powerline-awesome/config.sh
+source ~/.sh-common/prompt-old/powerline-awesome/config.sh
 
 # -----------------------------------------------------------------------------
 # Input "prompt" symbol
@@ -73,7 +73,8 @@ function _prompt_PS2() {
     _prompt_for_input $?
 }
 
-export PS1='$(_prompt_PS1)'
-export PS2='$(_prompt_PS2)'
-
-export RPROMPT='$(_prompt_RPROMPT)'
+function _prompt_precmd() {
+    PS1="$(_prompt_PS1)"
+    PS2="$(_prompt_PS2)"
+    RPROMPT="$(_prompt_RPROMPT)"
+}

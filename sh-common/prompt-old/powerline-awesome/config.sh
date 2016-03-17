@@ -6,35 +6,8 @@
 PROMPT_ONE_LINE=true
 
 # -----------------------------------------------------------------------------
-declare -A _PROMPT_SYMBOLS
-_PROMPT_SYMBOLS[left_separator]="⮀"
-_PROMPT_SYMBOLS[right_separator]="⮂"
-
-_PROMPT_SYMBOLS[background_job_count]="⚙ "
-
-_PROMPT_SYMBOLS[git_deviation_ahead]="↑"
-_PROMPT_SYMBOLS[git_deviation_behind]="↓"
-
-_PROMPT_SYMBOLS[git_upstream_pointer]="→"
-_PROMPT_SYMBOLS[git_branch_name_prefix]="⭠"
-_PROMPT_SYMBOLS[git_hash_prefix]=":"
-
-_PROMPT_SYMBOLS[git_repo_clean]=""
-
-_PROMPT_SYMBOLS[git_staged_file]="+"
-_PROMPT_SYMBOLS[git_deleted_file]="-"
-_PROMPT_SYMBOLS[git_modified_file]="✎"
-_PROMPT_SYMBOLS[git_unmerged_file]="×"
-_PROMPT_SYMBOLS[git_untracked_file]="?"
-
-_PROMPT_SYMBOLS[working_directory_aliased]="⟴ "
-# _PROMPT_SYMBOLS[input]="❯"
-# _PROMPT_SYMBOLS[input]="⮀"
-_PROMPT_SYMBOLS[root_input]=" ⚡ "
-
+# Background
 # -----------------------------------------------------------------------------
-
-declare -A _PROMPT_SEGMENT_BG
 _PROMPT_SEGMENT_BG[user_name]="208"
 _PROMPT_SEGMENT_BG[virtualenv]="55"
 _PROMPT_SEGMENT_BG[rvm]="40"
@@ -47,8 +20,8 @@ _PROMPT_SEGMENT_BG[prompt_failed]="1"
 _PROMPT_SEGMENT_BG[powerline_bg]="232"
 
 # -----------------------------------------------------------------------------
-
-declare -A _PROMPT_SEGMENT_FG
+# Foreground
+# -----------------------------------------------------------------------------
 _PROMPT_SEGMENT_FG[user_name]="234"
 _PROMPT_SEGMENT_FG[virtualenv_name]="255"
 _PROMPT_SEGMENT_FG[rvm]="255"
@@ -56,7 +29,6 @@ _PROMPT_SEGMENT_FG[background_job_count]="255"
 _PROMPT_SEGMENT_FG[working_directory]="255"
 _PROMPT_SEGMENT_FG[git]="233"
 
-# Git colors
 _PROMPT_SEGMENT_FG[git_branch_name_prefix]="234"
 _PROMPT_SEGMENT_FG[git_branch_name]="233"
 _PROMPT_SEGMENT_FG[git_upstream_pointer]="234"
@@ -75,8 +47,5 @@ _PROMPT_SEGMENT_FG[git_modified_file]="65"
 _PROMPT_SEGMENT_FG[git_unmerged_file]="1"
 _PROMPT_SEGMENT_FG[git_untracked_file]="136"
 
-# Prompt colors
 _PROMPT_SEGMENT_FG[prompt_success]="220"
 _PROMPT_SEGMENT_FG[prompt_failed]="214"
-
-_PROMPT_SEGMENT_FG[powerline_bg]="232"
