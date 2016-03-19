@@ -12,7 +12,9 @@ import contextlib
 import click
 
 
-DEBUG = True
+DRY_RUN = None
+HOME_DIR = os.path.expanduser('~')
+THIS_DIR = os.path.dirname(__file__)
 
 
 # ----------------------------------------------------------------------------------------
@@ -20,7 +22,7 @@ DEBUG = True
 # ----------------------------------------------------------------------------------------
 class Logger(object):
 
-    def _m(self, message, args, kwargs):
+    def _m(self, message, *args, **kwargs):
         # A shorthand for brevity
         if isinstance(message, str):
             return message.format(*args, **kwargs)
@@ -28,20 +30,33 @@ class Logger(object):
             return repr(message)
 
     def debug(self, message, *args, **kwargs):
-        if DEBUG:
-            self.info_debug(message, *args, **kwargs)
+        if DRY_RUN:
+            self.info(message, *args, **kwargs)
+
+    def status(self, message, *args, **kwargs):
+        click.secho(self._m(message, *args, **kwargs), fg='magenta')
+
+    def file_status(self, action, target):
+        colour = {
+            'update': 'black',
+            'up to date': 'green',
+            'backup': 'magenta',
+            'skip': 'gray',
+            'remove': 'blue'
+        }[action]
+        s = click.style("[" + action.center(10) + "]", fg=colour)
+        if target.startswith(HOME_DIR + os.sep):
+            target = "~" + target[len(HOME_DIR):]
+        click.secho(self._m('{} {}', s, target))
 
     def info(self, message, *args, **kwargs):
-        click.secho(self._m(message, args, kwargs), fg='yellow', dim=True)
-
-    def info_debug(self, message, *args, **kwargs):
-        click.secho(self._m(message, args, kwargs), dim=True)
+        click.secho(self._m(message, *args, **kwargs), dim=True)
 
     def error(self, message, *args, **kwargs):
-        click.secho(self._m('ERROR: ' + message, args, kwargs), fg='red')
+        click.secho(self._m('ERROR: ' + message, *args, **kwargs), fg='red')
 
     def success(self, message, *args, **kwargs):
-        click.secho(self._m(message, args, kwargs), fg='green')
+        click.secho(self._m(message, *args, **kwargs), fg='green')
 
 
 class ListFile(object):
@@ -96,20 +111,20 @@ class ListFile(object):
 
 @contextlib.contextmanager
 def task(message):
-    click.secho('{}...'.format(message), fg='blue', bold=True)
+    click.secho('# {}...'.format(message), fg='blue', dim=True)
     try:
         yield
-    except Exception as e:
-        log.error(repr(e))
+    except Exception:
+        log.error('Aborting due to following error...')
         raise
     else:
-        log.success('Done!')
+        click.secho('# Completed', fg='blue', dim=True)
 
 
 def run(command, verbose):
     if verbose:
-        log.info_debug('> {}', command)
-    if DEBUG:
+        log.info('> {}', command)
+    if DRY_RUN:
         return 0
     return subprocess.call(shlex.split(command))
 
@@ -128,6 +143,7 @@ class DotFilesRepo(object):
         self.verbose = verbose
 
     def link_source_to_target(self, source, target):
+        run('mkdir -p "{}"'.format(os.path.dirname(target)), self.verbose)
         run('ln -s "{}" "{}"'.format(source, target), self.verbose)
 
     def get_action(self, target):
@@ -138,7 +154,7 @@ class DotFilesRepo(object):
         mapping = {
             's': 'skip',
             'b': 'backup',
-            'o': 'overwrite',
+            'u': 'update (overwrite)',
         }
 
         # Prepare Prompt
@@ -222,7 +238,7 @@ class DotFilesRepo(object):
         """Symlinks the dotfiles in the source_dir with target_dir
         """
 
-        if not DEBUG:
+        if not DRY_RUN:
             # Write the location of the dotfiles repository in a file
             with open(os.path.join(self.target_dir, '.dotfiles-dir'), 'w') as f:
                 f.write(self.source_dir)
@@ -231,24 +247,25 @@ class DotFilesRepo(object):
             source = os.path.join(self.source_dir, rel_path)
 
             target = self.compute_target(rel_path)
+
             if self.symlink_needs_update(target, source):
                 if self.is_broken_symlink(target):
-                    log.info('Out of date: {}', rel_path)
-                    action = 'overwrite'
+                    action = 'update'
                 else:
                     action = self.get_action(target)
+
+                log.file_status(action, target)
+
+                # This is the exact flow I want.
                 if action == 'skip':
-                    log.info('Skipping: {}', rel_path)
                     continue
                 elif action == 'backup':
                     self.backup_file(target)
-                    log.info('Backed up: {}', rel_path)
-                elif action == 'overwrite':
+                elif action == 'update':
                     self.remove_file(target)
-                    log.info('Removed: {}', rel_path)
                 self.link_source_to_target(source, target)
             else:
-                log.info('Up to date: {}', target, rel_path)
+                log.file_status('up to date', target)
 
     def is_broken_symlink(self, path):
         return os.path.islink(path) and not os.path.exists(path)
@@ -261,6 +278,7 @@ class DotFilesRepo(object):
             # If symlink is broken
             if self.is_broken_symlink(path):
                 run('rm "{}"'.format(path), self.verbose)
+                log.file_status('remove', path)
 
 
 # ----------------------------------------------------------------------------------------
@@ -268,35 +286,33 @@ class DotFilesRepo(object):
 # ----------------------------------------------------------------------------------------
 @click.group()
 @click.option(
-    '--src-dir', type=click.Path(exists=True), default=os.path.dirname(__file__),
+    '--src-dir', type=click.Path(exists=True), default=THIS_DIR,
     help="Location to use as dotfiles directory"
 )
 @click.option(
-    '--dest-dir', type=click.Path(exists=True), default=os.path.expanduser('~'),
+    '--dest-dir', type=click.Path(exists=True), default=HOME_DIR,
     help="Location to create symlinks"
 )
 @click.option(
-    '--debug/--no-debug', default=False,
-    help='Enable debugging mode (overrides --quiet)'
+    '-n', '--dry-run', default=False, is_flag=True,
+    help='Enable debugging mode (implies --verbose)'
 )
 @click.option(
     '--depth', default=3, type=int,
     help='How deep to recurse looking for ".symlink" items'
 )
 @click.option(
-    '-q', '--quiet', default=False, is_flag=True,
-    help='Don\'t show what commands have been executed.'
+    '-v', '--verbose', default=False, is_flag=True,
+    help='Show what commands have been executed.'
 )
 @click.pass_context
-def cli(ctx, src_dir, dest_dir, debug, depth, quiet):
-    global DEBUG
-    if debug:
-        quiet = False
+def cli(ctx, src_dir, dest_dir, dry_run, depth, verbose):
+    global DRY_RUN
 
-    # Because we are verbose by default
-    verbose = not quiet
+    if dry_run:
+        verbose = True
 
-    DEBUG = debug
+    DRY_RUN = dry_run
     ctx.obj['obj'] = DotFilesRepo(src_dir, dest_dir, depth, verbose)
     ctx.obj['verbose'] = verbose
 
@@ -343,8 +359,8 @@ def setup_new_system(ctx):
         final_command_parts = ['sudo apt-get install --yes']
         try:
             iterable = iter(lf)
-        except RuntimeError:
-            pass
+        except RuntimeError as e:
+            raise Exception("Someone made a mistake while coding this. :P") from e
         else:
             for item in iterable:
                 final_command_parts.append('"' + item + '"')
