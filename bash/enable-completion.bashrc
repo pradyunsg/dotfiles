@@ -8,6 +8,6 @@ if ! shopt -oq posix; then
 fi
 
 # Custom completions
-for file in ~/.sh-bash/completions/*.bash-completion; do
+for file in ~/.bash/completions/*.bash-completion; do
     source $file
 done

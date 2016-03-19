@@ -1,0 +1,362 @@
+#!/usr/bin/env python3
+"""Manage dotfiles
+
+This script is used to manage dotfiles.
+"""
+
+import os
+import shlex
+import subprocess
+import contextlib
+
+import click
+
+
+DEBUG = True
+
+
+# ----------------------------------------------------------------------------------------
+# Helpers
+# ----------------------------------------------------------------------------------------
+class Logger(object):
+
+    def _m(self, message, args, kwargs):
+        # A shorthand for brevity
+        if isinstance(message, str):
+            return message.format(*args, **kwargs)
+        else:
+            return repr(message)
+
+    def debug(self, message, *args, **kwargs):
+        if DEBUG:
+            self.info_debug(message, *args, **kwargs)
+
+    def info(self, message, *args, **kwargs):
+        click.secho(self._m(message, args, kwargs), fg='yellow', dim=True)
+
+    def info_debug(self, message, *args, **kwargs):
+        click.secho(self._m(message, args, kwargs), dim=True)
+
+    def error(self, message, *args, **kwargs):
+        click.secho(self._m('ERROR: ' + message, args, kwargs), fg='red')
+
+    def success(self, message, *args, **kwargs):
+        click.secho(self._m(message, args, kwargs), fg='green')
+
+
+class ListFile(object):
+    """A hash-commented file with one item per line.
+    """
+
+    def __init__(self, file_name):
+        super().__init__()
+        self.file_name = file_name
+        self._initialized = False
+
+        self._file = None
+
+    def __iter__(self):
+        if self._initialized:
+            raise RuntimeError('Cannot re-initialize an initialized list file')
+        self._initialized = True
+
+        try:
+            self.file = open(self.file_name)
+        except FileNotFoundError as e:
+            log.error('ERROR: Could not load list: {}', self.file_name)
+            raise RuntimeError('Cannot re-initialize an initialized list file') from e
+
+    def __next__(self):
+        while True:
+            line = next(self.file)
+            # Stop if reached EOF
+            if not line:
+                raise StopIteration
+
+            # If the first character is a '#' or it is an empty line, skip
+            line = line.strip()
+            if line[0:1] in ['', '#']:  # Comment
+                continue
+            else:
+                return line
+
+    def for_every(self, function):
+
+        def show_progress_counter(items, function):
+            total_items = len(items)
+            for i, item in enumerate(items):
+                log.info('... {} of {}: {}', i+1, total_items, item)
+                function(item)
+
+        items = list(self)
+
+        if items is not None:
+            show_progress_counter(items, function)
+
+
+@contextlib.contextmanager
+def task(message):
+    click.secho('{}...'.format(message), fg='blue', bold=True)
+    try:
+        yield
+    except Exception as e:
+        log.error(repr(e))
+        raise
+    else:
+        log.success('Done!')
+
+
+def run(command, verbose):
+    if verbose:
+        log.info_debug('> {}', command)
+    if DEBUG:
+        return 0
+    return subprocess.call(shlex.split(command))
+
+
+# ----------------------------------------------------------------------------------------
+# Handling Symlinks
+# ----------------------------------------------------------------------------------------
+class DotFilesRepo(object):
+
+    def __init__(self, source_dir, target_dir, walk_depth, verbose):
+        super().__init__()
+        self.global_action = None
+        self.source_dir = os.path.abspath(source_dir)
+        self.target_dir = os.path.abspath(target_dir)
+        self.walk_depth = walk_depth
+        self.verbose = verbose
+
+    def link_source_to_target(self, source, target):
+        run('ln -s "{}" "{}"'.format(source, target), self.verbose)
+
+    def get_action(self, target):
+        if self.global_action is not None:
+            return self.global_action
+
+        # Mapping of options to return values
+        mapping = {
+            's': 'skip',
+            'b': 'backup',
+            'o': 'overwrite',
+        }
+
+        # Prepare Prompt
+        options = []
+        for val in mapping.values():
+            options.append('[{}]{}'.format(val[0], val[1:]))
+            options.append('[{}]{} all'.format(val[0].upper(), val[1:]))
+
+        prompt_text = (
+            'File already exists: {}, what do you want to do?\n'.format(target) +
+            ', '.join(options)
+        )
+
+        # Show Prompt
+        click.echo(prompt_text)
+
+        # Get and validate input
+        action = ' '
+        while action.lower() not in mapping:
+            action = click.getchar()
+            click.echo(action)
+
+        # Set the action
+        val = mapping[action.lower()]
+        if action.isupper():
+            self.global_action = val
+
+        return val
+
+    def find_files_to_symlink(self, topics):
+        walk_dir = self.source_dir.rstrip(os.path.sep)
+        base_depth = walk_dir.count(os.path.sep)
+        # assert os.path.isdir(walk_dir)
+        # if topics and 'base' not in topics:
+        #     log.info('Adding topic {!r}', 'base')
+
+        for root, dirs, files in os.walk(walk_dir):
+            current_depth = root.count(os.path.sep)
+
+            # Filter topics
+            # if current_depth == 0 and topics:
+            #     for item in dirs[:]:
+            #         if item not in topics:
+            #             dirs.remove(item)
+            #             log.info('Skipping topic: {}'.format(item))
+
+            # Skip .git folders
+            if '.git' in dirs:
+                dirs.remove('.git')
+
+            # yield things to be symlinked
+            for item in dirs + files:
+                if item.endswith('.symlink'):
+                    yield os.path.join(os.path.relpath(root, walk_dir), item)
+
+            # Ensure we don't recurse more than the allowed limit
+            if current_depth >= base_depth + self.walk_depth:
+                del dirs[:]
+
+    def compute_target(self, rel_path):
+        topic, *parts = rel_path.split(os.sep)
+        # Prefix a '.'
+        parts[0] = '.' + parts[0]
+        # Remove the '.symlink' portion
+        parts[-1] = parts[-1][:-len('.symlink')]
+        return os.path.join(self.target_dir, *parts)
+
+    def symlink_needs_update(self, target, source):
+        if os.path.islink(target) and os.readlink(target) == source:
+            return False
+        else:
+            return True
+
+    def backup_file(self, fname):
+        run('mv "{0}" "{0}.backup"'.format(fname), self.verbose)
+
+    def remove_file(self, fname):
+        run('rm "{}"'.format(fname), self.verbose)
+
+    def sync(self, topics):
+        """Symlinks the dotfiles in the source_dir with target_dir
+        """
+
+        if not DEBUG:
+            # Write the location of the dotfiles repository in a file
+            with open(os.path.join(self.target_dir, '.dotfiles-dir'), 'w') as f:
+                f.write(self.source_dir)
+
+        for rel_path in self.find_files_to_symlink(topics):
+            source = os.path.join(self.source_dir, rel_path)
+
+            target = self.compute_target(rel_path)
+            if self.symlink_needs_update(target, source):
+                if self.is_broken_symlink(target):
+                    log.info('Out of date: {}', rel_path)
+                    action = 'overwrite'
+                else:
+                    action = self.get_action(target)
+                if action == 'skip':
+                    log.info('Skipping: {}', rel_path)
+                    continue
+                elif action == 'backup':
+                    self.backup_file(target)
+                    log.info('Backed up: {}', rel_path)
+                elif action == 'overwrite':
+                    self.remove_file(target)
+                    log.info('Removed: {}', rel_path)
+                self.link_source_to_target(source, target)
+            else:
+                log.info('Up to date: {}', target, rel_path)
+
+    def is_broken_symlink(self, path):
+        return os.path.islink(path) and not os.path.exists(path)
+
+    def clean(self):
+        """Removes stale symlinks from target_dir
+        """
+        for item in os.listdir(self.target_dir):
+            path = os.path.join(self.target_dir, item)
+            # If symlink is broken
+            if self.is_broken_symlink(path):
+                run('rm "{}"'.format(path), self.verbose)
+
+
+# ----------------------------------------------------------------------------------------
+# CLI
+# ----------------------------------------------------------------------------------------
+@click.group()
+@click.option(
+    '--src-dir', type=click.Path(exists=True), default=os.path.dirname(__file__),
+    help="Location to use as dotfiles directory"
+)
+@click.option(
+    '--dest-dir', type=click.Path(exists=True), default=os.path.expanduser('~'),
+    help="Location to create symlinks"
+)
+@click.option(
+    '--debug/--no-debug', default=False,
+    help='Enable debugging mode (overrides --quiet)'
+)
+@click.option(
+    '--depth', default=3, type=int,
+    help='How deep to recurse looking for ".symlink" items'
+)
+@click.option(
+    '-q', '--quiet', default=False, is_flag=True,
+    help='Don\'t show what commands have been executed.'
+)
+@click.pass_context
+def cli(ctx, src_dir, dest_dir, debug, depth, quiet):
+    global DEBUG
+    if debug:
+        quiet = False
+
+    # Because we are verbose by default
+    verbose = not quiet
+
+    DEBUG = debug
+    ctx.obj['obj'] = DotFilesRepo(src_dir, dest_dir, depth, verbose)
+    ctx.obj['verbose'] = verbose
+
+
+@cli.command()
+@click.argument('topics', nargs=-1)
+@click.pass_context
+def sync(ctx, topics):
+    """Update the symlinks
+    """
+    with task('Syncing dotfiles'):
+        ctx.obj['obj'].sync(topics)
+
+
+@cli.command()
+@click.pass_context
+def clean(ctx):
+    """Removes stale/broken symlinks
+    """
+    with task('Cleaning broken symlinks'):
+        ctx.obj['obj'].clean()
+
+
+@cli.command()
+@click.pass_context
+def setup_new_system(ctx):
+    """Runs various routines to setup a new system.
+    """
+    verbose = ctx.obj['verbose']
+
+    def add_ppa(ppa_name):
+        run('sudo apt-add-repository --yes "ppa:{}"'.format(ppa_name), verbose)
+
+    with task('Getting Super-User Permissions'):
+        run('sudo echo "Got permissions!"', verbose)
+
+    with task('Adding apt PPAs'):
+        lf = ListFile('ppas.list')
+        lf.for_every(add_ppa)
+
+    with task('Installing apt packages'):
+        lf = ListFile('packages.list')
+
+        final_command_parts = ['sudo apt-get install --yes']
+        try:
+            iterable = iter(lf)
+        except RuntimeError:
+            pass
+        else:
+            for item in iterable:
+                final_command_parts.append('"' + item + '"')
+            run(' '.join(final_command_parts), verbose)
+
+
+def main():
+    cli(obj={}, auto_envvar_prefix='DOTFILES')
+
+
+# Some globals for nicer handling of the world
+log = Logger()
+
+if __name__ == '__main__':
+    main()

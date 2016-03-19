@@ -20,6 +20,7 @@
 	template = ~/.git-commit-template
 
 [core]
+    excludesfile = ~/.gitignore
 	autocrlf = input
 	editor = subl -w -n
 	whitespace = trailing-space,tab-in-indent,cr-at-eol

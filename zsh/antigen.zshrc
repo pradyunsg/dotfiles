@@ -18,28 +18,28 @@ COMPLETION_WAITING_DOTS="true"
 
 # -----------------------------------------------------------------------------
 
-_overlap_log "Sourcing antigen.zsh"
-source ~/.sh-zsh/antigen/antigen.zsh
+echo "Sourcing antigen.zsh"
+source ${DOTFILES_LOCATION}/zsh/antigen/antigen.zsh
 
-_overlap_log "Enabling oh-my-zsh..."
+echo "Enabling oh-my-zsh..."
 antigen use oh-my-zsh
 
 # Default bundles
 for bundle in $antigen_default_bundles; do
-    _overlap_log "Enabling default oh-my-zsh bundles: ${bundle}"
+    echo "Enabling default oh-my-zsh bundles: ${bundle}"
     antigen bundle $bundle
 done
 
 # Third party bundles
 for bundle in $antigen_third_party_bundles; do
-    _overlap_log "Enabling third-party oh-my-zsh bundles: ${bundle}"
+    echo "Enabling third-party oh-my-zsh bundles: ${bundle}"
     antigen bundle $bundle
 done
 
 # CONFIG:: ZSH theme.
-# _overlap_log "Loading oh-my-zsh theme... "
+# echo "Loading oh-my-zsh theme... "
 # antigen theme bhilburn/powerlevel9k powerlevel9k.zsh-theme
 
 # Tell antigen that you're done.
-_overlap_log "Applying Changes..."
+echo "Applying Changes..."
 antigen apply

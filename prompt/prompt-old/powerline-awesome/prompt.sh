@@ -1,5 +1,5 @@
 # Prompt configuration
-source ~/.sh-common/prompt-old/powerline-awesome/config.sh
+source ${DOTFILES_LOCATION}/prompt/prompt-old/powerline-awesome/config.sh
 
 # -----------------------------------------------------------------------------
 # Input "prompt" symbol

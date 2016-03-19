@@ -7,17 +7,17 @@ if [ -z "${PROMPT_SPECIES}" ]; then
 fi
 
 if [ -z "$DO_NOT_SET_PROMPT" ]; then
-    for prompt_common in ~/.sh-common/prompt-old/common/*.sh; do
-        _overlap_log "Sourcing $prompt_common"
+    for prompt_common in ${DOTFILES_LOCATION}/prompt/prompt-old/common/*.sh; do
+        echo "Sourcing $prompt_common"
         source $prompt_common
     done
-    for class_common in ~/.sh-common/prompt-old/${PROMPT_CLASS}/*.sh; do
-        _overlap_log "Sourcing $class_common"
+    for class_common in ${DOTFILES_LOCATION}/prompt/prompt-old/${PROMPT_CLASS}/*.sh; do
+        echo "Sourcing $class_common"
         source $class_common
     done
 
-    _overlap_log "Sourcing $HOME/.sh-common/prompt-old/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh"
-    source ~/.sh-common/prompt-old/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh
+    echo "Sourcing ${DOTFILES_LOCATION}/prompt/prompt-old/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh"
+    source ${DOTFILES_LOCATION}/prompt/prompt-old/${PROMPT_CLASS}-${PROMPT_SPECIES}/prompt.sh
 
 fi
 

@@ -1,2 +1,4 @@
-*history*
-fonts/
+
+# Ignore all bin files, except the ones that I add myself
+bin/local/bin.symlink/*
+fonts/fonts.symlink/

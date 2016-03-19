@@ -1,6 +1,5 @@
-
 # Prompt configuration
-source ~/.sh-common/prompt-old/text-awesome/config.sh
+source ${DOTFILES_LOCATION}/prompt/prompt-old/powerline-basic/config.sh
 
 # -----------------------------------------------------------------------------
 # Input "prompt" symbol
@@ -25,10 +24,17 @@ _prompt_for_input() {
 function _prompt_print() {
     last_failed=$?
     # Draw left segments
+    previous_segment=none
     for segment_name in "user_name" "virtualenv" "background_job_count" "working_directory" "git"
     do
-        _prompt_write $(_prompt_segment_${segment_name})
+        segment_text=$(_prompt_segment_${segment_name})
+        if [[ -n $segment_text ]]; then
+            _prompt_start_new_left_segment $previous_segment $segment_name
+            _prompt_write $segment_text
+            previous_segment=$segment_name
+        fi
     done
+    _prompt_end_left_segment $previous_segment
 
     # Input on separate line
     _prompt_write "\n"

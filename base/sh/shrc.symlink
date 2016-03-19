@@ -2,24 +2,19 @@
 [[ "$-" != *i* ]] && [[ -z $SETUP_SHELL ]] && return
 
 CURRENT_SHELL=$(ps -o comm= -p $$)
-
-_overlap_log() {
-    # Clear line and return to start.
-    echo -ne "\e[2K\r"
-    echo -n $@
-}
+DOTFILES_LOCATION=$(cat ~/.dotfiles-dir)
 
 # Source shell-specific files
-for shell_rc in ~/.sh-${CURRENT_SHELL}/*.${CURRENT_SHELL}rc; do
-    _overlap_log "Sourcing $shell_rc"
+for shell_rc in ${DOTFILES_LOCATION}/*/*.${CURRENT_SHELL}rc; do
+    echo "Sourcing $shell_rc"
     source $shell_rc
 done
 
 # Source common files
-for common_rc in ~/.sh-common/*.shrc; do
-    _overlap_log "Sourcing $common_rc"
+for common_rc in ${DOTFILES_LOCATION}/*/*.sh; do
+    echo "Sourcing $common_rc"
     source $common_rc
 done
 
 # Clear the last line...
-_overlap_log
+echo
