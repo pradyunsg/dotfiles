@@ -1,0 +1,10 @@
+# Generated files
+build/
+*.[oa]
+*.pyc
+
+# Mac OS X
+*.DS_Store
+
+# Because I hate these
+*.fuse_hidden*
