@@ -28,7 +28,7 @@ _PROMPT_SYMBOLS[git_hash_prefix]=":"
 
 _PROMPT_SYMBOLS[git_repo_clean]="⎘"
 
-_PROMPT_SYMBOLS[git_staged_file]="+"
+_PROMPT_SYMBOLS[git_staged_file]="⚪"
 _PROMPT_SYMBOLS[git_deleted_file]="-"
 _PROMPT_SYMBOLS[git_modified_file]="✎"
 _PROMPT_SYMBOLS[git_unmerged_file]="×"
