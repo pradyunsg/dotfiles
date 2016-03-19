@@ -1,4 +1,3 @@
 
-# Ignore all bin files, except the ones that I add myself
-bin/local/bin.symlink/*
+# Ignore all fonts
 fonts/fonts.symlink/
