@@ -23,18 +23,5 @@ alias apt-upgrade-full="sudo apt-get dist-upgrade"
 # Better safe than sorry!
 alias rm='rm -I --preserve-root'
 
-# -----------------------------------------------------------------------------
-# Git
-# -----------------------------------------------------------------------------
-alias gst="git st"
-
-# -----------------------------------------------------------------------------
 # Because we need inspiration and laughter in life.
-# -----------------------------------------------------------------------------
 alias forsay="fortune | cowsay | lolcat"
-
-# -----------------------------------------------------------------------------
-# virtualenvwrapper shorthands
-# -----------------------------------------------------------------------------
-alias mkvenv="mkvirtualenv"
-alias rmvenv="rmvirtualenv"
