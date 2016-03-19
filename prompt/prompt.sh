@@ -27,7 +27,7 @@ if [[ ${CURRENT_SHELL} == "bash" ]]; then
     fi
 elif [[ ${CURRENT_SHELL} == "zsh" ]]; then
     for s in "${precmd_functions[@]}"; do
-        if [ "$s" = "powerline_precmd" ]; then
+        if [ "$s" = "_prompt_precmd" ]; then
             return
         fi
     done
