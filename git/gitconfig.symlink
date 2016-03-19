@@ -4,14 +4,20 @@
 
 [alias]
 	b = branch -v                 # branch with latest commit summary
-	s = status -sb                # status
-	st = status -sb               # status
-	lg = log --graph --date=short # log
+	s = status -sb
+	st = status -sb
 
+	# Some nice log graphs
+	lg = log --graph --date=short
+	graph = log --graph --oneline
+
+	undo = reset --soft HEAD~1    # undo your last commit
 	amend = commit --amend        # amend your last commit
+
 	co = checkout                 # checkout
 	nb = checkout -b              # new branch
-	graph = log --graph --oneline
+
+	cst = crypt status
 
 [apply]
 	whitespace = error
@@ -20,7 +26,7 @@
 	template = ~/.git-commit-template
 
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 	autocrlf = input
 	editor = subl -w -n
 	whitespace = trailing-space,tab-in-indent,cr-at-eol
