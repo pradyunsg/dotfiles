@@ -1,0 +1,3 @@
+
+DIRCOLORS_FILE=${DOTFILES_LOCATION}/dircolors/ls-colors.dircolors
+eval $(dircolors $DIRCOLORS_FILE)
