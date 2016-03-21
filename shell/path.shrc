@@ -1,0 +1,2 @@
+# Because local binaries matter
+export PATH=$PATH:$HOME/.local/bin
