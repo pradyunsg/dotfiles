@@ -1,0 +1,41 @@
+
+# Because I'm always improving this.
+alias reload_shell="source ~/.\${CURRENT_SHELL}rc"
+alias reload_prompt="source \${DOTFILES_LOCATION}/prompt/prompt.shrc"
+
+# -----------------------------------------------------------------------------
+# UNIX tools
+# -----------------------------------------------------------------------------
+# Be colorful!
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Shorthands
+alias la='ls -a'
+alias ll='ls -l'
+alias nau='nautilus'
+
+alias apt-ud='echo "Updating cache..." && sudo apt-get update > /dev/null'
+alias apt-ug='sudo apt-get upgrade'
+alias apt-ugf='sudo apt-get dist-upgrade'
+
+# Better safe than sorry!
+alias rm='rm -I --preserve-root'
+
+# Because we need inspiration and laughter in life.
+alias forsay='fortune | cowsay | lolcat'
+
+# -----------------------------------------------------------------------------
+# Because simple things aren't always simple
+# -----------------------------------------------------------------------------
+function mcd {
+  if [ ! -n "$1" ]; then
+    echo "Enter a directory name"
+  elif [ -d $1 ]; then
+    echo "\`$1' already exists"
+  else
+    mkdir $1 && cd $1
+  fi
+}
