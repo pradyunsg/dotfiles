@@ -1,2 +1,12 @@
+# If not running interactively or not requested to, don't do anything
+[[ "$-" != *i* ]] && [[ -z $SETUP_SHELL ]] && return
 
-source ~/.sh/shrc
+CURRENT_SHELL=$(ps -o comm= -p $$)
+DOTFILES_LOCATION=$(cat ~/.dotfiles-dir)
+
+if [ ${CURRENT_SHELL} != "zsh" ]; then
+    echo "What the hell are you upto?"
+    return;
+fi
+
+source $DOTFILES_LOCATION/shell/load_dotfiles.sh
