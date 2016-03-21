@@ -17,22 +17,22 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 # -----------------------------------------------------------------------------
+if [ ! -d "$HOME/.antigen-repo" ]; then
+    echo "Downloading antigen..."
+    git clone --depth=1 https://github.com/zsh-users/antigen.git $HOME/.antigen-repo
+fi
 
-echo "Sourcing antigen.zsh"
-source ${DOTFILES_LOCATION}/zsh/antigen/antigen.zsh
+source ~/.antigen-repo/antigen.zsh
 
-echo "Enabling oh-my-zsh..."
 antigen use oh-my-zsh
 
 # Default bundles
 for bundle in $antigen_default_bundles; do
-    echo "Enabling default oh-my-zsh bundles: ${bundle}"
     antigen bundle $bundle
 done
 
 # Third party bundles
 for bundle in $antigen_third_party_bundles; do
-    echo "Enabling third-party oh-my-zsh bundles: ${bundle}"
     antigen bundle $bundle
 done
 
@@ -41,5 +41,4 @@ done
 # antigen theme bhilburn/powerlevel9k powerlevel9k.zsh-theme
 
 # Tell antigen that you're done.
-echo "Applying Changes..."
 antigen apply
