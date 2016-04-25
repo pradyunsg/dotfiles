@@ -1,0 +1,21 @@
+
+# For indicator-sound-switcher
+ppa:yktooo/ppa
+
+ppa:atareao/atareao
+ppa:fossfreedom/rhythmbox-plugins
+
+# For git crypt
+ppa:avacariu/git-crypt
+
+# For zukitwo
+ppa:noobslab/themes
+
+# For caffeine - Keeping system awake when needed with flipping of indicator
+ppa:caffeine-developers/ppa
+
+# For Atom
+ppa:webupd8team/atom
+
+# For Guake
+ppa:webupd8team/unstable

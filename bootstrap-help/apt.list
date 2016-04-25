@@ -1,0 +1,24 @@
+# Basic system tools
+unity-tweak-tool
+
+# Basic shell tools
+terminator
+autojump
+zsh
+
+# Basic development tools
+build-essential
+
+python-dev
+python3-dev
+
+
+meld
+
+git-all
+git-cola
+git-dag
+
+# Because Vagrant is awesome!
+vagrant
+virtualbox

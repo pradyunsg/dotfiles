@@ -14,7 +14,7 @@ import click
 
 DRY_RUN = None
 HOME_DIR = os.path.expanduser('~')
-THIS_DIR = os.path.dirname(__file__)
+THIS_DIR = os.path.dirname(__file__) or "."
 
 
 # ----------------------------------------------------------------------------------------
@@ -36,21 +36,8 @@ class Logger(object):
     def status(self, message, *args, **kwargs):
         click.secho(self._m(message, *args, **kwargs), fg='magenta')
 
-    def file_status(self, action, target):
-        colour = {
-            'update': 'black',
-            'up to date': 'green',
-            'backup': 'magenta',
-            'skip': 'gray',
-            'remove': 'blue'
-        }[action]
-        s = click.style("[" + action.center(10) + "]", fg=colour)
-        if target.startswith(HOME_DIR + os.sep):
-            target = "~" + target[len(HOME_DIR):]
-        click.secho(self._m('{} {}', s, target))
-
     def info(self, message, *args, **kwargs):
-        click.secho(self._m(message, *args, **kwargs), dim=True)
+        click.secho(self._m(message, *args, **kwargs))
 
     def error(self, message, *args, **kwargs):
         click.secho(self._m('ERROR: ' + message, *args, **kwargs), fg='red')
@@ -77,15 +64,18 @@ class ListFile(object):
 
         try:
             self.file = open(self.file_name)
-        except FileNotFoundError as e:
-            log.error('ERROR: Could not load list: {}', self.file_name)
-            raise RuntimeError('Cannot re-initialize an initialized list file') from e
+        except FileNotFoundError:
+            log.error('ERROR: Could not load file: {}', self.file_name)
+            raise
+
+        return self
 
     def __next__(self):
         while True:
             line = next(self.file)
             # Stop if reached EOF
             if not line:
+                self.file.close()
                 raise StopIteration
 
             # If the first character is a '#' or it is an empty line, skip
@@ -238,6 +228,22 @@ class DotFilesRepo(object):
         """Symlinks the dotfiles in the source_dir with target_dir
         """
 
+        def file_status(action, target):
+            colour = {
+                'update': 'black',
+                'up to date': 'green',
+                'backup': 'magenta',
+                'skip': 'gray',
+                'remove': 'blue'
+            }[action]
+
+            s = click.style("[" + action.center(10) + "]", fg=colour)
+
+            if target.startswith(HOME_DIR + os.sep):
+                target = "~" + target[len(HOME_DIR):]
+
+            log.info('{} {}', s, target)
+
         if not DRY_RUN:
             # Write the location of the dotfiles repository in a file
             with open(os.path.join(self.target_dir, '.dotfiles-dir'), 'w') as f:
@@ -254,7 +260,7 @@ class DotFilesRepo(object):
                 else:
                     action = self.get_action(target)
 
-                log.file_status(action, target)
+                file_status(action, target)
 
                 # This is the exact flow I want.
                 if action == 'skip':
@@ -350,21 +356,27 @@ def setup_new_system(ctx):
         run('sudo echo "Got permissions!"', verbose)
 
     with task('Adding apt PPAs'):
-        lf = ListFile('ppas.list')
+        lf = ListFile('bootstrap-help/ppas.list')
         lf.for_every(add_ppa)
 
     with task('Installing apt packages'):
-        lf = ListFile('packages.list')
+        lf = ListFile('bootstrap-help/apt.list')
 
         final_command_parts = ['sudo apt-get install --yes']
         try:
             iterable = iter(lf)
         except RuntimeError as e:
-            raise Exception("Someone made a mistake while coding this. :P") from e
+            raise Exception("Someone made a silly mistake while coding this. :P") from e
         else:
             for item in iterable:
                 final_command_parts.append('"' + item + '"')
             run(' '.join(final_command_parts), verbose)
+
+    with task('Setting up shell environment'):
+        # Change shell for me
+        run('chsh -s $(which zsh)', verbose)
+        # Change shell for root
+        run('sudo chsh -s $(which zsh)', verbose)
 
 
 def main():
