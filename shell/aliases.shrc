@@ -17,9 +17,9 @@ alias la='ls -a'
 alias ll='ls -l'
 alias nau='nautilus'
 
-alias apt-ud='echo "Updating cache..." && sudo apt-get update > /dev/null'
-alias apt-ug='sudo apt-get upgrade'
-alias apt-ugf='sudo apt-get dist-upgrade'
+alias apt-upd='echo "Updating cache..." && sudo apt-get update > /dev/null'
+alias apt-upg='sudo apt-get upgrade'
+alias apt-upgf='sudo apt-get dist-upgrade'
 
 # Better safe than sorry!
 alias rm='rm -I --preserve-root'
