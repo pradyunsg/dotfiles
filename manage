@@ -9,7 +9,13 @@ import shlex
 import subprocess
 import contextlib
 
-import click
+try:
+    import click
+except Exception:
+    print(
+        "Please run `pip install click==6.2.0` "
+        "since this script depends on click, for command line."
+    )
 
 
 DRY_RUN = None
@@ -46,6 +52,7 @@ class Logger(object):
         click.secho(self._m(message, *args, **kwargs), fg='green')
 
 
+
 class ListFile(object):
     """A hash-commented file with one item per line.
     """
@@ -59,7 +66,7 @@ class ListFile(object):
 
     def __iter__(self):
         if self._initialized:
-            raise RuntimeError('Cannot re-initialize an initialized list file')
+            return self
         self._initialized = True
 
         try:
@@ -101,14 +108,14 @@ class ListFile(object):
 
 @contextlib.contextmanager
 def task(message):
-    click.secho('# {}...'.format(message), fg='blue', dim=True)
+    click.secho('# {}...'.format(message), fg='blue')
     try:
         yield
     except Exception:
         log.error('Aborting due to following error...')
         raise
     else:
-        click.secho('# Completed', fg='blue', dim=True)
+        click.secho('# Completed', fg='blue')
 
 
 def run(command, verbose):
@@ -168,7 +175,8 @@ class DotFilesRepo(object):
             click.echo(action)
 
         # Set the action
-        val = mapping[action.lower()]
+        val = mapping[action.lower()].split()[0]
+
         if action.isupper():
             self.global_action = val
 
@@ -374,9 +382,9 @@ def setup_new_system(ctx):
 
     with task('Setting up shell environment'):
         # Change shell for me
-        run('chsh -s $(which zsh)', verbose)
+        run('chsh -s $( which zsh )', verbose)
         # Change shell for root
-        run('sudo chsh -s $(which zsh)', verbose)
+        run('sudo chsh -s $( which zsh )', verbose)
 
 
 def main():
