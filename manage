@@ -51,6 +51,21 @@ class Logger(object):
     def success(self, message, *args, **kwargs):
         click.secho(self._m(message, *args, **kwargs), fg='green')
 
+    def file_status(self, action, target):
+        colour = {
+            'update': 'blue',
+            'up to date': 'green',
+            'backup': 'magenta',
+            'skip': 'yellow',
+            'remove': 'red'
+        }[action]
+
+        s = click.style("[" + action.center(10) + "]", fg=colour)
+
+        if target.startswith(HOME_DIR + os.sep):
+            target = "~" + target[len(HOME_DIR):]
+
+        self.info('{} {}', s, target)
 
 
 class ListFile(object):
@@ -234,24 +249,17 @@ class DotFilesRepo(object):
 
     def sync(self, topics):
         """Symlinks the dotfiles in the source_dir with target_dir
+
+        Structure of dotfiles:
+          - topic-1/
+            - content-file-1.shrc
+            - content-file-2.symlink
+            - content-file-3.zsh
+          - topic-2/
+            - content-file-1.shrc
+            - content-file-2.symlink
+            - content-file-3.zsh
         """
-
-        def file_status(action, target):
-            colour = {
-                'update': 'black',
-                'up to date': 'green',
-                'backup': 'magenta',
-                'skip': 'gray',
-                'remove': 'blue'
-            }[action]
-
-            s = click.style("[" + action.center(10) + "]", fg=colour)
-
-            if target.startswith(HOME_DIR + os.sep):
-                target = "~" + target[len(HOME_DIR):]
-
-            log.info('{} {}', s, target)
-
         if not DRY_RUN:
             # Write the location of the dotfiles repository in a file
             with open(os.path.join(self.target_dir, '.dotfiles-dir'), 'w') as f:
@@ -268,7 +276,7 @@ class DotFilesRepo(object):
                 else:
                     action = self.get_action(target)
 
-                file_status(action, target)
+                log.file_status(action, target)
 
                 # This is the exact flow I want.
                 if action == 'skip':
