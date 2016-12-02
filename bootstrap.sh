@@ -11,8 +11,10 @@ which pip3 > /dev/null
 
 # If not installed, then install it, via apt
 if [ $? != "0" ]; then
-    sudo apt-get install --yes python3 pip3
-    if [[ $? != "0" ]]; then
+    sudo apt-get update
+    echo "Installing Python 3 and pip."
+    sudo apt-get install --yes python3 python3-pip
+    if [ $? != "0" ]; then
         echo "Could not install Python 3. Please install Python 3 (with pip) and re-run."
         exit 1
     fi
