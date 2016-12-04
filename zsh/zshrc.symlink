@@ -9,4 +9,6 @@ if [ ${CURRENT_SHELL} != "zsh" ]; then
     return;
 fi
 
+# Source a local zshrc if it exists
+test -e "${HOME}/.zshrc.local" && source "${HOME}/.zshrc.local"
 source $DOTFILES_LOCATION/shell/load_dotfiles.sh
