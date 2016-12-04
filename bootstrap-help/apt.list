@@ -5,6 +5,7 @@ unity-tweak-tool
 terminator
 autojump
 zsh
+colortest
 
 # Basic development tools
 build-essential
