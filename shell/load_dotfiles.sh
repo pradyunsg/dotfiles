@@ -28,4 +28,3 @@ do
 done
 
 unset config_files
-unset source
