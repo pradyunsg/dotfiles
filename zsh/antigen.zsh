@@ -7,13 +7,17 @@ source ~/.antigen-repo/antigen.zsh
 
 # Default bundles
 antigen bundles <<EOBUNDLES
-  git
+  compleat
   pip
+  python
+  vagrant
   command-not-found
 EOBUNDLES
 
 # External bundles
 antigen bundles <<EOBUNDLES
+  djui/alias-tips
+  supercrabtree/k
   Tarrasch/zsh-autoenv
   zsh-users/zsh-syntax-highlighting
 EOBUNDLES
