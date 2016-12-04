@@ -1,7 +1,3 @@
-[user]
-	email = pradyunsg@gmail.com
-	name = Pradyun S. Gedam
-
 [alias]
 	# One Character Shorthands
 	b = branch -v                 # branches with latest commit summary
@@ -69,3 +65,9 @@
 
 [push]
 	default = simple
+
+[user]
+    useConfigOnly = true
+
+[include]
+	path = ~/.gitconfig.local
