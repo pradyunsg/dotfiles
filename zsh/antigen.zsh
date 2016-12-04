@@ -20,6 +20,7 @@ antigen bundles <<EOBUNDLES
   supercrabtree/k
   Tarrasch/zsh-autoenv
   zsh-users/zsh-syntax-highlighting
+  pradyunsg/rvm-zsh
 EOBUNDLES
 
 # Tell antigen that you're done.
