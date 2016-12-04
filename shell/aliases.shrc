@@ -3,6 +3,10 @@
 alias reload_shell="source ~/.\${CURRENT_SHELL}rc"
 alias reload_prompt="source \${DOTFILES_LOCATION}/prompt/prompt.shrc"
 
+alias dotpath="cat ~/.dotfiles-dir; echo"
+#                                   ^^^^
+#                                   Need a newline after the path
+
 # -----------------------------------------------------------------------------
 # UNIX tools
 # -----------------------------------------------------------------------------
