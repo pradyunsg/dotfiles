@@ -65,6 +65,7 @@
 
 [merge]
 	tool = meld
+	conflictstyle = diff3
 
 [push]
 	default = simple
