@@ -1,8 +1,8 @@
-PROMPT_DESIGN=powerline
-PROMPT_THEME=pradyunsg
+PROMPT_DESIGN=${PROMPT_DESIGN:=powerline}
+PROMPT_THEME=${PROMPT_THEME:=pradyunsg}
 
-MY_PROMPT_LOCATION=~/code/sigma-prompts
+SIGMA_PROMPT_LOCATION=${SIGMA_PROMPT_LOCATION:=~/code/sigma-prompts}
 
-if [[ -f "${MY_PROMPT_LOCATION}/prompt.sh" ]]; then
-    source "${MY_PROMPT_LOCATION}/prompt.sh"
+if [[ -f "${SIGMA_PROMPT_LOCATION}/prompt.sh" ]]; then
+    source "${SIGMA_PROMPT_LOCATION}/prompt.sh"
 fi

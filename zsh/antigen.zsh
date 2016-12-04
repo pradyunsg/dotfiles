@@ -1,9 +1,11 @@
-if [ ! -d "$HOME/.antigen-repo" ]; then
+ANTIGEN_LOCATION="${ANTIGEN_LOCATION:=$HOME/.antigen-repo}"
+
+if [ ! -d "${ANTIGEN_LOCATION}" ]; then
     echo "Downloading antigen..."
-    git clone --depth=1 https://github.com/zsh-users/antigen.git $HOME/.antigen-repo
+    git clone --depth=1 https://github.com/zsh-users/antigen.git "${ANTIGEN_LOCATION}"
 fi
 
-source ~/.antigen-repo/antigen.zsh
+source ${ANTIGEN_LOCATION}/antigen.zsh
 
 # Default bundles
 antigen bundles <<EOBUNDLES
