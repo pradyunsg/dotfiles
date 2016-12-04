@@ -2,3 +2,4 @@ python/pypirc
 
 # Ignore all fonts
 fonts/fonts.symlink/
+fonts/old/
