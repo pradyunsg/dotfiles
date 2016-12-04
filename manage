@@ -112,7 +112,7 @@ class ListFile(object):
         def show_progress_counter(items, function):
             total_items = len(items)
             for i, item in enumerate(items):
-                log.info('... {} of {}: {}', i+1, total_items, item)
+                log.info('... {} of {}: {}', i + 1, total_items, item)
                 function(item)
 
         items = list(self)
@@ -176,7 +176,8 @@ class DotFilesRepo(object):
             options.append('[{}]{} all'.format(val[0].upper(), val[1:]))
 
         prompt_text = (
-            'File already exists: {}, what do you want to do?\n'.format(target) +
+            'File already exists: {}, '.format(target) +
+            'what do you want to do?\n' +
             ', '.join(options)
         )
 
@@ -262,7 +263,8 @@ class DotFilesRepo(object):
         """
         if not DRY_RUN:
             # Write the location of the dotfiles repository in a file
-            with open(os.path.join(self.target_dir, '.dotfiles-dir'), 'w') as f:
+            path = os.path.join(self.target_dir, '.dotfiles-dir')
+            with open(path, 'w') as f:
                 f.write(self.source_dir)
 
         for rel_path in self.find_files_to_symlink(topics):
@@ -382,7 +384,8 @@ def setup_new_system(ctx):
         try:
             iterable = iter(lf)
         except RuntimeError as e:
-            raise Exception("Someone made a silly mistake while coding this. :P") from e
+            msg = "Someone made a silly mistake while coding this. :P"
+            raise Exception(msg) from e
         else:
             for item in iterable:
                 final_command_parts.append('"' + item + '"')
