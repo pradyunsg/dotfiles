@@ -10,3 +10,5 @@ if [ ${CURRENT_SHELL} != "zsh" ]; then
 fi
 
 source $DOTFILES_LOCATION/shell/load_dotfiles.sh
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
