@@ -237,10 +237,9 @@ class DotFilesRepo(object):
         return os.path.join(self.target_dir, *parts)
 
     def symlink_needs_update(self, target, source):
-        if os.path.islink(target) and os.readlink(target) == source:
-            return False
-        else:
-            return True
+        return not os.path.exists(target) or not (
+            os.path.islink(target) and os.readlink(target) == source
+        )
 
     def backup_file(self, fname):
         run('mv "{0}" "{0}.backup"'.format(fname), self.verbose)
