@@ -3,3 +3,6 @@ python/pypirc
 # Ignore all fonts
 fonts/fonts.symlink/
 fonts/old/
+
+# Ignore local files
+*.local.symlink
