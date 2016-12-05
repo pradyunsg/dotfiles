@@ -71,3 +71,7 @@
 
 [include]
 	path = ~/.gitconfig.local
+
+# Pro-tip: Makes life with submodules easier.
+# [url "git@github.com:yourname/"]
+# 	insteadOf = "git://github.com/yourname/"
