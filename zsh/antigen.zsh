@@ -25,6 +25,8 @@ antigen bundles <<EOBUNDLES
   zsh-users/zsh-syntax-highlighting
   pradyunsg/rvm.plugin.zsh
 EOBUNDLES
+# pradyunsg/heroku.plugin.zsh
+# pradyunsg/virtualenvwrapper.plugin.zsh
 
 # Tell antigen that you're done.
 antigen apply
