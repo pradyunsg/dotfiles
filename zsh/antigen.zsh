@@ -12,6 +12,7 @@ antigen bundles <<EOBUNDLES
   compleat
   pip
   python
+  heroku
   vagrant
   command-not-found
 EOBUNDLES
