@@ -1,1 +1,1 @@
-export PATH=$PATH:${DOTFILES_LOCATION}/spark/bin
+add_to_path "${DOTFILES_LOCATION}/spark/bin"

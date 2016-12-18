@@ -3,6 +3,18 @@
 
 typeset -U config_files
 
+# Helper function
+add_to_path() {
+    if ! echo $PATH | /bin/grep -Eq "(^|:)$1($|:)" ; then
+       if [ "$2" = "prepend" ] ; then
+          PATH=$1:$PATH
+       else
+          PATH=$PATH:$1
+       fi
+    fi
+}
+
+
 config_files=($DOTFILES_LOCATION/**/*.(shrc|${CURRENT_SHELL}))
 
 # load the path files

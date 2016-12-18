@@ -1,1 +1,2 @@
-export PATH="/home/pradyunsg/.multirust/toolchains/stable/cargo/bin:$PATH"
+# export PATH="$HOME/.cargo/bin":$PATH
+add_to_path "$HOME/.multirust/toolchains/stable/cargo/bin:$PATH"
