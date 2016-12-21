@@ -1,2 +1,2 @@
 # export PATH="$HOME/.cargo/bin":$PATH
-add_to_path "$HOME/.multirust/toolchains/stable/cargo/bin:$PATH"
+add_to_path "$HOME/.multirust/toolchains/stable/cargo/bin"
