@@ -1,3 +1,9 @@
+# Directory shortnames
+.dirname
+
+# My new Text Editor!
+.vscode
+
 # Generated files
 build/
 *.[oa]
