@@ -21,6 +21,14 @@ except Exception:
 DRY_RUN = None
 HOME_DIR = os.path.expanduser('~')
 THIS_DIR = os.path.dirname(__file__) or "."
+ACTION_COLOR_DICT = {
+    'backup': 'magenta',
+    'create': 'green',
+    'remove': 'red',
+    'skip': 'yellow',
+    'up to date': 'green',
+    'update': 'blue',
+}
 
 
 # ------------------------------------------------------------------------------
@@ -52,13 +60,7 @@ class Logger(object):
         click.secho(self._m(message, *args, **kwargs), fg='green')
 
     def file_status(self, action, target):
-        colour = {
-            'update': 'blue',
-            'up to date': 'green',
-            'backup': 'magenta',
-            'skip': 'yellow',
-            'remove': 'red'
-        }[action]
+        colour = ACTION_COLOR_DICT[action]
 
         s = click.style("[" + action.center(10) + "]", fg=colour)
 
@@ -271,24 +273,28 @@ class DotFilesRepo(object):
 
             target = self.compute_target(rel_path)
 
-            if self.symlink_needs_update(target, source):
-                if self.is_broken_symlink(target):
+            # Determine what to do with target
+            if not os.path.exists(target):
+                action = 'create'
+            elif os.path.islink(target):
+                if os.readlink(target) == source:  # link is up to date
+                    action = 'up to date'
+                else:  # link needs updating
                     action = 'update'
                 else:
                     action = self.get_action(target)
 
                 log.file_status(action, target)
 
-                # This is the exact flow I want.
-                if action == 'skip':
-                    continue
+            # Take the required action
+            if action in ['skip', 'up to date']:
+                continue  # no action needed.
                 elif action == 'backup':
                     self.backup_file(target)
                 elif action == 'update':
                     self.remove_file(target)
+
                 self.link_source_to_target(source, target)
-            else:
-                log.file_status('up to date', target)
 
     def is_broken_symlink(self, path):
         return os.path.islink(path) and not os.path.exists(path)
