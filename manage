@@ -18,7 +18,6 @@ except Exception:
     )
 
 
-DRY_RUN = None
 HOME_DIR = os.path.expanduser('~')
 THIS_DIR = os.path.dirname(__file__) or "."
 ACTION_COLOR_DICT = {
@@ -135,10 +134,10 @@ def task(message):
         click.secho('# Completed', fg='blue')
 
 
-def run(command, verbose):
-    if verbose:
+def run(command, repo):
+    if repo.verbose:
         log.info('> {}', command)
-    if DRY_RUN:
+    if repo.dry_run:
         return 0
     return subprocess.call(shlex.split(command))
 
@@ -148,17 +147,18 @@ def run(command, verbose):
 # ------------------------------------------------------------------------------
 class DotFilesRepo(object):
 
-    def __init__(self, source_dir, target_dir, walk_depth, verbose):
+    def __init__(self, source_dir, target_dir, walk_depth, verbose, dry_run):
         super().__init__()
         self.global_action = None
         self.source_dir = os.path.abspath(source_dir)
         self.target_dir = os.path.abspath(target_dir)
         self.walk_depth = walk_depth
         self.verbose = verbose
+        self.dry_run = dry_run
 
     def link_source_to_target(self, source, target):
-        run('mkdir -p "{}"'.format(os.path.dirname(target)), self.verbose)
-        run('ln -s "{}" "{}"'.format(source, target), self.verbose)
+        run('mkdir -p "{}"'.format(os.path.dirname(target)), self)
+        run('ln -s "{}" "{}"'.format(source, target), self)
 
     def get_action(self, target):
         if self.global_action is not None:
@@ -238,16 +238,11 @@ class DotFilesRepo(object):
         parts[-1] = parts[-1][:-len('.symlink')]
         return os.path.join(self.target_dir, *parts)
 
-    def symlink_needs_update(self, target, source):
-        return not os.path.exists(target) or not (
-            os.path.islink(target) and os.readlink(target) == source
-        )
-
     def backup_file(self, fname):
-        run('mv "{0}" "{0}.backup"'.format(fname), self.verbose)
+        run('mv "{0}" "{0}.backup"'.format(fname), self)
 
     def remove_file(self, fname):
-        run('rm "{}"'.format(fname), self.verbose)
+        run('rm "{}"'.format(fname), self)
 
     def sync(self, topics):
         """Symlinks the dotfiles in the source_dir with target_dir
@@ -262,7 +257,7 @@ class DotFilesRepo(object):
             - content-file-2.symlink
             - content-file-3.zsh
         """
-        if not DRY_RUN:
+        if not self.dry_run:
             # Write the location of the dotfiles repository in a file
             path = os.path.join(self.target_dir, '.dotfiles-dir')
             with open(path, 'w') as f:
@@ -281,20 +276,20 @@ class DotFilesRepo(object):
                     action = 'up to date'
                 else:  # link needs updating
                     action = 'update'
-                else:
-                    action = self.get_action(target)
+            else:
+                action = self.get_action(target)
 
-                log.file_status(action, target)
+            log.file_status(action, target)
 
             # Take the required action
             if action in ['skip', 'up to date']:
                 continue  # no action needed.
-                elif action == 'backup':
-                    self.backup_file(target)
-                elif action == 'update':
-                    self.remove_file(target)
+            elif action == 'backup':
+                self.backup_file(target)
+            elif action == 'update':
+                self.remove_file(target)
 
-                self.link_source_to_target(source, target)
+            self.link_source_to_target(source, target)
 
     def is_broken_symlink(self, path):
         return os.path.islink(path) and not os.path.exists(path)
@@ -306,7 +301,7 @@ class DotFilesRepo(object):
             path = os.path.join(self.target_dir, item)
             # If symlink is broken
             if self.is_broken_symlink(path):
-                run('rm "{}"'.format(path), self.verbose)
+                run('rm "{}"'.format(path), self)
                 log.file_status('remove', path)
 
 
@@ -336,13 +331,10 @@ class DotFilesRepo(object):
 )
 @click.pass_context
 def cli(ctx, src_dir, dest_dir, dry_run, depth, verbose):
-    global DRY_RUN
-
     if dry_run:
         verbose = True
 
-    DRY_RUN = dry_run
-    ctx.obj['obj'] = DotFilesRepo(src_dir, dest_dir, depth, verbose)
+    ctx.obj['obj'] = DotFilesRepo(src_dir, dest_dir, depth, verbose, dry_run)
     ctx.obj['verbose'] = verbose
 
 
