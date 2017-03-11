@@ -49,7 +49,7 @@
 
 [diff]
 	algorithm = patience
-	tool = xxdiff
+	tool = meld
 
 [gui]
 	editor = subl -w
