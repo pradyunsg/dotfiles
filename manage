@@ -388,7 +388,7 @@ def setup_new_system(ctx):
                 final_command_parts.append('"' + item + '"')
             run(' '.join(final_command_parts), verbose)
 
-    with task('Setting up shell environment'):
+    with task('Changing default shell to zsh'):
         # Change shell for me
         run('chsh -s $( which zsh )', verbose)
         # Change shell for root
