@@ -6,7 +6,7 @@
 
 SCRIPT_DIR=$( cd $(dirname $0) ; pwd )
 
-function have_command() {
+function have_tool() {
     which $1 > /dev/null
     if [ $? != "0" ]; then
         echo false
