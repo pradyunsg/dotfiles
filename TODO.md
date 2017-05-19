@@ -3,3 +3,4 @@
 - Improve
     - https://github.com/slomkowski/bash-full-of-colors
     - See if there's some way to use fresh: https://github.com/freshshell/fresh
+- Move over to a lighter plugin system
