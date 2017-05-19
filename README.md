@@ -31,7 +31,7 @@
 - Custom dircolors
 - Create a productive working environment for myself
 
-> NOTE: The `sigma-prompts` repository is currently not uploaded. Thus, the prompt I use is currently not accessible to everyone. I'll upload it soon.
+> NOTE: The prompt I use is currently not accessible to everyone. The `sigma-prompts` repository is currently not public. I'll make it public once it's a little cleaner and more robust.
 
 
 ## Installation
