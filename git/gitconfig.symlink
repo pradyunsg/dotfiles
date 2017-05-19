@@ -59,6 +59,9 @@
 [help]
 	autocorrect = 20
 
+[init]
+	templatedir = ~/.git-templates
+
 [merge]
 	tool = meld
 	conflictstyle = diff3
