@@ -8,10 +8,10 @@
 	l = log --graph --date=short
 	s = !git st
 
-
 	# Two Character Shorthands
+	br = branch                   # branch
 	co = checkout                 # checkout
-	nb = checkout -b              # new branch
+	nb = co -b                    # new branch
 	st = status -sb               # status in a concise manner
 	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 
