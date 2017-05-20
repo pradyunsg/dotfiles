@@ -8,3 +8,5 @@ verify-options show-uid-validity
 # Try to use the GnuPG-Agent. With this option, GnuPG first tries to connect to
 # the agent before it asks for a passphrase.
 use-agent
+
+no-tty
