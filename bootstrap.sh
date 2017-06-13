@@ -21,6 +21,11 @@ if [[ $(have_tool python3) == "false" || $(have_tool pip3) == "false" ]]; then
     exit 1
 fi
 
+if [[ $VIRTUAL_ENV == "" ]]; then
+    echo "Please run in a virtual environment to prevent environment pollution.";
+    exit 1;
+fi
+
 echo "Installing click==6.6 for manage script"
 pip3 install click==6.6
 
