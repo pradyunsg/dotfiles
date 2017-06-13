@@ -23,6 +23,7 @@ antigen bundles <<EOBUNDLES
   supercrabtree/k
   Tarrasch/zsh-autoenv
   zsh-users/zsh-syntax-highlighting
+  zsh-users/zsh-autosuggestions
   pradyunsg/rvm.plugin.zsh
 EOBUNDLES
 # pradyunsg/heroku.plugin.zsh
