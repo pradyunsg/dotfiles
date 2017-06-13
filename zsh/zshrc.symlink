@@ -1,11 +1,11 @@
 # If not running interactively or not requested to, don't do anything
 [[ "$-" != *i* ]] && [[ -z $SETUP_SHELL ]] && return
 
-CURRENT_SHELL=$(ps -o comm= -p $$)
+CURRENT_SHELL=$(basename -- $SHELL)
 DOTFILES_LOCATION=$(cat ~/.dotfiles-dir)
 
-if [ ${CURRENT_SHELL} != "zsh" ]; then
-    echo "What the hell are you upto?"
+if [[ "$(basename -- "${SHELL}")" != *"zsh"* ]]; then
+    echo "What the hell are you upto? This is not zsh."
     return;
 fi
 
