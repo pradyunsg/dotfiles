@@ -11,10 +11,10 @@ alias dotpath="cat ~/.dotfiles-dir; echo"
 # UNIX tools
 # -----------------------------------------------------------------------------
 # Be colorful!
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+# alias ls='ls --color=auto'
+# alias grep='grep --color=auto'
+# alias fgrep='fgrep --color=auto'
+# alias egrep='egrep --color=auto'
 
 # Shorthands
 alias la='ls -a'
@@ -26,7 +26,7 @@ alias '?=man'
 
 # Better safe than sorry!
 alias ln="ln -v"
-alias rm='rm -I --preserve-root'
+# alias rm='rm -I --preserve-root'
 
 # Because we need inspiration and laughter in life.
 alias forsay='fortune | cowsay | lolcat'
