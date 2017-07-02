@@ -47,6 +47,13 @@ alias apt-upg='sudo apt-get upgrade'
 alias apt-upgf='sudo apt-get dist-upgrade'
 
 # -----------------------------------------------------------------------------
+# Because it's shorter
+# -----------------------------------------------------------------------------
+alias g="git"
+alias workon-ghp="rvm use ruby-2.4.0@gh-pages"
+alias prompt_one_line_toggle='{ [ "$PROMPT_POWERLINE_ONE_LINE" = "true" ] && PROMPT_POWERLINE_ONE_LINE="false" || PROMPT_POWERLINE_ONE_LINE="true"; }'
+
+# -----------------------------------------------------------------------------
 # Because simple things aren't always simple
 # -----------------------------------------------------------------------------
 function mcd {
@@ -62,10 +69,3 @@ function mcd {
     mkdir $1 && cd $1
   fi
 }
-
-# -----------------------------------------------------------------------------
-# Because it's shorter
-# -----------------------------------------------------------------------------
-alias g="git"
-alias workon-ghp="rvm use ruby-2.3.0@gh-pages"
-alias prompt_one_line_toggle='{ [ "$PROMPT_POWERLINE_ONE_LINE" = "true" ] && PROMPT_POWERLINE_ONE_LINE="false" || PROMPT_POWERLINE_ONE_LINE="true"; }'
