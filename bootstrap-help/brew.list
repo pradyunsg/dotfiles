@@ -1,0 +1,25 @@
+# General
+binutils
+cmake
+curl
+git
+imagemagick
+openssl
+wget
+zsh
+
+heroku
+docker
+
+# C++
+gcc
+gdb
+
+# Languages
+go
+rust
+
+# Python
+python
+python3
+readline
