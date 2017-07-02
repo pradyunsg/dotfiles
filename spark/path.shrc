@@ -1,1 +1,0 @@
-add_to_path "${DOTFILES_LOCATION}/spark/bin"
