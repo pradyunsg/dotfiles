@@ -11,10 +11,13 @@ alias dotpath="cat ~/.dotfiles-dir; echo"
 # UNIX tools
 # -----------------------------------------------------------------------------
 # Be colorful!
-# alias ls='ls --color=auto'
-# alias grep='grep --color=auto'
-# alias fgrep='fgrep --color=auto'
-# alias egrep='egrep --color=auto'
+
+if [[ $(uname) == 'Linux' ]]; then
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
 
 # Shorthands
 alias la='ls -a'
