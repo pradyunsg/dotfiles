@@ -22,9 +22,9 @@ antigen bundles <<EOBUNDLES
   djui/alias-tips
   supercrabtree/k
   Tarrasch/zsh-autoenv
-  zsh-users/zsh-syntax-highlighting
   zsh-users/zsh-autosuggestions
   pradyunsg/rvm.plugin.zsh
+  zsh-users/zsh-syntax-highlighting
 EOBUNDLES
 # pradyunsg/heroku.plugin.zsh
 # pradyunsg/virtualenvwrapper.plugin.zsh
