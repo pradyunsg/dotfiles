@@ -29,6 +29,9 @@
 	amend = commit --amend        # amend your last commit
 
 	diffc = diff --cached
+	pushf = push --force
+
+	whatadded = log --diff-filter=A  # which commit added this file
 
 	# Remotes from various places is useful to have
 	remote-add-gh = "!f() { git remote add $1 https://github.com/$2.git; }; f"
