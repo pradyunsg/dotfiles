@@ -23,3 +23,25 @@ rust
 python
 python3
 readline
+
+# Just opencv things
+cmake
+pkg-config
+eigen
+jpeg
+libpng
+libtiff
+openexr
+numpy
+ffmpeg
+gphoto2
+gstreamer
+jasper
+jpeg-turbo
+libdc1394
+openni
+openni2
+qt
+tbb
+vtk
+cuda
