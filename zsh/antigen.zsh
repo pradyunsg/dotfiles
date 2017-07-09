@@ -12,6 +12,7 @@ antigen bundles <<EOBUNDLES
   compleat
   pip
   python
+  rbenv
   heroku
   vagrant
   command-not-found
@@ -23,7 +24,6 @@ antigen bundles <<EOBUNDLES
   supercrabtree/k
   Tarrasch/zsh-autoenv
   zsh-users/zsh-autosuggestions
-  pradyunsg/rvm.plugin.zsh
   zsh-users/zsh-syntax-highlighting
 EOBUNDLES
 # pradyunsg/heroku.plugin.zsh
