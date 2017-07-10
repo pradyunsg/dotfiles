@@ -35,6 +35,8 @@ ACTION_COLOR_DICT = {
     'skip': 'yellow',
     'up to date': 'green',
     'update': 'blue',
+    'okay': 'green',
+    'not okay': 'red',
 }
 
 
@@ -372,41 +374,77 @@ def clean(ctx):
 
 @cli.command()
 @click.pass_context
-def setup_new_system(ctx):
-    """Runs various routines to setup a new system.
+def check(ctx):
+    """Check whether a system is setup correctly.
+
+    NOTE: This is obviously opinionated. :)
+    TODO: Implement all these checks
+
+    - Username
+    - GPG key installed
+    - SSH key installed
+    - default shell = ZSH
+    - Git:
+        - Author Name
+        - Email
+        - GPG signed of commits by default
+    - Python:
+        - (TODO: look into pyenv)
+        - Python 2 (> 2.7.9)
+        - Python 3 (> 3.3)
+        - pip
+        - virtualenvwrapper
+        - NumPy
+        - OpenCV
+    - Ruby:
+        - rbenv
+        - gem
+        - bundler
+    - Javascript:
+        - nodeenv
+        - npm
+    - Web Tools:
+        - sass
+    - Android Studio
+    - Virtual Machines:
+        - VirtualBox
+        - Vagrant
+    - Nerd Fonts:
+        - ensure a Nerd Font is installed
+        - active in VS Code (if installed)
+        - active in Sublime Text (if installed)
+    - MacOS:
+        (from https://github.com/mathiasbynens/dotfiles/blob/398496c2372d65c0e6770d02b0c5b49c0d636f31/.macos)
+        - ensure XCode CLI tools are installed
+        - brew is installed
+        - save panel expanded by default
+        - smart dashes disabled
+        - screenshots go in a screenshots folder
+        - status bar is enabled
+        - safari: full URL
+        - safari: don't auto open "safe" files
+        - settings: need admin password to modify system settings
+        - settings: firewall is on
+    - Debian:
+        - apt
+        - screenshots go in a screenshots folder
     """
-    verbose = ctx.obj['verbose']
+    # check if CLI tools are installed
+    # pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
 
-    def add_ppa(ppa_name):
-        run('sudo apt-add-repository --yes "ppa:{}"'.format(ppa_name), verbose)
+    logger = Logger()
 
-    with task('Getting Super-User Permissions'):
-        run('sudo echo "Got permissions!"', verbose)
-
-    with task('Adding apt PPAs'):
-        lf = ListFile('bootstrap-help/ppas.list')
-        lf.for_every(add_ppa)
-
-    with task('Installing apt packages'):
-        lf = ListFile('bootstrap-help/apt.list')
-
-        final_command_parts = ['sudo apt-get install --yes']
-        try:
-            iterable = iter(lf)
-        except RuntimeError as e:
-            msg = "Someone made a silly mistake while coding this. :P"
-            raise Exception(msg) from e
+    def check_condition(condition, okay_msg, not_okay_msg):
+        if condition:
+            logger.spaced_status("okay", okay_msg)
         else:
-            for item in iterable:
-                final_command_parts.append('"' + item + '"')
-            run(' '.join(final_command_parts), verbose)
+            logger.spaced_status("not okay", not_okay_msg)
 
-    with task('Changing default shell to zsh'):
-        # Change shell for me
-        run('chsh -s $( which zsh )', verbose)
-        # Change shell for root
-        run('sudo chsh -s $( which zsh )', verbose)
-
+    check_condition(
+        os.environ["USER"] == 'pradyunsg',
+        "username is pradyunsg",
+        "username is not pradyunsg"
+    )
 
 def main():
     cli(obj={}, auto_envvar_prefix='DOTFILES')
