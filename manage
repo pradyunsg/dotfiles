@@ -380,14 +380,17 @@ def check(ctx):
     NOTE: This is obviously opinionated. :)
     TODO: Implement all these checks
 
-    - Username
-    - GPG key installed
-    - SSH key installed
-    - default shell = ZSH
+    - Identity:
+        - username
+        - GPG key
+        - SSH key
     - Git:
-        - Author Name
+        - git > 2.0.0 (prefer latest)
+        - Name
         - Email
         - GPG signed of commits by default
+
+    - Android Studio
     - Python:
         - (TODO: look into pyenv)
         - Python 2 (> 2.7.9)
@@ -405,14 +408,16 @@ def check(ctx):
         - npm
     - Web Tools:
         - sass
-    - Android Studio
     - Virtual Machines:
         - VirtualBox
         - Vagrant
+
+    - default shell = ZSH
     - Nerd Fonts:
         - ensure a Nerd Font is installed
         - active in VS Code (if installed)
         - active in Sublime Text (if installed)
+
     - MacOS:
         (from https://github.com/mathiasbynens/dotfiles/blob/398496c2372d65c0e6770d02b0c5b49c0d636f31/.macos)
         - ensure XCode CLI tools are installed
