@@ -5,6 +5,7 @@ This script is used to manage dotfiles.
 """
 
 import os
+import sys
 import shlex
 import subprocess
 import contextlib
@@ -12,10 +13,17 @@ import contextlib
 try:
     import click
 except Exception:
+    click = None
+else:
+    if not click.__version__.startswith("6."):
+        click = None
+
+if click is None:
     print(
-        "Please run `pip install click==6.2.0` "
-        "since this script depends on click, for command line."
+        "Please run `pip install 'click>=6.0.0'` since this script depends on "
+        "click for it's command line interface."
     )
+    sys.exit(1)
 
 
 HOME_DIR = os.path.expanduser('~')
