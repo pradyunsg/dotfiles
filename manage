@@ -66,14 +66,15 @@ class Logger(object):
     def success(self, message, *args, **kwargs):
         click.secho(self._m(message, *args, **kwargs), fg='green')
 
-    def file_status(self, action, target):
-        colour = ACTION_COLOR_DICT[action]
+    def spaced_status(self, action, target):
+        colour = ACTION_COLOR_DICT.get(action, None)
+        if colour is None:
+            self.error(
+                "Got unknown action for logger - {}; will continue though",
+                action
+            )
 
         s = click.style("[" + action.center(10) + "]", fg=colour)
-
-        if target.startswith(HOME_DIR + os.sep):
-            target = "~" + target[len(HOME_DIR):]
-
         self.info('{} {}', s, target)
 
 
@@ -287,7 +288,11 @@ class DotFilesRepo(object):
             else:
                 action = self.get_action(target)
 
-            log.file_status(action, target)
+            if target.startswith(HOME_DIR + os.sep):
+                status_target = "~" + target[len(HOME_DIR):]
+            else:
+                status_target = target
+            log.spaced_status(action, status_target)
 
             # Take the required action
             if action in ['skip', 'up to date']:
