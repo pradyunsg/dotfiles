@@ -26,8 +26,8 @@ if [[ $VIRTUAL_ENV == "" ]]; then
     exit 1;
 fi
 
-echo "Installing click==6.6 for manage script"
-pip3 install click==6.6
+echo "Installing click 6 for manage script"
+pip3 install "click>=6.0.0"
 
-python3 manage setup_new_system
 python3 manage sync
+python3 manage check
