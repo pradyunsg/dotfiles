@@ -35,8 +35,10 @@ ACTION_COLOR_DICT = {
     'skip': 'yellow',
     'up to date': 'green',
     'update': 'blue',
-    'okay': 'green',
-    'not okay': 'red',
+    # For check
+    'good': 'green',
+    'not good': 'red',
+    'warn': 'yellow',
 }
 
 
@@ -321,6 +323,46 @@ class DotFilesRepo(object):
 
 
 # ------------------------------------------------------------------------------
+# Checking the system setup
+# ------------------------------------------------------------------------------
+class SystemChecker(object):
+    """Implements helpers for checking the system configuration
+    """
+
+    def __init__(self):
+        super().__init__()
+        self._logger = Logger()
+
+    def _log_msg(self, result, msg):
+        assert result in {"good", "not good", "warn"}
+        self._logger.spaced_status(result, msg)
+
+    @property
+    def is_mac(self):
+        return sys.platform == 'darwin'
+
+    @property
+    def is_linux(self):
+        return sys.platform.startswith('linux')
+
+
+    def equal(self, *, expected, should_warn=False, **kwargs):
+        assert len(kwargs) == 1, "expected only 2 kwargs"
+
+        name, value = next(iter(kwargs.items()))
+        if value == expected:
+            self._log_msg(
+                "good",
+                "{} is {!r}".format(name, expected)
+            )
+        else:
+            self._log_msg(
+                "warn" if should_warn else "not good",
+                "{} is not {!r}, it is {!r}".format(name, expected, value)
+            )
+
+
+# ------------------------------------------------------------------------------
 # CLI
 # ------------------------------------------------------------------------------
 @click.group()
@@ -436,20 +478,9 @@ def check(ctx):
     """
     # check if CLI tools are installed
     # pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
+    checker = SystemChecker()
 
-    logger = Logger()
-
-    def check_condition(condition, okay_msg, not_okay_msg):
-        if condition:
-            logger.spaced_status("okay", okay_msg)
-        else:
-            logger.spaced_status("not okay", not_okay_msg)
-
-    check_condition(
-        os.environ["USER"] == 'pradyunsg',
-        "username is pradyunsg",
-        "username is not pradyunsg"
-    )
+    checker.equal(username=os.environ["USER"], expected="pradyunsg")
 
 def main():
     cli(obj={}, auto_envvar_prefix='DOTFILES')
