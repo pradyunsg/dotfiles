@@ -30,6 +30,7 @@
 
 	diffc = diff --cached
 	pushf = push --force
+	pushit = push -u origin HEAD
 
 	whatadded = log --diff-filter=A  # which commit added this file
 
