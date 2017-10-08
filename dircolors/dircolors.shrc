@@ -1,4 +1,6 @@
 command -v dircolors >/dev/null 2>&1 || return
 
-DIRCOLORS_FILE=${DOTFILES_LOCATION}/dircolors/ls-colors.dircolors
+if [ -z $DIRCOLORS_FILE ]; then
+    DIRCOLORS_FILE=${DOTFILES_LOCATION}/dircolors/default.dircolors
+fi
 eval $(dircolors $DIRCOLORS_FILE)
