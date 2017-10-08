@@ -1,1 +1,1 @@
-export GOPATH=~/Projects/go
+export GOPATH="~/Projects/go"
