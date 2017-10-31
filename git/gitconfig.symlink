@@ -43,7 +43,6 @@
 	whitespace = error
 
 [commit]
-	template = ~/.git-commit-template
 	gpgsign = true
 
 [core]
