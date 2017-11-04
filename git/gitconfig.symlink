@@ -39,6 +39,9 @@
 	remote-add-bb = "!f() { git remote add $1 https://bitbucket.org/$2.git; }; f"
 	remote-add-gl = "!f() { git remote add $1 https://gitlab.com/$2.git; }; f"
 
+	# Checking out PRs should be easy
+	co-pr = "!f() { if [ -z ""$2"" ]; then echo 'Not enough arguments (git co-pr remote PR-number)'; return; fi; git fetch $1 ""pull/$2/head:pr/$2"" && git checkout ""pr/$2"";}; f"
+
 [apply]
 	whitespace = error
 
