@@ -47,12 +47,16 @@ ACTION_COLOR_DICT = {
 # ------------------------------------------------------------------------------
 class Logger(object):
 
+    def __init__(self):
+        super().__init__()
+        self._indent = 0
+
     def _m(self, message, *args, **kwargs):
         # A shorthand for brevity
         if isinstance(message, str):
-            return message.format(*args, **kwargs)
+            return " " * self._indent + message.format(*args, **kwargs)
         else:
-            return repr(message)
+            return " " * self._indent + repr(message)
 
     def debug(self, message, *args, **kwargs):
         if DRY_RUN:
