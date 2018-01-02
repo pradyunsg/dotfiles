@@ -337,9 +337,14 @@ class SystemChecker(object):
         super().__init__()
         self._logger = Logger()
 
-    def _log_msg(self, result, msg):
-        assert result in {"good", "not good", "warn"}
-        self._logger.spaced_status(result, msg)
+    def _log_happy(self, msg):
+        self._logger.spaced_status("good", msg)
+
+    def _log_angry(self, msg, is_warning):
+        if is_warning:
+            self._logger.spaced_status("warn", msg)
+        else:
+            self._logger.spaced_status("not good", msg)
 
     @property
     def is_mac(self):
@@ -349,20 +354,20 @@ class SystemChecker(object):
     def is_linux(self):
         return sys.platform.startswith('linux')
 
+    def equal(self, expected, *, should_warn=False, **kwargs):
+        """Check if a given value for something is equal to the expected value.
 
-    def equal(self, *, expected, should_warn=False, **kwargs):
-        assert len(kwargs) == 1, "expected only 2 kwargs"
+        checker.equal(value, name=from_system)
+        """
+        assert len(kwargs) == 1, "expected 1 keyword argument"
 
         name, value = next(iter(kwargs.items()))
         if value == expected:
-            self._log_msg(
-                "good",
-                "{} is {!r}".format(name, expected)
-            )
+            self._log_happy("{} is {!r}".format(name, expected))
         else:
-            self._log_msg(
-                "warn" if should_warn else "not good",
-                "{} is not {!r}, it is {!r}".format(name, expected, value)
+            self._log_angry(
+                "{} is not {!r}, it is {!r}".format(name, expected, value),
+                should_warn=should_warn,
             )
 
 
