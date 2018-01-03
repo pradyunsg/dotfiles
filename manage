@@ -330,7 +330,7 @@ class DotFilesRepo(object):
 # Checking the system setup
 # ------------------------------------------------------------------------------
 class SystemChecker(object):
-    """Implements helpers for checking the system configuration
+    """A super-fancy helper for checking the system configuration
     """
 
     def __init__(self):
