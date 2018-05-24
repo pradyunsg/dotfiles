@@ -2,7 +2,7 @@
 
 typeset -U config_files
 
-# Helper function
+# Helper functions
 add_to_path() {
     if ! echo $PATH | /bin/grep -Eq "(^|:)$1($|:)" ; then
        if [ "$2" = "prepend" ] ; then
@@ -16,14 +16,14 @@ add_to_path() {
 
 config_files=($DOTFILES_LOCATION/**/*.(shrc|${CURRENT_SHELL}))
 
-# load the config files
-for file in ${(M)config_files:#*/*config.(shrc|${CURRENT_SHELL})}
+# load the "first" files
+for file in ${(M)config_files:#*/*first.(shrc|${CURRENT_SHELL})}
 do
   source $file
 done
 
-# load everything but the config and completion files
-for file in ${${config_files:#*/*config.(shrc|${CURRENT_SHELL})}:#*/completion.(shrc|${CURRENT_SHELL})}
+# load everything but the first and last files
+for file in ${${config_files:#*/*first.(shrc|${CURRENT_SHELL})}:#*/last.(shrc|${CURRENT_SHELL})}
 do
   source $file
 done
@@ -32,8 +32,8 @@ done
 autoload -U compinit
 compinit
 
-# load every completion after autocomplete loads
-for file in ${(M)config_files:#*/completion.(shrc|${CURRENT_SHELL})}
+# load the "last" files
+for file in ${(M)config_files:#*/last.(shrc|${CURRENT_SHELL})}
 do
   source $file
 done
