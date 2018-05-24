@@ -12,12 +12,19 @@ alias dotpath="cat ~/.dotfiles-dir; echo"
 # -----------------------------------------------------------------------------
 # Be colorful!
 
-if [[ $(uname) == 'Linux' ]]; then
-  alias ls='ls --color=auto'
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
+if ls --color > /dev/null 2>&1; then
+  # GNU `ls`
+  _ls_color_flag="--color=auto"
+else
+  # OS X `ls`
+  _ls_color_flag="-G"
 fi
+
+alias ls='ls ${_ls_color_flag}'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 # Shorthands
 alias la='ls -a'
@@ -60,14 +67,40 @@ function mcd {
   if [ ! -n "$1" ]; then
     echo "Usage: mcd directory"
     echo "FATAL: Did not pass directory"
+    return 1
   elif [ -n "$2" ]; then
     echo "Usage: mcd directory"
     echo "FATAL: Too many arguments"
+    return 1
   elif [ -d $1 ]; then
-    echo "\`$1' already exists"
+    echo "'$1' already exists"
+    return 1
   else
     mkdir $1 && cd $1
   fi
+}
+
+
+# Helper to switch project directories
+function p {
+  PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
+  if [ ! -n "$1" ]; then
+    cd "$PROJECT_DIRECTORY"
+  elif [ -n "$2" ]; then
+    echo "Usage: mcd directory"
+    echo "FATAL: Too many arguments"
+    return 1
+  elif [ ! -d "${PROJECT_DIRECTORY}/$1" ]; then
+    echo "'${PROJECT_DIRECTORY}/$1' does not exist"
+    return 1
+  else
+    cd $PROJECT_DIRECTORY/$1
+    workhere
+  fi
+}
+
+function workhere {
+  workon . 2> /dev/null || echo "No virtualenv found for here."
 }
 
 # -----------------------------------------------------------------------------
