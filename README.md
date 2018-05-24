@@ -74,7 +74,7 @@ The contents of this repository are licensed under the liberal MIT license.
 ## Contributing
 If you have any ideas or suggestions, feel free to open up an issue or shoot through a pull request! Thanks!
 
-Fell free to fork whenever you want!
+Feel free to fork whenever you want!
 
 ## Acknowledgements
 Uses parts of or inspired by:
