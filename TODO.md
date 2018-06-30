@@ -1,6 +1,0 @@
-- Add a bootstrap script to setup new systems.
-    - Make it as OS-agnostic as possible. Depend only on Bash and Python.
-- Improve
-    - https://github.com/slomkowski/bash-full-of-colors
-    - See if there's some way to use fresh: https://github.com/freshshell/fresh
-- Move over to a lighter plugin system
