@@ -339,6 +339,8 @@ class DotFilesRepo(object):
 
             self.link_source_to_target(source, target)
 
+        self.clean()
+
     def is_broken_symlink(self, path):
         return os.path.islink(path) and not os.path.exists(path)
 
