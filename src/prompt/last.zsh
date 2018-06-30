@@ -1,4 +1,4 @@
-_pradyunsg_log "Loading prompt..."
+_pradyunsg_log "Enabling prompt..."
 
 PROMPT_DESIGN=${PROMPT_DESIGN:=powerline}
 PROMPT_THEME=${PROMPT_THEME:=pradyunsg}

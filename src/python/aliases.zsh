@@ -1,4 +1,4 @@
-_pradyunsg_log "Loading Python-specific aliases..."
+_pradyunsg_log "Creating Python-specific shorthands..."
 
 # Sometimes, you need a package quickly
 function mkpkg() {
