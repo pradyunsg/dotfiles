@@ -2,7 +2,7 @@ _pradyunsg_log "Loading aliases..."
 
 # Because I'm always improving this.
 alias reload_shell="source ~/.\${CURRENT_SHELL}rc"
-alias reload_prompt="source \${DOTFILES_LOCATION}/prompt/prompt.shrc"
+alias reload_prompt="source \"${SIGMA_PROMPT_LOCATION}/prompt.sh\""
 
 alias dotpath="cat ~/.dotfiles-dir; echo"
 #                                   ^^^^
