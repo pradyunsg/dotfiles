@@ -1,8 +1,4 @@
-python/pypirc
-
-# Ignore all fonts
-fonts/fonts.symlink/
-fonts/old/
+bootstrap
 
 # Ignore local files
 *.local.symlink
