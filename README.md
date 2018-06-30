@@ -15,7 +15,7 @@
   <a href="#acknowledgements">Acknowledgements</a>
 </p>
 
-![Preview Image](./README-image.png)
+![Preview Image](./.github/README-image.png)
 
 ## Goals
 - Configure essential tools and software
