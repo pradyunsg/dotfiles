@@ -314,13 +314,13 @@ class DotFilesRepo(object):
             target = self.compute_target(rel_path)
 
             # Determine what to do with target
-            if not os.path.exists(target):
-                action = 'create'
-            elif os.path.islink(target):
+            if os.path.islink(target):
                 if os.readlink(target) == source:  # link is up to date
                     action = 'up to date'
                 else:  # link needs updating
                     action = 'update'
+            elif not os.path.exists(target):
+                action = 'create'
             else:
                 action = self.get_action(target)
 
@@ -353,7 +353,7 @@ class DotFilesRepo(object):
             # If symlink is broken
             if self.is_broken_symlink(path):
                 if not self.dry_run:
-                run('rm "{}"'.format(path), self)
+                    run('rm "{}"'.format(path), self)
                 log.spaced_status('remove', path)
 
 
