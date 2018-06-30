@@ -564,71 +564,9 @@ def clean(ctx):
 @click.pass_context
 def check(ctx):
     """Check whether a system is setup correctly.
-
-    NOTE: This is obviously opinionated. :)
-    TODO: Implement all these checks
-
-    - Identity:
-        - username
-        - GPG key
-        - SSH key
-    - Git:
-        - git > 2.0.0 (prefer latest)
-        - Name
-        - Email
-        - GPG signed of commits by default
-
-    - Android Studio
-    - Python:
-        - (TODO: look into pyenv)
-        - Python 2 (> 2.7.9)
-        - Python 3 (> 3.3)
-        - pip
-        - virtualenvwrapper
-        - NumPy
-        - OpenCV
-    - Ruby:
-        - rbenv
-        - gem
-        - bundler
-    - Javascript:
-        - nodeenv
-        - npm
-    - Web Tools:
-        - sass
-    - Virtual Machines:
-        - VirtualBox
-        - Vagrant
-
-    - default shell = ZSH
-    - Nerd Fonts:
-        - ensure a Nerd Font is installed
-        - active in VS Code (if installed)
-        - active in Sublime Text (if installed)
-
-    - MacOS:
-        (from https://github.com/mathiasbynens/dotfiles/blob/398496c2372d65c0e6770d02b0c5b49c0d636f31/.macos)
-        - ensure XCode CLI tools are installed
-        - brew is installed
-        - save panel expanded by default
-        - smart dashes disabled
-        - screenshots go in a screenshots folder
-        - status bar is enabled
-        - safari: full URL
-        - safari: don't auto open "safe" files
-        - settings: need admin password to modify system settings
-        - settings: firewall is on
-    - Debian:
-        - apt
-        - screenshots go in a screenshots folder
     """
-    # check if CLI tools are installed
-    # pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
     checker = SystemChecker()
-    checker.run("checks.yaml")
-
-    # NOTE: Maybe this should also check to see that all the symlinks are
-    #       up-to-date.
+    checker.run("tools/checks.yaml")
 
 
 def main():
