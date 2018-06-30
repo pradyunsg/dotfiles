@@ -4,7 +4,7 @@ typeset -U config_files
 
 # Helper functions
 add_to_path() {
-    if ! echo $PATH | /bin/grep -Eq "(^|:)$1($|:)" ; then
+    if ! echo $PATH | \grep -Eq "(^|:)$1($|:)" ; then
        if [ "$2" = "prepend" ] ; then
           PATH=$1:$PATH
        else
