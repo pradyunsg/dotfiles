@@ -9,6 +9,7 @@
 	s = !git st
 
 	# Two Character Shorthands
+	cl = clone                    # clone
 	br = branch                   # branch
 	co = checkout                 # checkout
 	nb = !git co -b               # new branch
