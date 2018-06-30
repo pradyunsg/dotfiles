@@ -1,11 +1,5 @@
 _pradyunsg_log "Loading Python-specific aliases..."
 
-# -----------------------------------------------------------------------------
-# virtualenvwrapper shorthands
-# -----------------------------------------------------------------------------
-alias mkvenv="mkvirtualenv"
-alias rmvenv="rmvirtualenv"
-
 # Sometimes, you need a package quickly
 function mkpkg() {
     if [ -n "$1" ]; then

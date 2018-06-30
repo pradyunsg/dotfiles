@@ -1,8 +1,1 @@
 eval "$(pyenv init -)"
-
-# If're in a project directory, enable it.
-if workon . 2> /dev/null; then
-  _pradyunsg_log "Enabled '$(basename ${VIRTUAL_ENV})' virtualenv."
-else
-  _pradyunsg_log "No virtualenv for here."
-fi
