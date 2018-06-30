@@ -222,10 +222,10 @@ class DotFilesRepo(object):
             options.append('[{}]{} all'.format(val[0].upper(), val[1:]))
 
         prompt_text = (
-            'File already exists: {}, '.format(target) +
-            'what do you want to do?\n' +
-            ', '.join(options)
-        )
+            'File already exists: {}\n'
+            'What do you want to do?\n'
+            '{}'
+        ).format(target, ', '.join(options))
 
         # Show Prompt
         click.echo(prompt_text)
