@@ -18,16 +18,16 @@ _pradyunsg_log() {
 }
 
 
-config_files=($DOTFILES_LOCATION/**/*.(shrc|${CURRENT_SHELL}))
+config_files=($DOTFILES_LOCATION/**/*.zsh)
 
 # load the "first" files
-for file in ${(M)config_files:#*/*first.(shrc|${CURRENT_SHELL})}
+for file in ${(M)config_files:#*/*first.zsh}
 do
   source $file
 done
 
 # load everything but the first and last files
-for file in ${${config_files:#*/*first.(shrc|${CURRENT_SHELL})}:#*/last.(shrc|${CURRENT_SHELL})}
+for file in ${${config_files:#*/*first.zsh}:#*/last.zsh}
 do
   source $file
 done
@@ -37,7 +37,7 @@ autoload -U compinit
 compinit
 
 # load the "last" files
-for file in ${(M)config_files:#*/last.(shrc|${CURRENT_SHELL})}
+for file in ${(M)config_files:#*/last.zsh}
 do
   source $file
 done
