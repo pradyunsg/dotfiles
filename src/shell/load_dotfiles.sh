@@ -12,6 +12,10 @@ add_to_path() {
        fi
     fi
 }
+_pradyunsg_log() {
+    echo -n "$(python -c "import datetime; print(datetime.datetime.now())"): "
+    echo $@
+}
 
 
 config_files=($DOTFILES_LOCATION/**/*.(shrc|${CURRENT_SHELL}))
