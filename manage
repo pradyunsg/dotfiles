@@ -7,6 +7,9 @@ This script is used to manage dotfiles.
 import os
 import sys
 import shlex
+import shutil
+import locale
+import platform
 import subprocess
 import contextlib
 
@@ -14,30 +17,38 @@ try:
     import click
 except Exception:
     click = None
-else:
-    if not click.__version__.startswith("6."):
-        click = None
 
-if click is None:
+if click is None or not click.__version__.startswith("6."):
     print(
         "Please run `pip install 'click>=6.0.0'` since this script depends on "
         "click for it's command line interface."
     )
     sys.exit(1)
 
+try:
+    import yaml
+except Exception:
+    print(
+        "Please run `pip install pyyaml` since this script depends on it for "
+        "the check command"
+    )
+    sys.exit(1)
+
 
 HOME_DIR = os.path.expanduser('~')
-THIS_DIR = os.path.dirname(__file__) or "."
+THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 ACTION_COLOR_DICT = {
     'backup': 'magenta',
     'create': 'green',
     'remove': 'red',
-    'skip': 'yellow',
+    'skip': 'magenta',
     'up to date': 'green',
     'update': 'blue',
-    # For check
-    'good': 'green',
-    'not good': 'red',
+    'outdated': 'red',
+    # For SystemChecker
+    'topic': 'magenta',
+    'pass': 'green',
+    'fail': 'red',
     'warn': 'yellow',
 }
 
@@ -50,20 +61,27 @@ class Logger(object):
     def __init__(self):
         super().__init__()
         self._indent = 0
+        self._indent_size = 4
+
+    def __enter__(self):
+        self._indent += self._indent_size
+        return self
+
+    def __exit__(self, exception_type, exception_value, traceback):
+        self._indent -= self._indent_size
+        return True
+
+    @staticmethod
+    def style(msg, **kwargs):
+        return click.style(msg, **kwargs)
 
     def _m(self, message, *args, **kwargs):
         # A shorthand for brevity
         if isinstance(message, str):
             return " " * self._indent + message.format(*args, **kwargs)
         else:
+            assert not (args, kwargs)
             return " " * self._indent + repr(message)
-
-    def debug(self, message, *args, **kwargs):
-        if DRY_RUN:
-            self.info(message, *args, **kwargs)
-
-    def status(self, message, *args, **kwargs):
-        click.secho(self._m(message, *args, **kwargs), fg='magenta')
 
     def info(self, message, *args, **kwargs):
         click.secho(self._m(message, *args, **kwargs))
@@ -71,10 +89,7 @@ class Logger(object):
     def error(self, message, *args, **kwargs):
         click.secho(self._m('ERROR: ' + message, *args, **kwargs), fg='red')
 
-    def success(self, message, *args, **kwargs):
-        click.secho(self._m(message, *args, **kwargs), fg='green')
-
-    def spaced_status(self, action, target):
+    def spaced_status(self, action, message, fit_width=10):
         colour = ACTION_COLOR_DICT.get(action, None)
         if colour is None:
             self.error(
@@ -82,8 +97,8 @@ class Logger(object):
                 action
             )
 
-        s = click.style("[" + action.center(10) + "]", fg=colour)
-        self.info('{} {}', s, target)
+        s = click.style("[" + action.center(fit_width) + "]", fg=colour)
+        self.info('{} {}', s, message)
 
 
 class ListFile(object):
@@ -157,6 +172,18 @@ def run(command, repo):
     if repo.dry_run:
         return 0
     return subprocess.call(shlex.split(command))
+
+
+def run_output(command):
+    try:
+        return subprocess.check_output(
+            shlex.split(command),
+            stderr=subprocess.STDOUT,
+        ).decode(
+            locale.getpreferredencoding()
+        )
+    except subprocess.CalledProcessError:
+        return None
 
 
 # ------------------------------------------------------------------------------
@@ -322,8 +349,9 @@ class DotFilesRepo(object):
             path = os.path.join(self.target_dir, item)
             # If symlink is broken
             if self.is_broken_symlink(path):
+                if not self.dry_run:
                 run('rm "{}"'.format(path), self)
-                log.file_status('remove', path)
+                log.spaced_status('remove', path)
 
 
 # ------------------------------------------------------------------------------
@@ -338,21 +366,16 @@ class SystemChecker(object):
         self._logger = Logger()
 
     def _log_happy(self, msg):
-        self._logger.spaced_status("good", msg)
+        self._logger.spaced_status("pass", msg, fit_width=4)
 
     def _log_angry(self, msg, is_warning):
         if is_warning:
-            self._logger.spaced_status("warn", msg)
+            self._logger.spaced_status("warn", msg, fit_width=4)
         else:
-            self._logger.spaced_status("not good", msg)
+            self._logger.spaced_status("fail", msg, fit_width=4)
 
-    @property
-    def is_mac(self):
-        return sys.platform == 'darwin'
-
-    @property
-    def is_linux(self):
-        return sys.platform.startswith('linux')
+    def platform(self):
+        return platform.system()
 
     def equal(self, expected, *, should_warn=False, **kwargs):
         """Check if a given value for something is equal to the expected value.
@@ -363,12 +386,123 @@ class SystemChecker(object):
 
         name, value = next(iter(kwargs.items()))
         if value == expected:
-            self._log_happy("{} is {!r}".format(name, expected))
+            self._log_happy(name + " is correct")
         else:
             self._log_angry(
                 "{} is not {!r}, it is {!r}".format(name, expected, value),
-                should_warn=should_warn,
+                is_warning=should_warn,
             )
+
+    # The actual logic is below
+    def run(self, fname):
+        data = self._load_yaml(fname)
+
+        self._check_username(data["identity"]["username"])
+        self._check_ssh(data["identity"]["ssh-key"])
+        self._check_gpg(data["identity"]["gpg-key"])
+
+        for category, contents in data["things"].items():
+            self._check_category(category, contents, data)
+
+    def _load_yaml(self, fname):
+        with open(fname) as f:
+            try:
+                return yaml.load(f)
+            except Exception as e:
+                click.secho("ERROR: Could not parse file.", fg="red")
+                click.secho(str(e), fg="red")
+                sys.exit(1)
+
+    def _check_username(self, expected):
+        self.equal(expected, Username=os.environ["USER"])
+
+    def _check_ssh(self, expected):
+        # FIXME: Is this fragile?
+        output = run_output("ssh-keygen -E md5 -lf {}".format(
+            os.path.expanduser("~/.ssh/id_rsa.pub")
+        ))
+        if output is None:
+            ssh_key = "not found"
+        else:
+            ssh_key = output.split()[1]
+            if ssh_key.startswith("MD5:"):
+                ssh_key = ssh_key[4:]
+
+        self.equal(expected, **{"SSH key": ssh_key})
+
+    def _check_gpg(self, expected):
+        # This checks that the GPG key exists in the dB
+        output = run_output("gpg --list-keys {}".format(expected))
+        if output is not None:
+            self.equal(expected, **{"GPG key": expected})
+        else:
+            self.equal(expected, **{"GPG key": "not found"})
+
+    def _check_category(self, category, contents, data):
+        if "if" in contents:
+            if list(contents["if"]) != ["platform"]:
+                raise ValueError(
+                    "Needed condition of category {} to be 'platform'"
+                    .format(category)
+                )
+            if contents["if"]["platform"] != self.platform():
+                log.spaced_status("skip", category)
+                return
+
+        log.spaced_status("topic", category, fit_width=5)
+        with log:
+            self._check_executables(category, contents.get("executables", None))
+            self._check_run_items(category, contents.get("run_check", None), data)
+
+    def _check_executables(self, category, executables):
+        if not executables:
+            return
+        # Convert the string to a list.
+        executables = list(map(lambda x: x.strip(), executables.split(",")))
+
+        missing = set()
+        for fname in executables:
+            if shutil.which(fname) is None:
+                missing.add(fname)
+
+        verb = lambda x: "executable" if len(x) == 1 else "executables"
+        if missing:
+            desc = "missing {}: {}".format(
+                verb(missing), ", ".join(map(repr, missing))
+            )
+
+            log.spaced_status("fail", desc, fit_width=4)
+        else:
+            log.spaced_status(
+                "pass",
+                "{} {} available".format(len(executables), verb(executables)),
+                fit_width=4,
+            )
+
+    def _check_run_items(self, category, run_items, data):
+        if not run_items:
+            return
+
+        for name, cmd_dict in run_items.items():
+            if not isinstance(cmd_dict, dict) or "cmd" not in cmd_dict:
+                log.spaced_status("fail", "!!! invalid !!! {}".format(category, name))
+                continue
+
+            if "equal" in cmd_dict:
+                # Matching output.
+                expected = cmd_dict["equal"]
+                # Perform substitution
+                if expected.startswith("$"):
+                    item = data
+                    for part in expected[1:].split("."):
+                        item = item[part]
+                    expected = item
+
+                got = run_output(cmd_dict["cmd"])
+                if isinstance(got, str) and expected == got.strip():
+                    log.spaced_status("pass", name, fit_width=4)
+                else:
+                    log.spaced_status("fail", name, fit_width=4)
 
 
 # ------------------------------------------------------------------------------
@@ -488,8 +622,11 @@ def check(ctx):
     # check if CLI tools are installed
     # pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
     checker = SystemChecker()
+    checker.run("checks.yaml")
 
-    checker.equal(username=os.environ["USER"], expected="pradyunsg")
+    # NOTE: Maybe this should also check to see that all the symlinks are
+    #       up-to-date.
+
 
 def main():
     cli(obj={}, auto_envvar_prefix='DOTFILES')
