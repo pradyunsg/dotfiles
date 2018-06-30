@@ -1,4 +1,4 @@
-eval "$(pip completion --zsh)"
+eval "$(pyenv init -)"
 
 # If're in a project directory, enable it.
 if workon . 2> /dev/null; then
