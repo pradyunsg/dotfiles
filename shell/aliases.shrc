@@ -1,3 +1,4 @@
+_pradyunsg_log "Loading aliases..."
 
 # Because I'm always improving this.
 alias reload_shell="source ~/.\${CURRENT_SHELL}rc"

@@ -1,3 +1,5 @@
+_pradyunsg_log "Setting up dircolors..."
+
 command -v dircolors >/dev/null 2>&1 || return
 
 if [ -z $DIRCOLORS_FILE ]; then
