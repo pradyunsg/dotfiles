@@ -13,12 +13,11 @@ alias dotpath="cat ~/.dotfiles-dir; echo"
 # -----------------------------------------------------------------------------
 # Be colorful!
 
-if ls --color > /dev/null 2>&1; then
+if [[ "$OSTYPE" == darwin* ]]; then
+  _ls_color_flag="-G"
+else
   # GNU `ls`
   _ls_color_flag="--color=auto"
-else
-  # OS X `ls`
-  _ls_color_flag="-G"
 fi
 
 alias ls='ls ${_ls_color_flag}'
