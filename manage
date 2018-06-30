@@ -37,6 +37,7 @@ except Exception:
 
 HOME_DIR = os.path.expanduser('~')
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
+DEFAULT_SOURCE_DIR = os.path.join(THIS_DIR, "src")
 ACTION_COLOR_DICT = {
     'backup': 'magenta',
     'create': 'green',
@@ -512,7 +513,7 @@ class SystemChecker(object):
 # ------------------------------------------------------------------------------
 @click.group()
 @click.option(
-    '--src-dir', type=click.Path(exists=True), default=THIS_DIR,
+    '--src-dir', type=click.Path(exists=True), default=DEFAULT_SOURCE_DIR,
     help="Location to use as dotfiles directory"
 )
 @click.option(
