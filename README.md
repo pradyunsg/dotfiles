@@ -5,9 +5,7 @@
   Magical objects that make certain computers extremely use-able for me.
 </p>
 
-
 <p align="center">
-  <a href="#goals">Goals</a> |
   <a href="#installation">Installation</a> |
   <a href="#customization">Customization</a> |
   <a href="#license">License</a> |
@@ -17,32 +15,29 @@
 
 ![Preview Image](./.github/README-image.png)
 
-## Goals
-- Configure essential tools and software
-    - git (with a good bunch of aliases)
-    - Python (virtualenv, virtualenvwrapper, pip)
-    - IPython
-    - Rust Lang
-    - Go Lang
-- Multi-platform support
-    - Ubuntu
-    - Debian (working on this)
-    - OSX    (once I get hold of *my* MacBook)
-- Custom dircolors
-- Create a productive working environment for myself
 
-> NOTE: The prompt I use is currently not accessible to everyone. The `sigma-prompts` repository is currently not public. I'll make it public once it's a little cleaner and more robust.
-
+> NOTE
+> The prompt I use is currently not accessible to everyone.
+> I'm currently working on improving it to a state where I'm comfortable
+> releasing it in. Plus, it's slooow today. :)
 
 ## Installation
-Currently, it is required to create a Python 3.4+ virtual environment and with that active, execute bootstrap.sh
 
-```
-virtualenv .venv
-source .venv/bin/activate
-./bootstrap.sh
-deactivate
-```
+The current approach is a little wierd. You need to have Python 3.4+
+environment with `click > 6` and `PyYAML` installed.
+
+## Customization
+
+You can do customization using `.local` files:
+
+  - `~/.gitconfig.local`
+      - This is sourced before any other files from this folder.
+  - `~/.zshrc.local`
+      - This is sourced before any other files from this folder.
+
+These `.local` files can be used to add a few personal stuff without the need
+to fork this entire repository, or to add commands you don’t want to commit to
+a public repository.
 
 Make sure you create a `~/.gitconfig.local` for storing your credentials. Here's a template, if you're feeling lazy (replace everything in `{}` including the braces) :
 
@@ -52,31 +47,24 @@ Make sure you create a `~/.gitconfig.local` for storing your credentials. Here's
     name = {Your Name}
 
 # Pro-tip: This makes working with sub-modules easier.
-[url "git@github.com:{your-github-id-here}/"]
-    insteadOf = "git://github.com/{your-github-id-here}/"
+[url "git@github.com:{your-github-username-here}/"]
+    insteadOf = "git://github.com/{your-github-username-here}/"
 ```
-
-## Customization
-You can do customization using `.local` files:
-
-  - `~/.gitconfig.local`
-      - This is sourced before any other files from this folder.
-  - `~/.zshrc.local`
-      - This is sourced before any other files from this folder.
-
-These `.local` files can be used to add a few custom commands without the need to fork this entire repository, or to add commands you don’t want to commit to a public repository.
 
 As things currently stand, these 2 files can modify nearly everything.
 
 ## License
-The contents of this repository are licensed under the liberal MIT license.
+
+The contents of this repository are licensed under the MIT license.
 
 ## Contributing
+
 If you have any ideas or suggestions, feel free to open up an issue or shoot through a pull request! Thanks!
 
 Feel free to fork whenever you want!
 
 ## Acknowledgements
+
 Uses parts of or inspired by:
 
 - [@nicksp](https://github.com/nicksp/dotfiles)
