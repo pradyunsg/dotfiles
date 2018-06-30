@@ -1,3 +1,5 @@
+[[ "$OSTYPE" == darwin* ]] && return
+
 _pradyunsg_log "Setting up dircolors..."
 
 command -v dircolors >/dev/null 2>&1 || return
