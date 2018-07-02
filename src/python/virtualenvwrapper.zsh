@@ -11,18 +11,18 @@ alias v-mk='\
 alias v-rm='([ -e .venv ] && rmvirtualenv $(cat .venv) && rm .venv) || rmvirtualenv'
 alias v-rmtmp='lsvirtualenv -b | grep tmp- | while read line ; do rmvirtualenv $line ; done'
 
-alias v-act='[ -e .venv ] && workon "$(cat .venv)" || echo "No virtualenv associated with this directory."'
+alias v-act='[ -e .venv ] && workon "$(cat .venv)" || echo "No virtualenv associated with this directory, create a \".venv\" file or use \"v-mk\""'
 alias v-deact='deactivate'
 
 alias v-wipe='wipeenv'
 alias v-ls='lsvirtualenv -b | column -c $COLUMNS'
 
-alias v='echo "\
+alias v="echo \"\
 Helper commands for managing virtualenvs
 
 v-mk:
     Make a virtualenv for the current project directory and create a \".venv\"
-    file; if it doesn''t already exist.
+    file; if it doesn't already exist.
 v-rm:
     Remove the virtualenv (as given in \".venv\" or CLI; not both)
 v-tmp:
@@ -37,4 +37,4 @@ v-wipe:
     Remove all packages installed in the current virtualenv
 v-ls:
     List all available virtualenvs\
-"'
+\""
