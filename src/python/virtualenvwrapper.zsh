@@ -63,3 +63,6 @@ function v() {
     Remove all packages installed in the current virtualenv
   "
 }
+
+# HACK: Use the same function as virtualenvwrapper for completion
+compctl -K _virtualenvs v-rm
