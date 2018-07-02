@@ -30,6 +30,6 @@ function p {
     return 1
   else
     cd $PROJECT_DIRECTORY/$1
-    workhere
+    v-act
   fi
 }
