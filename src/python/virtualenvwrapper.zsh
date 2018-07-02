@@ -39,20 +39,20 @@ alias v="echo \"\
 Helper commands for managing virtualenvs
 
 v-mk:
-    Make a virtualenv for the current project directory and create a \".venv\"
-    file; if it doesn't already exist.
+  Make a virtualenv for the current project directory and create a \".venv\"
+  file; if it doesn't already exist.
 v-rm:
-    Remove the virtualenv (as given in \".venv\" or CLI; not both)
+  Remove the virtualenv (as given in \".venv\" or CLI; not both)
 v-tmp:
-    Create a temporary virtualenv
+  Create a temporary virtualenv
 v-rmtmp:
-    Remove all temporary virtualenvs
+  Remove all temporary virtualenvs
 v-act:
-    Activate the virtualenv specified in the \".venv\" file.
+  Activate the virtualenv specified in the \".venv\" file.
 v-deact:
-    Deactivate the currently active virtualenv.
+  Deactivate the currently active virtualenv.
 v-wipe:
-    Remove all packages installed in the current virtualenv
+  Remove all packages installed in the current virtualenv
 v-ls:
-    List all available virtualenvs\
+  List all available virtualenvs\
 \""
