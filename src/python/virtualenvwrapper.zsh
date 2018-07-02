@@ -1,21 +1,39 @@
 # Helper Aliases
-#   I think these should become functions but I will do that later. Possibly
-#   even package it up into a nice plugin-like thing to make life easier?
-
 alias v-tmp='mktmpenv'
-alias v-mk='\
-  [ -e .venv ] \
-  && echo "\"$(cat .venv)\" virtualenv is already associated with this directory." \
-  || mkvirtualenv -a $(pwd) $(basename $(pwd)) && echo "$(basename $(pwd))" > .venv
-'
-alias v-rm='([ -e .venv ] && rmvirtualenv $(cat .venv) && rm .venv) || rmvirtualenv'
-alias v-rmtmp='lsvirtualenv -b | grep tmp- | while read line ; do rmvirtualenv $line ; done'
-
-alias v-act='[ -e .venv ] && workon "$(cat .venv)" || echo "No virtualenv associated with this directory, create a \".venv\" file or use \"v-mk\""'
 alias v-deact='deactivate'
-
 alias v-wipe='wipeenv'
 alias v-ls='lsvirtualenv -b | column -c $COLUMNS'
+
+# Helper Functions
+function v-act() {
+  if [ -r .venv ]; then
+    workon "$(cat .venv)"
+  else
+    echo "No virtualenv associated with this directory, create a '.venv' file or use 'v-mk'"
+  fi
+}
+
+function v-mk() {
+  if [ -r .venv ]; then
+    echo "'$(cat .venv)' virtualenv is already associated with this directory."
+    return
+  fi
+  mkvirtualenv -a $(pwd) $(basename $(pwd)) && echo "$(basename $(pwd))" > .venv
+}
+
+function v-rm() {
+  if [ -r .venv ]; then
+    rmvirtualenv $(cat .venv) && rm .venv
+    return
+  fi
+  rmvirtualenv $@
+}
+
+function v-rmtmp() {
+  lsvirtualenv -b | grep tmp- | while read line; do
+    rmvirtualenv $line
+  done
+}
 
 alias v="echo \"\
 Helper commands for managing virtualenvs
