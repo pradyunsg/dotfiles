@@ -35,24 +35,31 @@ function v-rmtmp() {
   done
 }
 
-alias v="echo \"\
-Helper commands for managing virtualenvs
+function v() {
+  echo -e "Helpers for managing virtualenvs
 
-v-mk:
-  Make a virtualenv for the current project directory and create a \".venv\"
-  file; if it doesn't already exist.
-v-rm:
-  Remove the virtualenv (as given in \".venv\" or CLI; not both)
-v-tmp:
-  Create a temporary virtualenv
-v-rmtmp:
-  Remove all temporary virtualenvs
-v-act:
-  Activate the virtualenv specified in the \".venv\" file.
-v-deact:
-  Deactivate the currently active virtualenv.
-v-wipe:
-  Remove all packages installed in the current virtualenv
-v-ls:
-  List all available virtualenvs\
-\""
+  \e[36mv-mk\e[0m
+    Make a virtualenv for the current project directory and add '.venv'
+
+  \e[36mv-ls\e[0m
+    List all available virtualenvs
+
+  \e[36mv-rm\e[0m
+    Remove the virtualenv (as given in '.venv' or CLI; not both)
+
+  \e[36mv-tmp\e[0m
+    Create a temporary virtualenv
+
+  \e[36mv-rmtmp\e[0m
+    Remove all temporary virtualenvs
+
+  \e[36mv-act\e[0m
+    Activate the virtualenv specified in the '.venv' file.
+
+  \e[36mv-deact\e[0m
+    Deactivate the currently active virtualenv.
+
+  \e[36mv-wipe\e[0m
+    Remove all packages installed in the current virtualenv
+  "
+}
