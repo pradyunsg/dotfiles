@@ -102,59 +102,6 @@ class Logger(object):
         self.info('{} {}', s, message)
 
 
-class ListFile(object):
-    """A hash-commented file with one item per line.
-    """
-
-    def __init__(self, file_name):
-        super().__init__()
-        self.file_name = file_name
-        self._initialized = False
-
-        self._file = None
-
-    def __iter__(self):
-        if self._initialized:
-            return self
-        self._initialized = True
-
-        try:
-            self.file = open(self.file_name)
-        except FileNotFoundError:
-            log.error('ERROR: Could not load file: {}', self.file_name)
-            raise
-
-        return self
-
-    def __next__(self):
-        while True:
-            line = next(self.file)
-            # Stop if reached EOF
-            if not line:
-                self.file.close()
-                raise StopIteration
-
-            # If the first character is a '#' or it is an empty line, skip
-            line = line.strip()
-            if line[0:1] in ['', '#']:  # Comment
-                continue
-            else:
-                return line
-
-    def for_every(self, function):
-
-        def show_progress_counter(items, function):
-            total_items = len(items)
-            for i, item in enumerate(items):
-                log.info('... {} of {}: {}', i + 1, total_items, item)
-                function(item)
-
-        items = list(self)
-
-        if items is not None:
-            show_progress_counter(items, function)
-
-
 @contextlib.contextmanager
 def task(message):
     click.secho('# {}...'.format(message), fg='blue')
