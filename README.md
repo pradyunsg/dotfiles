@@ -13,7 +13,7 @@
   <a href="#acknowledgements">Acknowledgements</a>
 </p>
 
-![Preview Image](./.github/README-image.png)
+![Preview Image](./docs/README-image.png)
 
 
 > NOTE
