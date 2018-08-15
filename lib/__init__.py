@@ -34,25 +34,7 @@ except Exception:
     )
     sys.exit(1)
 
-
-HOME_DIR = os.path.expanduser('~')
-ROOT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-DEFAULT_SOURCE_DIR = os.path.join(ROOT_DIR, "src")
-ACTION_COLOR_DICT = {
-    'backup': 'magenta',
-    'create': 'green',
-    'remove': 'red',
-    'skip': 'magenta',
-    'up to date': 'green',
-    'update': 'blue',
-    'outdated': 'red',
-    # For SystemChecker
-    'topic': 'magenta',
-    'pass': 'green',
-    'fail': 'red',
-    'warn': 'yellow',
-}
-
+from .config import HOME_DIR, ROOT_DIR, DEFAULT_SOURCE_DIR, ACTION_COLOR_DICT
 
 # ------------------------------------------------------------------------------
 # Helpers
