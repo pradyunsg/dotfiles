@@ -29,8 +29,19 @@ things:
   Go:
     executables: go, gofmt
   Python:
-    executables: python, pip
+    executables: python, pip, python2, pip2, python3, pip3
     run_check:
+      "python  -> is a 3.x version":
+        cmd: python -c 'import sys; print(sys.version_info[0])'
+        equal: "3"
+      "python2 -> is a 2.7 version":
+        cmd: python2 -c 'import sys; print(sys.version_info[:2])'
+        equal: "(2, 7)"
+      "python3 -> is a 3.x version":
+        cmd: python3 -c 'import sys; print(sys.version_info[0])'
+        equal: "3"
+      "NumPy is installed on default Python":
+        cmd: python -c 'import numpy'
       "OpenCV is installed on default Python":
         cmd: python -c 'import cv2'
       "NumPy is installed on default Python":
