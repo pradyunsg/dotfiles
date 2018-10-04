@@ -35,3 +35,13 @@ function p {
     v-act
   fi
 }
+
+# I do this far too often
+function octobox-update {
+  PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
+  pushd "${PROJECT_DIRECTORY}/octobox"
+  git checkout master
+  git pull upstream master
+  git push origin master
+  popd
+}
