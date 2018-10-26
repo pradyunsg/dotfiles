@@ -5,6 +5,12 @@ alias v-wipe='wipeenv'
 alias v-ls='lsvirtualenv -b | column -c $COLUMNS'
 
 # Helper Functions
+function v-tmp-here() {
+  pushd > /dev/null
+  v-tmp
+  popd > /dev/null
+}
+
 function v-act() {
   if [ -r .venv ]; then
     workon "$(cat .venv)"
