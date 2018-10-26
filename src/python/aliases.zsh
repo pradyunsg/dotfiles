@@ -19,3 +19,20 @@ setup(
     echo "Need an argument"
     return 1
 }
+
+function toxr() {
+    if [[ -z "$1" || -z "$2" ]]; then
+        echo "FATAL: Not enough arguments"
+        echo "Usage: toxr <env> <binary>"
+        return 1
+    fi
+
+    if [ ! -e ".tox/$1" ]; then
+        echo "FATAL: No environment '$1' created."
+        return 1
+    elif [ ! -e ".tox/$1/bin/$2" ]; then
+        echo "FATAL: No binary '$2' available."
+        return 1
+    fi
+    ./.tox/$1/bin/$2 "${@:3}"
+}
