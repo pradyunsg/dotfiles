@@ -25,7 +25,7 @@ function p {
     echo "Usage: p <dir>"
     echo "FATAL: Too many arguments"
     return 1
-  elif [ "$1" == "." ]; then
+  elif [[ "$1" == "." ]]; then
     v-act
   elif [ ! -d "${PROJECT_DIRECTORY}/$1" ]; then
     echo "'${PROJECT_DIRECTORY}/$1' does not exist"
