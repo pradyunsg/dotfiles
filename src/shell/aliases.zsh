@@ -58,3 +58,7 @@ alias prompt_one_line_toggle='{
    && PROMPT_POWERLINE_ONE_LINE="false" \
    || PROMPT_POWERLINE_ONE_LINE="true";
 }'
+
+# For pyenv and "brew doctor" working together well.
+# See https://github.com/pyenv/pyenv/issues/106
+alias brew="env PATH=${PATH//$(pyenv root)\/shims:/} brew"
