@@ -43,6 +43,9 @@
 	# Checking out PRs should be easy
 	co-pr = "!f() { if [ -z ""$2"" ]; then echo 'Not enough arguments (git co-pr remote PR-number)'; return; fi; git fetch $1 ""pull/$2/head:pr/$2"" && git checkout ""pr/$2"";}; f"
 
+	# Syncing with an upstream should be easy
+	sync = "!f() { git pull upstream master && git push origin master; }; f"
+
 [apply]
 	whitespace = error
 
