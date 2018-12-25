@@ -33,6 +33,9 @@
 	pushf = push --force
 	pushit = push -u origin HEAD
 
+	# Make it easy to get the current upstream easily.
+	pullit = "!f() { set -x; v1=$(git symbolic-ref --short HEAD); git checkout master && git pull upstream master && git push --no-verify; git checkout $v1; }; f"
+
 	whatadded = log --diff-filter=A  # which commit added this file
 
 	# Remotes from various places is useful to have
