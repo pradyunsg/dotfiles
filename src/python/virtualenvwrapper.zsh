@@ -7,7 +7,7 @@ alias v-ls='lsvirtualenv -b | column -c $COLUMNS'
 # Helper Functions
 function v-tmp-here() {
   pushd > /dev/null
-  v-tmp
+  v-tmp $@
   popd > /dev/null
 }
 
@@ -24,7 +24,7 @@ function v-mk() {
     echo "'$(cat .venv)' virtualenv is already associated with this directory."
     return
   fi
-  mkvirtualenv -a $(pwd) $(basename $(pwd)) && echo "$(basename $(pwd))" > .venv
+  mkvirtualenv -a "$(pwd)" "$(basename "$(pwd)")" && echo "$(basename "$(pwd)")" > .venv
 }
 
 function v-rm() {
