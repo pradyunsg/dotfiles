@@ -26,7 +26,7 @@ function v-mk() {
     echo "'$(cat ${VENV_NAME_FILE})' virtualenv is already associated with this directory."
     return
   fi
-  mkvirtualenv -a "$(pwd)" "$(basename "$(pwd)")" && echo "$(basename "$(pwd)")" > ${VENV_NAME_FILE}
+  mkvirtualenv -a "$(pwd)" "$(basename "$(pwd)")" $@ && echo "$(basename "$(pwd)")" > ${VENV_NAME_FILE}
 }
 
 function v-rm() {
