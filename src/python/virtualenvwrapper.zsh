@@ -1,3 +1,5 @@
+export VENV_NAME_FILE=".venvname"
+
 # Helper Aliases
 alias v-tmp='mktmpenv'
 alias v-deact='deactivate'
@@ -12,24 +14,24 @@ function v-tmp-here() {
 }
 
 function v-act() {
-  if [ -r .venv ]; then
-    workon "$(cat .venv)"
+  if [ -r ${VENV_NAME_FILE} ]; then
+    workon "$(cat ${VENV_NAME_FILE})"
   else
-    echo "No virtualenv associated with this directory, create a '.venv' file or use 'v-mk'"
+    echo "No virtualenv associated with this directory, create a '${VENV_NAME_FILE}' file or use 'v-mk'"
   fi
 }
 
 function v-mk() {
-  if [ -r .venv ]; then
-    echo "'$(cat .venv)' virtualenv is already associated with this directory."
+  if [ -r ${VENV_NAME_FILE} ]; then
+    echo "'$(cat ${VENV_NAME_FILE})' virtualenv is already associated with this directory."
     return
   fi
-  mkvirtualenv -a "$(pwd)" "$(basename "$(pwd)")" && echo "$(basename "$(pwd)")" > .venv
+  mkvirtualenv -a "$(pwd)" "$(basename "$(pwd)")" && echo "$(basename "$(pwd)")" > ${VENV_NAME_FILE}
 }
 
 function v-rm() {
-  if [ -r .venv ]; then
-    rmvirtualenv $(cat .venv) && rm .venv
+  if [ -r ${VENV_NAME_FILE} ]; then
+    rmvirtualenv $(cat ${VENV_NAME_FILE}) && rm ${VENV_NAME_FILE}
     return
   fi
   rmvirtualenv $@
@@ -45,13 +47,13 @@ function v() {
   echo -e "Helpers for managing virtualenvs
 
   \e[36mv-mk\e[0m
-    Make a virtualenv for the current project directory and add '.venv'
+    Make a virtualenv for the current project directory and add '${VENV_NAME_FILE}'
 
   \e[36mv-ls\e[0m
     List all available virtualenvs
 
   \e[36mv-rm\e[0m
-    Remove the virtualenv (as given in '.venv' or CLI; not both)
+    Remove the virtualenv (as given in '${VENV_NAME_FILE}' or CLI; not both)
 
   \e[36mv-tmp\e[0m
     Create a temporary virtualenv
@@ -60,7 +62,7 @@ function v() {
     Remove all temporary virtualenvs
 
   \e[36mv-act\e[0m
-    Activate the virtualenv specified in the '.venv' file.
+    Activate the virtualenv specified in the '${VENV_NAME_FILE}' file.
 
   \e[36mv-deact\e[0m
     Deactivate the currently active virtualenv.

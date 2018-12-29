@@ -5,7 +5,7 @@
 .vscode
 
 # Ignore the file that specifies what virtualenv is to be used locally
-.venv
+.venvname
 
 # Makes it easier to ignore files that I don't want to commit by mistake
 *.ignore
