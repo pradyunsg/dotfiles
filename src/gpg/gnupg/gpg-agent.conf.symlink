@@ -1,3 +1,6 @@
+# Apparently, this enables GPG to find gpg-agent more easily.
+use-standard-socket
+
 # Connects gpg-agent to the OSX keychain via the brew-installed
 # pinentry program from GPGtools. This is the OSX 'magic sauce',
 # allowing the gpg key's passphrase to be stored in the login
