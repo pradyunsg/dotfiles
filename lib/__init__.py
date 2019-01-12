@@ -18,7 +18,7 @@ try:
 except Exception:
     click = None
 
-if click is None or not click.__version__.startswith("6."):
+if click is None or click.__version__[0] < "6":
     print(
         "Please run `pip install 'click>=6.0.0'` since this script depends on "
         "click for it's command line interface."
