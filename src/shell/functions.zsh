@@ -17,7 +17,7 @@ function mcd {
 }
 
 # Switching between projects
-function p {
+function pp {
   PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
   if [ ! -n "$1" ]; then
     cd "$PROJECT_DIRECTORY"
