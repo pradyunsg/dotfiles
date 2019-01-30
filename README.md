@@ -23,7 +23,7 @@
 
 ## Installation
 
-The current approach is a little wierd. You need to have Python 3.4+
+The current approach is a little weird. You need to have Python 3.4+
 environment with `click > 6` and `PyYAML` installed.
 
 ## Customization
