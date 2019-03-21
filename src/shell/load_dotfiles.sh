@@ -33,8 +33,14 @@ do
 done
 
 # initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+autoload -Uz compinit
+
+# Speed up startup by only checking once a day, if the cached .zcompdump file should be regenerated
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+
+compinit -C
 
 # load the "last" files
 for file in ${(M)config_files:#*/last.zsh}
