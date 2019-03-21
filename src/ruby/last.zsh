@@ -1,4 +1,1 @@
-eval "$(rbenv init -)"
-export DEFAULT_RBENV=2.5.1
-
-rbenv shell $DEFAULT_RBENV
+export RBENV_VERSION=2.5.1

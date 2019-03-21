@@ -21,6 +21,7 @@ zplug "zsh-users/zsh-autosuggestions", from:github
 zplug "zsh-users/zsh-syntax-highlighting", from:github
 # zplug "mafredri/zsh-async", from:github
 zplug "davidparsson/zsh-pyenv-lazy", from:github
+zplug "kadaan/zsh-rbenv-lazy", from:github
 # zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
 
 # If the plugins are not installed, install them
