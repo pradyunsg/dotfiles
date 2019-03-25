@@ -1,5 +1,3 @@
-_pradyunsg_log "Creating Python-specific shorthands..."
-
 # Sometimes, you need a package quickly
 function mkpkg() {
     if [ -n "$1" ]; then
