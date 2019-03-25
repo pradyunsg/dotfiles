@@ -35,7 +35,8 @@ done
 # initialize autocomplete here, otherwise functions won't be loaded
 autoload -Uz compinit
 
-# Speed up startup by only checking once a day, if the cached .zcompdump file should be regenerated
+# Speed up startup by only checking once a day, if the cached .zcompdump
+# file should be regenerated
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
 done
