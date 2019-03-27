@@ -1,15 +1,15 @@
 export VENV_NAME_FILE=".venvname"
 
-_v__error() {
+v::error() {
   echo -ne "\e[31m"
   echo "ERROR:" $@
   echo -ne "\e[0m"
 }
 
 # Subcommand definitions
-_v_activate() {
+v::command::activate() {
   if ! [ -z $2 ]; then
-    _v__error "Got too many arguments"
+    v::error "Got too many arguments"
     return 1
   fi
 
@@ -37,7 +37,7 @@ _v_activate() {
   fi
 }
 
-_v_deactivate() {
+v::command::deactivate() {
   if [[ $1 == "-h" || $1 == "--help" ]]; then
     echo "Usage: v d[eactivate] [-h|--help]"
     echo ""
@@ -46,13 +46,13 @@ _v_deactivate() {
     echo "Options:"
     echo "  -h, --help   Show this message."
   elif ! [ -z $1 ]; then
-    _v__error "Got too many arguments"
+    v::error "Got too many arguments"
   fi
 
   deactivate
 }
 
-_v_make() {
+v::command::make() {
   if [[ $1 == "-h" || $1 == "--help" ]]; then
     echo "Usage: v make [-h|--help] [name [...]]"
     echo ""
@@ -73,12 +73,12 @@ _v_make() {
     echo "  -h, --help   Show this message."
     return 0
   elif [ -r ${VENV_NAME_FILE} ]; then
-    _v__error "\"${VENV_NAME_FILE}\" file already exists."
+    v::error "\"${VENV_NAME_FILE}\" file already exists."
     return 1
   elif ! [ -z $1 ]; then
     # Abort if the name looks like an option (i.e. starts with '-')
     if [[ $1 == "-*" ]]; then
-      _v__error "First argument seems to be an option. Please provide a name."
+      v::error "First argument seems to be an option. Please provide a name."
       return 1
     fi
     _v_make_name="$1"
@@ -87,10 +87,10 @@ _v_make() {
     _v_make_name="$(basename "$(pwd)")"
 
     # If there's already a virtual environment with this name, abort.
-    _v_list --oneline | while read line; do
+    v::command::list --oneline | while read line; do
       if [[ $line == $_v_make_name ]]; then
-        _v__error "${_v_make_name} is the name of an existing virtual environment."
-        _v__error "Please provide a different name."
+        v::error "${_v_make_name} is the name of an existing virtual environment."
+        v::error "Please provide a different name."
         unset _v_make_name
         return 1
       fi
@@ -104,7 +104,7 @@ _v_make() {
   unset _v_make_name
 }
 
-_v_remove() {
+v::command::remove() {
   if [[ $1 == "-h" || $1 == "--help" ]]; then
     echo "Usage: v make [-h|--help] [name [...]]"
     echo ""
@@ -125,12 +125,12 @@ _v_remove() {
     echo "  -h, --help   Show this message."
     return 0
   elif [ -e ${VENV_NAME_FILE} ]; then
-    _v__error "\"${VENV_NAME_FILE}\" file already exists."
+    v::error "\"${VENV_NAME_FILE}\" file already exists."
     return 1
   elif ! [ -z $1 ]; then
     # Abort if the name looks like an option (i.e. starts with '-')
     if [[ $1 == "-*" ]]; then
-      _v__error "First argument seems to be an option. Please provide a name."
+      v::error "First argument seems to be an option. Please provide a name."
       return 1
     fi
     _v_rm_name="$1"
@@ -139,10 +139,10 @@ _v_remove() {
     _v_rm_name="$(basename "$(pwd)")"
 
     # If there's already a virtual environment with this name, abort.
-    _v_list --oneline | while read line; do
+    v::command::list --oneline | while read line; do
       if [[ $line == $_v_rm_name ]]; then
-        _v__error "${_v_rm_name} is the name of an existing virtual environment."
-        _v__error "Please provide a different name."
+        v::error "${_v_rm_name} is the name of an existing virtual environment."
+        v::error "Please provide a different name."
         unset _v_rm_name
         return 1
       fi
@@ -156,7 +156,7 @@ _v_remove() {
   unset _v_rm_name
 }
 
-_v_list() {
+v::command::list() {
   case $1 in
     "")
       ;;
@@ -187,7 +187,7 @@ _v_list() {
   unset _v_list_oneline
 }
 
-_v_mk-tmp() {
+v::command::mk-tmp() {
   use_magic=0
   if [[ $1 == "." ]]; then
     use_magic=1
@@ -203,7 +203,7 @@ _v_mk-tmp() {
   fi
 }
 
-_v_rm-tmp() {
+v::command::rm-tmp() {
   candidates=$(lsvirtualenv -b | grep tmp-)
   if [ -z $candidates ]; then
     echo "No temporary environments found."
@@ -217,7 +217,7 @@ _v_rm-tmp() {
   done
 }
 
-_v_wipe() {
+v::command::wipe() {
   case $1 in
     "")
       ;;
@@ -240,15 +240,15 @@ _v_wipe() {
 }
 
 # Shorthands
-_v_a() { _v_activate $@ }
-_v_act() { _v_activate $@ }
-_v_d() { _v_deactivate $@ }
-_v_mk() { _v_make $@ }
-_v_rm() { _v_remove $@ }
-_v_ls() { _v_list $@ }
+v::command::a() { v::command::activate $@ }
+v::command::act() { v::command::activate $@ }
+v::command::d() { v::command::deactivate $@ }
+v::command::mk() { v::command::make $@ }
+v::command::rm() { v::command::remove $@ }
+v::command::ls() { v::command::list $@ }
 
 # Help text
-_v_help() {
+v::command::help() {
   FG="\e[36m"
   RESET="\e[0m"
   echo "A helper for managing virtualenvs"
@@ -271,11 +271,11 @@ function v() {
   subcommand=$1
   case $subcommand in
     "" | "-h" | "--help")
-      _v_help
+      v::command::help
       ;;
     *)
       # Check if there's a subcommand by that name
-      if ! typeset -f _v_${subcommand} > /dev/null; then
+      if ! typeset -f v::command::${subcommand} > /dev/null; then
         FG="\e[31m"
         echo -e "${FG}ERROR: '$subcommand' is not a known subcommand.${RESET}" >&2
         RESET="\e[0m"
@@ -283,7 +283,7 @@ function v() {
       fi
 
       shift
-      _v_${subcommand} $@
+      v::command::${subcommand} $@
       ;;
   esac
 }
