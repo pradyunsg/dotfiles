@@ -26,13 +26,13 @@ function pp {
     echo "FATAL: Too many arguments"
     return 1
   elif [[ "$1" == "." ]]; then
-    v-act
+    v act
   elif [ ! -d "${PROJECT_DIRECTORY}/$1" ]; then
     echo "'${PROJECT_DIRECTORY}/$1' does not exist"
     return 1
   else
     cd $PROJECT_DIRECTORY/$1
-    v-act
+    v act
   fi
 }
 
