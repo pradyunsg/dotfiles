@@ -34,7 +34,8 @@
 	pushit = push -u origin HEAD
 
 	# Make it easy to get the current upstream easily.
-	pullit = "!f() { set -x; v1=$(git symbolic-ref --short HEAD); git checkout master && git pull upstream master && git push --no-verify; git checkout $v1; }; f"
+	sync = "!f() { set -x; v1=$(git symbolic-ref --short HEAD); git checkout master && git pull upstream master && git push --no-verify; git checkout $v1; }; f"
+	pullit = "!git sync"
 
 	whatadded = log --diff-filter=A  # which commit added this file
 
@@ -45,9 +46,6 @@
 
 	# Checking out PRs should be easy
 	co-pr = "!f() { if [ -z ""$2"" ]; then echo 'Not enough arguments (git co-pr remote PR-number)'; return; fi; git fetch $1 ""pull/$2/head:pr/$2"" && git checkout ""pr/$2"";}; f"
-
-	# Syncing with an upstream should be easy
-	sync = "!f() { git pull upstream master && git push origin master; }; f"
 
 [apply]
 	whitespace = error
