@@ -29,8 +29,10 @@ v::command::activate() {
     echo "  -h, --help   Show this message."
   elif ! [ -z $1 ]; then
     workon "$1"
+    # pyenv activate "$1"
   elif [ -r ${VENV_NAME_FILE} ]; then
     workon "$(cat ${VENV_NAME_FILE})"
+    # pyenv activate "$(cat ${VENV_NAME_FILE})"
   else
     echo "No virtualenv associated with this directory."
     echo "You can associate one using 'v make'."
@@ -50,6 +52,7 @@ v::command::deactivate() {
   fi
 
   deactivate
+  # pyenv deactivate
 }
 
 v::command::make() {
@@ -99,7 +102,8 @@ v::command::make() {
 
   echo "Creating virtualenv \"${_v_make_name}\" here."
   mkvirtualenv -a "$(pwd)" "${_v_make_name}" $@ && \
-    echo "$(basename "$(pwd)")" > ${VENV_NAME_FILE}
+   echo "$(basename "$(pwd)")" > ${VENV_NAME_FILE}
+  # pyenv virtualenv ${_v_make_name}
 
   unset _v_make_name
 }
