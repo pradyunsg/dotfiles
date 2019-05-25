@@ -17,17 +17,18 @@ _pradyunsg_log() {
     echo $@
 }
 
+_pradyunsg_log "Sourcing from dotfiles..."
 
-config_files=($DOTFILES_LOCATION/**/*.zsh)
+config_files=($DOTFILES_LOCATION/**/*.(sh|${CURRENT_SHELL}))
 
 # load the "first" files
-for file in ${(M)config_files:#*/*first.zsh}
+for file in ${(M)config_files:#*/*first.(sh|${CURRENT_SHELL})}
 do
   source $file
 done
 
 # load everything but the first and last files
-for file in ${${config_files:#*/*first.zsh}:#*/last.zsh}
+for file in ${${config_files:#*/*first.(sh|${CURRENT_SHELL})}:#*/last.(sh|${CURRENT_SHELL})}
 do
   source $file
 done
@@ -44,9 +45,11 @@ done
 compinit -C
 
 # load the "last" files
-for file in ${(M)config_files:#*/last.zsh}
+for file in ${(M)config_files:#*/last.(sh|${CURRENT_SHELL})}
 do
   source $file
 done
 
 unset config_files
+
+_pradyunsg_log "All done!"
