@@ -13,4 +13,4 @@ fi
 test -e "${HOME}/.zshrc.local" && source "${HOME}/.zshrc.local"
 
 # Load the dotfiles
-source ${DOTFILES_LOCATION}/shell/load_dotfiles.sh
+source ${DOTFILES_LOCATION}/shell/load_dotfiles
