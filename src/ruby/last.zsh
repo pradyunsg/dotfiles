@@ -1,1 +1,1 @@
-export RBENV_VERSION=2.5.1
+export RBENV_VERSION=system
