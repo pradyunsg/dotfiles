@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -x
+MAIN_BRANCH=${1:-master}
+
+current_ref=$(git symbolic-ref --short HEAD)
+git checkout ${MAIN_BRANCH}
+git pull upstream ${MAIN_BRANCH}
+git push --no-verify
+git checkout ${current_ref}
