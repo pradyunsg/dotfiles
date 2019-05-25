@@ -1,89 +1,89 @@
 [alias]
-	# One Character Shorthands
-	b = branch -v                 # branches with latest commit summary
-	c = commit
-	d = diff  --color-words
-	g = !gitg
-	k = !gitk
-	l = log --graph --date=short
-	s = !git st
+  # One Character Shorthands
+  b = branch -v                 # branches with latest commit summary
+  c = commit
+  d = diff  --color-words
+  g = !gitg
+  k = !gitk
+  l = log --graph --date=short
+  s = !git st
 
-	# Two Character Shorthands
-	cl = clone                    # clone
-	br = branch                   # branch
-	co = checkout                 # checkout
-	nb = !git co -b               # new branch
-	st = status -sb               # status in a concise manner
-	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+  # Two Character Shorthands
+  cl = clone                    # clone
+  br = branch                   # branch
+  co = checkout                 # checkout
+  nb = !git co -b               # new branch
+  st = status -sb               # status in a concise manner
+  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 
-	# Nice log graph
-	graph = log --graph --oneline
+  # Nice log graph
+  graph = log --graph --oneline
 
-	# git-tools should open through git
-	visual = cola
+  # git-tools should open through git
+  visual = cola
 
-	# I forget too easily.
-	stage = add
-	unstage = reset HEAD --
+  # I forget too easily.
+  stage = add
+  unstage = reset HEAD --
 
-	undo = reset --soft HEAD~1    # undo your last commit
-	amend = commit --amend        # amend your last commit
+  undo = reset --soft HEAD~1    # undo your last commit
+  amend = commit --amend        # amend your last commit
 
-	diffc = diff --cached
-	pushf = push --force
-	pushit = push -u origin HEAD
+  diffc = diff --cached
+  pushf = push --force
+  pushit = push -u origin HEAD
 
-	# Make it easy to get the current upstream easily.
-	sync = "!f() { set -x; v1=$(git symbolic-ref --short HEAD); git checkout master && git pull upstream master && git push --no-verify; git checkout $v1; }; f"
-	pullit = "!git sync"
+  # Make it easy to get the current upstream easily.
+  sync = "!f() { set -x; v1=$(git symbolic-ref --short HEAD); git checkout master && git pull upstream master && git push --no-verify; git checkout $v1; }; f"
+  pullit = "!git sync"
 
-	whatadded = log --diff-filter=A  # which commit added this file
+  whatadded = log --diff-filter=A  # which commit added this file
 
-	# Remotes from various places is useful to have
-	remote-add-gh = "!f() { git remote add $1 https://github.com/$2.git; }; f"
-	remote-add-bb = "!f() { git remote add $1 https://bitbucket.org/$2.git; }; f"
-	remote-add-gl = "!f() { git remote add $1 https://gitlab.com/$2.git; }; f"
+  # Remotes from various places is useful to have
+  remote-add-gh = "!f() { git remote add $1 https://github.com/$2.git; }; f"
+  remote-add-bb = "!f() { git remote add $1 https://bitbucket.org/$2.git; }; f"
+  remote-add-gl = "!f() { git remote add $1 https://gitlab.com/$2.git; }; f"
 
-	# Checking out PRs should be easy
-	co-pr = "!f() { if [ -z ""$2"" ]; then echo 'Not enough arguments (git co-pr remote PR-number)'; return; fi; git fetch $1 ""pull/$2/head:pr/$2"" && git checkout ""pr/$2"";}; f"
+  # Checking out PRs should be easy
+  co-pr = "!f() { if [ -z ""$2"" ]; then echo 'Not enough arguments (git co-pr remote PR-number)'; return; fi; git fetch $1 ""pull/$2/head:pr/$2"" && git checkout ""pr/$2"";}; f"
 
 [apply]
-	whitespace = error
+  whitespace = error
 
 [commit]
-	gpgsign = true
+  gpgsign = true
 
 [core]
-	excludesfile = ~/.gitignore
-	autocrlf = input
-	editor = code -w
-	whitespace = trailing-space,cr-at-eol
+  excludesfile = ~/.gitignore
+  autocrlf = input
+  editor = code -w
+  whitespace = trailing-space,cr-at-eol
 
 [diff]
-	algorithm = patience
-	tool = meld
+  algorithm = patience
+  tool = meld
 
 [gui]
-	editor = code -w
-	fontdiff = -family \"Source Code Pro\" -size -12 -weight normal -slant roman -underline 0 -overstrike 0
-	historybrowser = gitg
+  editor = code -w
+  fontdiff = -family \"Source Code Pro\" -size -12 -weight normal -slant roman -underline 0 -overstrike 0
+  historybrowser = gitg
 
 [help]
-	autocorrect = 20
+  autocorrect = 20
 
 [merge]
-	tool = meld
-	conflictstyle = diff3
+  tool = meld
+  conflictstyle = diff3
 
 [push]
-	default = simple
+  default = simple
 
 [user]
     useConfigOnly = true
 
 [include]
-	path = ~/.gitconfig.local
+  path = ~/.gitconfig.local
 
 # Pro-tip: Makes life with submodules easier.
 # [url "git@github.com:yourname/"]
-# 	insteadOf = "git://github.com/yourname/"
+#   insteadOf = "git://github.com/yourname/"
