@@ -110,20 +110,13 @@ v::command::make() {
 
 v::command::remove() {
   if [[ $1 == "-h" || $1 == "--help" ]]; then
-    echo "Usage: v make [-h|--help] [name [...]]"
+    echo "Usage: v rm [-h|--help] name"
     echo ""
-    echo "  Creates and activates a virtual environment, associating it with"
+    echo "  Deletes a virtual environment., associating it with"
     echo "  the current directory by creating a \"${VENV_NAME_FILE}\" file."
     echo ""
     echo "  If a \"${VENV_NAME_FILE}\" file exists in the current directory,"
     echo "  no action is taken and an error is printed."
-    echo ""
-    echo "  If any arguments are given, all but the first are forwarded to "
-    echo "  virtualenv. The first argument is used to name the virtual "
-    echo "  environment. If it starts with '-', an error is thrown."
-    echo ""
-    echo "  In the absence of any arguments, the current directory is used "
-    echo "  to name the virtual environment."
     echo ""
     echo "Options:"
     echo "  -h, --help   Show this message."
