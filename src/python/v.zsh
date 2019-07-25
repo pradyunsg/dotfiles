@@ -146,9 +146,7 @@ v::command::remove() {
     done
   fi
 
-  echo "Creating virtualenv \"${_v_rm_name}\" here."
-  mkvirtualenv -a "$(pwd)" "${_v_rm_name}" $@ && \
-    echo "$(basename "$(pwd)")" > ${VENV_NAME_FILE}
+  rmvirtualenv "${_v_rm_name}"
 
   unset _v_rm_name
 }
