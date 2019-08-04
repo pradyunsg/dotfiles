@@ -1,2 +1,3 @@
 # Ignore local files
-*.local.symlink
+*.local.*
+*.local
