@@ -84,20 +84,35 @@ class DotFilesRepo(object):
 
             # yield things to be symlinked
             for item in dirs + files:
-                if item.endswith('.symlink'):
-                    yield os.path.join(os.path.relpath(root, walk_dir), item)
+                substr_length = len("symlink.")
+
+                if item.endswith(".symlink"):
+                    target_name = item[:-substr_length]
+                else:
+                    continue
+                source = os.path.join(root, item)
+                target = self.compute_target(os.path.relpath(root, walk_dir), item)
+
+                yield source, target
 
             # Ensure we don't recurse more than the allowed limit
             if current_depth >= base_depth + self.walk_depth:
                 del dirs[:]
 
-    def compute_target(self, rel_path):
-        topic, *parts = rel_path.split(os.sep)
-        # Prefix a '.'
-        parts[0] = '.' + parts[0]
-        # Remove the '.symlink' portion
-        parts[-1] = parts[-1][:-len('.symlink')]
-        return os.path.join(self.target_dir, *parts)
+    def compute_target(self, relative_directory_path, filename):
+        topic_unused, *parts = relative_directory_path.split(os.sep)
+
+        # Strip the magic from the filename
+        filename = filename[:-len(".symlink")]
+
+        # Add the "." to make it a dotfile
+        if not parts:
+            filename = "." + filename
+        else:
+            parts[0] = "." + parts[0]
+
+        final_parts = parts + [filename]
+        return os.path.join(self.target_dir, *final_parts)
 
     def backup_file(self, fname):
         run('mv "{0}" "{0}.backup"'.format(fname), self)
@@ -124,11 +139,7 @@ class DotFilesRepo(object):
             with open(path, 'w') as f:
                 f.write(self.source_dir)
 
-        for rel_path in self.find_files_to_symlink(topics):
-            source = os.path.join(self.source_dir, rel_path)
-
-            target = self.compute_target(rel_path)
-
+        for source, target in self.find_files_to_symlink(topics):
             # Determine what to do with target
             if os.path.islink(target):
                 if os.readlink(target) == source:  # link is up to date
