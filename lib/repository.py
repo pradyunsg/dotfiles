@@ -86,12 +86,17 @@ class DotFilesRepo(object):
             for item in dirs + files:
                 substr_length = len("symlink.")
 
-                if item.endswith(".symlink"):
+                if item.startswith("symlink."):
+                    target_name = item[substr_length:]
+                elif item.endswith(".symlink"):
                     target_name = item[:-substr_length]
                 else:
                     continue
                 source = os.path.join(root, item)
-                target = self.compute_target(os.path.relpath(root, walk_dir), item)
+                target = self.compute_target(
+                    os.path.relpath(root, walk_dir),
+                    target_name,
+                )
 
                 yield source, target
 
@@ -99,19 +104,16 @@ class DotFilesRepo(object):
             if current_depth >= base_depth + self.walk_depth:
                 del dirs[:]
 
-    def compute_target(self, relative_directory_path, filename):
+    def compute_target(self, relative_directory_path, dest_name):
         topic_unused, *parts = relative_directory_path.split(os.sep)
-
-        # Strip the magic from the filename
-        filename = filename[:-len(".symlink")]
 
         # Add the "." to make it a dotfile
         if not parts:
-            filename = "." + filename
+            dest_name = "." + dest_name
         else:
             parts[0] = "." + parts[0]
 
-        final_parts = parts + [filename]
+        final_parts = parts + [dest_name]
         return os.path.join(self.target_dir, *final_parts)
 
     def backup_file(self, fname):
