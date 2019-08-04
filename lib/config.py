@@ -6,7 +6,7 @@ ROOT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 DEFAULT_SOURCE_DIR = os.path.join(ROOT_DIR, "src")
 ACTION_COLOR_DICT = {
     'backup': 'magenta',
-    'create': 'green',
+    'create': 'cyan',
     'remove': 'red',
     'skip': 'magenta',
     'up to date': 'green',
