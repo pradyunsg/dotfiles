@@ -12,7 +12,7 @@
 *.ignore.*
 
 # Generated files
-build/
+/build/
 *.[oa]
 *.pyc
 
