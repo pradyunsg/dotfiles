@@ -21,3 +21,4 @@
 
 # Because I hate these
 *.fuse_hidden*
+.*cache
