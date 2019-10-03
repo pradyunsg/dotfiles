@@ -6,7 +6,7 @@ from .logging import log
 from .utils import run
 
 
-class DotFilesRepo(object):
+class Repository(object):
 
     def __init__(self, source_dir, target_dir, walk_depth, verbose, dry_run):
         super().__init__()

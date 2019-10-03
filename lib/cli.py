@@ -2,7 +2,7 @@ import click
 
 from .checker import SystemChecker
 from .config import HOME_DIR, DEFAULT_SOURCE_DIR
-from .repository import DotFilesRepo
+from .repository import Repository
 from .utils import task
 
 
@@ -32,7 +32,7 @@ def cli(ctx, src_dir, dest_dir, dry_run, depth, verbose):
     if dry_run:
         verbose = True
 
-    ctx.obj['obj'] = DotFilesRepo(src_dir, dest_dir, depth, verbose, dry_run)
+    ctx.obj['repository'] = Repository(src_dir, dest_dir, depth, verbose, dry_run)
     ctx.obj['verbose'] = verbose
 
 
@@ -43,7 +43,7 @@ def sync(ctx, topics):
     """Update the symlinks
     """
     with task('Syncing dotfiles'):
-        ctx.obj['obj'].sync(topics)
+        ctx.obj['repository'].sync(topics)
 
 
 @cli.command()
@@ -52,7 +52,7 @@ def clean(ctx):
     """Removes stale/broken symlinks
     """
     with task('Cleaning broken symlinks'):
-        ctx.obj['obj'].clean()
+        ctx.obj['repository'].clean()
 
 
 @cli.command()
