@@ -1,6 +1,6 @@
 [alias]
   # One Character Shorthands
-  b = branch -v                 # branches with latest commit summary
+  b = "!f() { git for-each-ref --color=always --sort='-committerdate:iso8601' --format='%(committerdate:relative)|%(objectname:short)|%(color:green)%(HEAD)%(color:reset) %(refname:short)' refs/heads | column -s '|' -t; }; f"
   c = commit
   d = diff  --color-words
   g = !gitg
