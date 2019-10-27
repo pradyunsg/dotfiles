@@ -30,6 +30,7 @@ alias la='ls -a'
 alias ll='ls -l'
 alias path='echo $PATH | tr -s ":" "\n"'
 alias '?=man'
+alias gpg-test='echo "test" | gpg --clearsign'
 
 # Better safe than sorry!
 alias ln="ln -v"
