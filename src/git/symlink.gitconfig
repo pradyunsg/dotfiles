@@ -15,6 +15,7 @@
   nb = !git co -b               # new branch
   st = status -sb               # status in a concise manner
   cp = cherry-pick              # cherry-pick is very log
+  # history of current HEAD
   ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 
   # Nice log graph
