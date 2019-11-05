@@ -1,5 +1,3 @@
-_pradyunsg_log "Setting up aliases..."
-
 # Because I'm always improving this.
 alias reload_shell="source ~/.\${CURRENT_SHELL}rc"
 alias reload_prompt="source \"${SIGMA_PROMPT_LOCATION}/prompt.sh\""

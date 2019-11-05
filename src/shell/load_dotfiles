@@ -12,12 +12,6 @@ add_to_path() {
        fi
     fi
 }
-_pradyunsg_log() {
-    echo -n "$(python -c "import datetime; print(datetime.datetime.now())"): "
-    echo $@
-}
-
-_pradyunsg_log "Sourcing from dotfiles..."
 
 config_files=($DOTFILES_LOCATION/**/*.(sh|${CURRENT_SHELL}))
 
@@ -52,4 +46,4 @@ done
 
 unset config_files
 
-_pradyunsg_log "All done!"
+# _pradyunsg_log "All done!"

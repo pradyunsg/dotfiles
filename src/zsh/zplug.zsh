@@ -1,5 +1,3 @@
-_pradyunsg_log "Loading zplug and plugins..."
-
 export ZPLUG_HOME=${ZPLUG_HOME:="/usr/local/opt/zplug"}
 export ZPLUG_REPOS=${ZPLUG_REPOS:="$HOME/.zplug"}
 source $ZPLUG_HOME/init.zsh
