@@ -49,7 +49,7 @@
   co-pr = "!f() { if [ -z ""$2"" ]; then echo 'Not enough arguments (git co-pr remote PR-number)'; return; fi; git fetch $1 ""pull/$2/head:pr/$2"" && git checkout ""pr/$2"";}; f"
 
   # Because I'm usually bad at this
-  cleanup = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs git branch -d; }; f"
+  cleanup = "!f() { git branch --merged ${1-master} | grep -v "" ${1-master}$"" | xargs git branch -d; }; f"
 
 [apply]
   whitespace = error
