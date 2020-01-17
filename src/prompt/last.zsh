@@ -1,8 +1,2 @@
-PROMPT_DESIGN=${PROMPT_DESIGN:=powerline}
-PROMPT_THEME=${PROMPT_THEME:=pradyunsg}
-
-SIGMA_PROMPT_LOCATION=${SIGMA_PROMPT_LOCATION:=~/Projects/sigma-prompts}
-
-if [[ -f "${SIGMA_PROMPT_LOCATION}/prompt.sh" ]]; then
-    source "${SIGMA_PROMPT_LOCATION}/prompt.sh"
-fi
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

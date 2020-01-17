@@ -18,6 +18,7 @@ zplug "Tarrasch/zsh-autoenv", from:github
 zplug "zsh-users/zsh-autosuggestions", from:github
 zplug "zsh-users/zsh-syntax-highlighting", from:github
 zplug "romkatv/zsh-prompt-benchmark", from:github
+zplug "romkatv/powerlevel10k", as:theme, depth:1
 # zplug "mafredri/zsh-async", from:github
 # zplug sindresorhus/pure, use:pure.zsh, from:github, as:theme
 
