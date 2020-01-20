@@ -15,25 +15,25 @@
 
 ![Preview Image](./docs/README-image.png)
 
-
-> NOTE
-> The prompt I use is currently not accessible to everyone.
-> I'm currently working on improving it to a state where I'm comfortable
-> releasing it in. Plus, it's slooow today. :)
-
 ## Installation
 
-The current approach is a little wierd. You need to have Python 3.4+
-environment with `click > 6` and `PyYAML` installed.
+This is a manual step currently.
+
+1. Set up Python 3.4+ on the system.
+2. Create a virtual environment for housing dotfiles-related dependencies and
+   activate it.
+3. Run `python manage sync` to create the required symlinks.
+4. (WIP) Run `python manage check` to see what more needs to be done to fully
+   configure the system.
 
 ## Customization
 
 You can do customization using `.local` files:
 
-  - `~/.gitconfig.local`
-      - This is sourced before any other files from this folder.
-  - `~/.zshrc.local`
-      - This is sourced before any other files from this folder.
+- `~/.gitconfig.local`
+  - This is sourced before any other files from this folder.
+- `~/.zshrc.local`
+  - This is sourced before any other files from this folder.
 
 These `.local` files can be used to add a few personal stuff without the need
 to fork this entire repository, or to add commands you don’t want to commit to
