@@ -1,20 +1,21 @@
 #!/bin/bash
+# Syncing with upstream branches should be easy.
+
+echo_git() {
+  echo -e "\033[34m> git $@\033[0m"
+  git $@
+}
 
 MAIN_BRANCH=${1:-master}
 INITIAL_BRANCH=$(git symbolic-ref --short HEAD)
 
-if [[ "$INITIAL_BRANCH" != "$MAIN_BRANCH" ]]; then
-  git checkout ${MAIN_BRANCH}
-else
-  echo "Already on ${MAIN_BRANCH}!"
+if [[ "$INITIAL_BRANCH" != $MAIN_BRANCH ]]; then
+  echo_git checkout "$MAIN_BRANCH"
 fi
 
-set -x
-git pull upstream ${MAIN_BRANCH}
-git push --no-verify
-set +x
+echo_git pull upstream "$MAIN_BRANCH"
+echo_git push --no-verify
 
-if [[ "$INITIAL_BRANCH" != "$MAIN_BRANCH" ]]; then
-  git checkout ${MAIN_BRANCH}
+if [[ "$INITIAL_BRANCH" != $MAIN_BRANCH ]]; then
+  echo_git checkout "$INITIAL_BRANCH"
 fi
-

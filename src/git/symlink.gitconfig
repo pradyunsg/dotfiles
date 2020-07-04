@@ -40,17 +40,6 @@
 
   whatadded = log --diff-filter=A  # which commit added this file
 
-  # Remotes from various places is useful to have
-  remote-add-gh = "!f() { git remote add $1 https://github.com/$2.git; }; f"
-  remote-add-bb = "!f() { git remote add $1 https://bitbucket.org/$2.git; }; f"
-  remote-add-gl = "!f() { git remote add $1 https://gitlab.com/$2.git; }; f"
-
-  # Checking out PRs should be easy
-  co-pr = "!f() { if [ -z ""$2"" ]; then echo 'Not enough arguments (git co-pr remote PR-number)'; return; fi; git fetch $1 ""pull/$2/head:pr/$2"" && git checkout ""pr/$2"";}; f"
-
-  # Because I'm usually bad at this
-  cleanup = "!f() { git branch --merged ${1-master} | grep -v "" ${1-master}$"" | xargs git branch -d; }; f"
-
 [apply]
   whitespace = error
 
