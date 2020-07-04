@@ -121,9 +121,6 @@ v::command::remove() {
     echo "Options:"
     echo "  -h, --help   Show this message."
     return 0
-  elif [ -e ${VENV_NAME_FILE} ]; then
-    v::error "\"${VENV_NAME_FILE}\" file already exists."
-    return 1
   elif ! [ -z $1 ]; then
     # Abort if the name looks like an option (i.e. starts with '-')
     if [[ $1 == "-*" ]]; then
@@ -133,7 +130,11 @@ v::command::remove() {
     _v_rm_name="$1"
     shift
   else
-    _v_rm_name="$(basename "$(pwd)")"
+    if [ -e ${VENV_NAME_FILE} ]; then
+      _v_rm_name=$(cat ${VENV_NAME_FILE})
+    else
+      _v_rm_name=$(basename "$(pwd)")
+    fi
 
     # If there's already a virtual environment with this name, abort.
     v::command::list --oneline | while read line; do
@@ -259,12 +260,10 @@ v::command::help() {
   echo -e "  ${FG}        rm-tmp     ${RESET} Remove all temporary virtualenvs"
 }
 
-
 # Main entrypoint
 function v() {
-  . /Users/pradyunsg/Projects/dotfiles/src/python/v.zsh
   subcommand=$1
-  case $subcommand in
+  case ${subcommand} in
     "" | "-h" | "--help")
       v::command::help
       ;;
@@ -272,8 +271,8 @@ function v() {
       # Check if there's a subcommand by that name
       if ! typeset -f v::command::${subcommand} > /dev/null; then
         FG="\e[31m"
-        echo -e "${FG}ERROR: '$subcommand' is not a known subcommand.${RESET}" >&2
         RESET="\e[0m"
+        echo -e "${FG}ERROR: '$subcommand' is not a known subcommand.${RESET}" >&2
         return 1
       fi
 
