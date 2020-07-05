@@ -14,9 +14,10 @@ class SystemChecker(object):
     """A super-fancy helper for checking the system configuration
     """
 
-    def __init__(self):
+    def __init__(self, verbose):
         super().__init__()
         self._logger = Logger()
+        self.verbose = verbose
 
     def _log_happy(self, msg):
         self._logger.spaced_status("pass", msg, fit_width=4)
@@ -42,7 +43,7 @@ class SystemChecker(object):
             self._log_happy(name + " is correct")
         else:
             self._log_angry(
-                "{} is not {!r}, it is {!r}".format(name, expected, value),
+                f"{name} is not {expected!r}, it is {value!r}",
                 is_warning=should_warn,
             )
 
@@ -60,7 +61,7 @@ class SystemChecker(object):
     def _load_yaml(self, fname):
         with open(fname) as f:
             try:
-                return yaml.load(f)
+                return yaml.safe_load(f)
             except Exception as e:
                 click.secho("ERROR: Could not parse file.", fg="red")
                 click.secho(str(e), fg="red")
@@ -143,27 +144,39 @@ class SystemChecker(object):
         for name, cmd_dict in run_items.items():
             if not isinstance(cmd_dict, dict) or "cmd" not in cmd_dict:
                 log.spaced_status(
-                    "warn", "!!! invalid !!! {}".format(category, name),
+                    "warn", f"!!! invalid !!! {category} {name}",
                     fit_width=4
                 )
                 continue
 
-            if "equal" in cmd_dict:
-                # Matching output.
-                expected = cmd_dict["equal"]
-                # Perform substitution
-                if expected.startswith("$"):
-                    item = data
-                    for part in expected[1:].split("."):
-                        item = item[part]
-                    expected = item
+            got = run_output(cmd_dict["cmd"])
 
-                got = run_output(cmd_dict["cmd"])
-                if isinstance(got, str) and expected == got.strip():
-                    log.spaced_status("pass", name, fit_width=4)
-                else:
-                    log.spaced_status("fail", name, fit_width=4)
+            if got is None:
+                # Did not exit cleanly
+                ok = False
+                reason = "command did not succeed"
+            elif "equal" in cmd_dict:
+                # Match the output against an expected value...
+                expected = cmd_dict["equal"]
+
+                # Perform substitution (from values earlier in the dict)
+                if expected.startswith("$"):
+                    expected = _dotted_access(data, expected[1:])
+
+                ok = expected == got.rstrip()
+                reason = f"{expected!r} != {got!r}"
+
+            if ok:
+                log.spaced_status("pass", name, fit_width=4)
             else:
-                log.spaced_status(
-                    "warn", name + " -- did not check.", fit_width=4
-                )
+                log.spaced_status("fail", name, fit_width=4)
+                if self.verbose:
+                    with log:
+                        log.info(reason)
+
+
+def _dotted_access(data, spec):
+    item = data
+    for part in spec.split("."):
+        item = item[part]
+    return item

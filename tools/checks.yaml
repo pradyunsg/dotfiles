@@ -8,9 +8,9 @@ identity:
 
 things:
   Core:
-    executables: cloc, curl, gpg, http, readline, ssh, tree, wget
+    executables: cloc, curl, gpg, http, ssh, tree, wget
   C/C++:
-    executables: make, cmake, gcc, clang
+    executables: make, cmake, gcc, clang, clang-format
   Git:
     executables: git
     run_check:
@@ -29,23 +29,7 @@ things:
   Go:
     executables: go, gofmt
   Python:
-    executables: python, pip, python2, pip2, python3, pip3
-    run_check:
-      "python  -> is a 3.x version":
-        cmd: python -c 'import sys; print(sys.version_info[0])'
-        equal: "3"
-      "python2 -> is a 2.7 version":
-        cmd: python2 -c 'import sys; print(sys.version_info[:2])'
-        equal: "(2, 7)"
-      "python3 -> is a 3.x version":
-        cmd: python3 -c 'import sys; print(sys.version_info[0])'
-        equal: "3"
-      "NumPy is installed on default Python":
-        cmd: python -c 'import numpy'
-      "OpenCV is installed on default Python":
-        cmd: python -c 'import cv2'
-      "NumPy is installed on default Python":
-        cmd: python -c 'import numpy'
+    executables: pyenv, python, pip, pipx, pre-commit
   Ruby:
     executables: rbenv
   Rust:
@@ -58,6 +42,14 @@ things:
     executables: mysql, psql
   MongoDB:
     executables: mongod
+
+  # Don't judge. I got a brainwave this one time to ensure stuff like this is
+  # correct; and kept that way.
+  XCode:
+    if: {platform: Darwin}
+    run_check:
+      "CLI tools are installed":
+        cmd: xcode-select -p
 
   MacOS:
     if: {platform: Darwin}
@@ -76,17 +68,13 @@ things:
       "Full keyboard access for all controls is activated":
         cmd: defaults read NSGlobalDomain AppleKeyboardUIMode
         equal: "3"
-      "'Are You Sure' application prompt is on":
-        cmd: defaults read com.apple.LaunchServices LSQuarantine
-        equal: "1"
+      "Screenshots go in a dedicated folder":
+        cmd: defaults read com.apple.screencapture location
+        equal: "/Users/pradyunsg/Pictures/Screenshots"
+      "Screenshot format is PNG":
+        cmd: defaults read com.apple.screencapture type
+        equal: "png"
 
-  # Don't judge. I got a brainwave this one time to ensure stuff like this is
-  # correct; and kept that way.
-  XCode:
-    if: {platform: Darwin}
-    run_check:
-      "CLI tools are installed":
-        cmd: pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
   Finder:
     if: {platform: Darwin}
     run_check:
@@ -96,25 +84,3 @@ things:
       "shows Path Bar":
         cmd: defaults read com.apple.finder ShowPathbar
         equal: "1"
-  Screenshots:
-    if: {platform: Darwin}
-    run_check:
-      "go in a dedicated folder":
-        cmd: basename $(defaults read com.apple.screencapture location)
-        equal: "Screenshots"
-      "format is PNG":
-        cmd: basename $(defaults read com.apple.screencapture type)
-        equal: "png"
-
-  Safari:
-    if: {platform: Darwin}
-    run_check:
-      "shows full URL":
-        cmd: defaults read com.apple.Safari ShowFullURLInSmartSearchField
-        equal: "1"
-      "doesn't auto open 'safe' files":
-        cmd: defaults read com.apple.Safari AutoOpenSafeDownloads
-        equal: "0"
-      "hides bookmarks bar by default":
-        cmd: defaults read com.apple.Safari ShowFavoritesBar
-        equal: "0"

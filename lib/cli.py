@@ -56,11 +56,15 @@ def clean(ctx):
 
 
 @cli.command()
+@click.option(
+    '-v', '--verbose', default=False, is_flag=True,
+    help='Show what commands have been executed.'
+)
 @click.pass_context
-def check(ctx):
+def check(ctx, verbose):
     """Check whether a system is setup correctly.
     """
-    checker = SystemChecker()
+    checker = SystemChecker(verbose=verbose)
     checker.run("tools/checks.yaml")
 
 
