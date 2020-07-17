@@ -13,7 +13,7 @@ if [[ "$INITIAL_BRANCH" != $MAIN_BRANCH ]]; then
   echo_git checkout "$MAIN_BRANCH"
 fi
 
-echo_git pull upstream "$MAIN_BRANCH"
+echo_git pull upstream "$MAIN_BRANCH" --ff-only
 echo_git push --no-verify
 
 if [[ "$INITIAL_BRANCH" != $MAIN_BRANCH ]]; then
