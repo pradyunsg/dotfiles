@@ -94,7 +94,6 @@ v::command::make() {
       if [[ $line == $_v_make_name ]]; then
         v::error "${_v_make_name} is the name of an existing virtual environment."
         v::error "Please provide a different name."
-        unset _v_make_name
         return 1
       fi
     done
@@ -105,7 +104,6 @@ v::command::make() {
    echo "$(basename "$(pwd)")" > ${VENV_NAME_FILE}
   # pyenv virtualenv ${_v_make_name}
 
-  unset _v_make_name
 }
 
 v::command::remove() {
@@ -154,7 +152,6 @@ v::command::remove() {
   if [[ $? == 0 && $found_from_file == "true" ]]; then
     rm ${VENV_NAME_FILE}
   fi
-  unset venv_name
 }
 
 v::command::list() {
@@ -185,7 +182,6 @@ v::command::list() {
   else
     lsvirtualenv -b | column -c $COLUMNS
   fi
-  unset _v_list_oneline
 }
 
 v::command::mk-tmp() {
