@@ -127,29 +127,34 @@ v::command::remove() {
       v::error "First argument seems to be an option. Please provide a name."
       return 1
     fi
-    _v_rm_name="$1"
+    venv_name="$1"
     shift
-  else
-    if [ -e ${VENV_NAME_FILE} ]; then
-      _v_rm_name=$(cat ${VENV_NAME_FILE})
-    else
-      _v_rm_name=$(basename "$(pwd)")
-    fi
+  elif [ -f ${VENV_NAME_FILE} ]; then
+    venv_name=$(cat ${VENV_NAME_FILE})
 
-    # If there's already a virtual environment with this name, abort.
+    # Look for an environment by this name.
+    found_from_file=false
     v::command::list --oneline | while read line; do
-      if [[ $line == $_v_rm_name ]]; then
-        v::error "${_v_rm_name} is the name of an existing virtual environment."
-        v::error "Please provide a different name."
-        unset _v_rm_name
-        return 1
+      if [[ $line == $venv_name ]]; then
+        found_from_file=true
       fi
     done
+
+  if [[ $found_from_file == "false" ]]; then
+      v::error "No environment named ${venv_name}."
+      return 1
+    fi
+  else
+    v::error "Did not find a ${VENV_NAME_FILE} or get name for the environment."
+    v::error "Aborting due to lack of a name."
+    return 1
   fi
 
-  rmvirtualenv "${_v_rm_name}"
-
-  unset _v_rm_name
+  rmvirtualenv "${venv_name}"
+  if [[ $? == 0 && $found_from_file == "true" ]]; then
+    rm ${VENV_NAME_FILE}
+  fi
+  unset venv_name
 }
 
 v::command::list() {
