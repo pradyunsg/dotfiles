@@ -13,7 +13,10 @@
   <a href="#acknowledgements">Acknowledgements</a>
 </p>
 
-![Preview Image](./docs/README-image.png)
+<p align="center">
+  <img src="docs/README-image.png" alt="Screenshot of my terminal set-up as on 2020-08-11"/>
+</p>
+
 
 ## Installation
 
