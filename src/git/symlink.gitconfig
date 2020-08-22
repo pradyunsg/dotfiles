@@ -71,6 +71,9 @@
 [push]
   default = simple
 
+[pull]
+	ff = only
+
 [user]
     useConfigOnly = true
 
