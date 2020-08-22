@@ -36,7 +36,7 @@
   pushit = push -u origin HEAD
 
   # Make it easy to get the current upstream easily.
-  pullit = "!git sync"
+  pullit = sync
 
   whatadded = log --diff-filter=A  # which commit added this file
 
