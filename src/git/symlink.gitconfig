@@ -58,8 +58,6 @@
 
 [gui]
   editor = code -w
-  fontdiff = -family \"Source Code Pro\" -size -12 -weight normal -slant roman -underline 0 -overstrike 0
-  historybrowser = gitg
 
 [help]
   autocorrect = 20
