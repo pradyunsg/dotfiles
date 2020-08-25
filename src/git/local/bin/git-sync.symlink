@@ -6,7 +6,7 @@ echo_git() {
   git $@
 }
 
-MAIN_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+MAIN_BRANCH=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@')
 INITIAL_BRANCH=$(git symbolic-ref --short HEAD)
 
 if [[ "$INITIAL_BRANCH" != $MAIN_BRANCH ]]; then
