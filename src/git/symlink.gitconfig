@@ -70,10 +70,13 @@
   default = simple
 
 [pull]
-	ff = only
+  ff = only
 
 [user]
-    useConfigOnly = true
+  useConfigOnly = true
+
+[init]
+  defaultBranch = main
 
 [include]
   path = ~/.gitconfig.local
