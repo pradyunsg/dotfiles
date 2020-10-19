@@ -1,0 +1,3 @@
+#!/bin/bash
+# Show commits since last tag
+git graph $(git describe --tags --abbrev=0)..HEAD --oneline
