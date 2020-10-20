@@ -47,6 +47,7 @@
   gpgsign = true
 
 [core]
+  attributesfile = ~/.gitattributes
   excludesfile = ~/.gitignore
   autocrlf = input
   editor = code -w

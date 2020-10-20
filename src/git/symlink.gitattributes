@@ -1,0 +1,34 @@
+*.json   text
+*.toml   text
+*.xml    text
+*.yaml   text
+*.yml    text
+
+# Language specific
+*.cpp    text diff=cpp
+
+*.css    text diff=css
+*.svg    text diff=html
+*.html   text diff=html
+
+*.rb     text diff=ruby
+*.rake   text diff=ruby
+
+*.rs     text diff=rust
+
+*.pyi    text diff=python
+*.py     text diff=python
+*.pyx    text diff=python
+
+*.md     text diff=markdown
+
+# These are explicitly windows files and should use crlf
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+*.ps1    text eol=crlf
+
+# These are explicitly unix files and should use lf
+*.bash   text eol=lf
+*.fish   text eol=lf
+*.zsh    text eol=lf
+*.sh     text eol=lf
