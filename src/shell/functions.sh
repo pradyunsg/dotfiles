@@ -1,3 +1,5 @@
+export PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
+
 # Create a directory and cd into it.
 function mcd {
   if [ ! -n "$1" ]; then
@@ -18,7 +20,6 @@ function mcd {
 
 # Switching between projects
 function pp {
-  PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
   if [ ! -n "$1" ]; then
     cd "$PROJECT_DIRECTORY"
   elif [ -n "$2" ]; then
@@ -38,7 +39,6 @@ function pp {
 
 # I do this far too often
 function octobox-update {
-  PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
   pushd "${PROJECT_DIRECTORY}/octobox"
   git checkout master
   git pull upstream master
