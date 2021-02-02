@@ -36,7 +36,7 @@ for dump in ~/.zcompdump(N.mh+24); do
   compinit -u
 done
 
-compinit -C
+compinit -uC
 
 # load the "last" files
 for file in ${(M)config_files:#*/last.(sh|${CURRENT_SHELL})}
