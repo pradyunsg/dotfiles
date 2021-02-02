@@ -37,7 +37,3 @@ fi
 # Because it's shorter
 # -----------------------------------------------------------------------------
 alias g="git"
-
-# For pyenv and "brew doctor" working together well.
-# See https://github.com/pyenv/pyenv/issues/106
-alias brew="env PATH=${PATH//$(pyenv root)\/shims:/} brew"
