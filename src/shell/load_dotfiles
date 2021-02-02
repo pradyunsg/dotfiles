@@ -33,7 +33,7 @@ autoload -Uz compinit
 # Speed up startup by only checking once a day, if the cached .zcompdump
 # file should be regenerated
 for dump in ~/.zcompdump(N.mh+24); do
-  compinit
+  compinit -u
 done
 
 compinit -C
