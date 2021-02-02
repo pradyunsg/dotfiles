@@ -1,25 +1,7 @@
 export PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
 
-# Create a directory and cd into it.
-function mcd {
-  if [ ! -n "$1" ]; then
-    echo "Usage: mcd directory"
-    echo "FATAL: Did not pass directory"
-    return 1
-  elif [ -n "$2" ]; then
-    echo "Usage: mcd directory"
-    echo "FATAL: Too many arguments"
-    return 1
-  elif [ -d $1 ]; then
-    echo "'$1' already exists"
-    return 1
-  else
-    mkdir $1 && cd $1
-  fi
-}
-
 # Switching between projects
-function pp {
+function p {
   if [ ! -n "$1" ]; then
     cd "$PROJECT_DIRECTORY"
   elif [ -n "$2" ]; then
@@ -35,13 +17,4 @@ function pp {
     cd $PROJECT_DIRECTORY/$1
     v act
   fi
-}
-
-# I do this far too often
-function octobox-update {
-  pushd "${PROJECT_DIRECTORY}/octobox"
-  git checkout master
-  git pull upstream master
-  git push origin master
-  popd
 }
