@@ -1,7 +1,7 @@
-# Directory shortnames
-.dirname
+# pyenv
+.python-version
 
-# My new Text Editor!
+# Visual Studio Code
 .vscode
 
 # Ignore the file that specifies what virtualenv is to be used locally
