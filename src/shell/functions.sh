@@ -1,4 +1,4 @@
-export PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Projects"}
+export PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-"${HOME}/Developer"}
 
 # Switching between projects
 function p {
