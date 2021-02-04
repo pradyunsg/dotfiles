@@ -80,6 +80,7 @@ v::command::make() {
 
   echo "Creating virtualenv here..."
   virtualenv .venv
+  v::command::activate
 }
 
 v::command::remove() {
