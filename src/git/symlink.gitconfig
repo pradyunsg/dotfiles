@@ -11,8 +11,8 @@
   # Two Character Shorthands
   cl = clone                    # clone
   br = branch                   # branch
-  co = checkout                 # checkout
-  nb = !git co -b               # new branch
+  co = switch                   # checkout, but only to branches
+  nb = checkout -b              # new branch
   st = status -sb               # status in a concise manner
   cp = cherry-pick              # cherry-pick is very log
   # history of current HEAD
@@ -34,9 +34,6 @@
   diffc = diff --cached
   pushf = push --force
   pushit = push -u origin HEAD
-
-  # Make it easy to get the current upstream easily.
-  pullit = sync
 
   whatadded = log --diff-filter=A  # which commit added this file
 
