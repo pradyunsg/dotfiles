@@ -1,10 +1,19 @@
 #!/bin/bash
 # Syncing with upstream branches should be easy.
 
-echo_git() {
-  echo -e "\033[34m> git $@\033[0m"
+function echo_git() {
+  echo -e "> \033[34mgit $@\033[0m"
   git $@
 }
+
+if ! git remote get-url upstream >/dev/null 2>&1; then
+  echo -e "\033[31m[FATAL]\033[37m No remote named 'upstream'.\033[0m"
+  exit 1
+fi
+
+if ! git symbolic-ref refs/remotes/upstream/HEAD >/dev/null 2>&1; then
+  echo_git remote set-head upstream -a
+fi
 
 MAIN_BRANCH=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@')
 INITIAL_BRANCH=$(git symbolic-ref --short HEAD)
