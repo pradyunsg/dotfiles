@@ -3,9 +3,9 @@ if [ -d "/usr/local/sbin" ] ; then
     PATH="/usr/local/sbin:$PATH"
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+# set PATH so it includes user's personal bin if it exists
+if [ -d "$HOME/Developer/bin" ] ; then
+    PATH="$HOME/Developer/bin:$PATH"
 fi
 
 # set PATH so it includes user's local bin if it exists
