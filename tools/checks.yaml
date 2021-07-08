@@ -1,14 +1,14 @@
 identity:
   name: Pradyun Gedam
-  email: pradyunsg@gmail.com
+  email: pradyunsg@users.noreply.github.com
 
   username: pradyunsg
-  gpg-key: DA17C4B29CB32E4B
+  gpg-key: FF99710C4332258E
   ssh-key: 2f:c7:f7:cf:aa:17:16:08:bf:40:73:3a:3f:4c:fc:e6
 
 things:
   Core:
-    executables: cloc, curl, gpg, http, ssh, tree, wget
+    executables: asdf, cloc, curl, gpg, http, ssh, tree, wget
   C/C++:
     executables: make, cmake, gcc, clang, clang-format
   Git:
@@ -26,33 +26,24 @@ things:
       "commit signing is enabled":
         cmd: git config --get commit.gpgsign
         equal: "true"
-  Go:
-    executables: go, gofmt
   Python:
-    executables: pyenv, python, pip, pipx, pre-commit
-  Ruby:
-    executables: rbenv
+    executables: python, pip, pipx, pre-commit, nox
   Rust:
     executables: rustc, cargo
   NodeJS:
     executables: node, npm
-  Virtual Machines:
-    executables: virtualenv, vagrant
-  SQL:
-    executables: mysql, psql
-  MongoDB:
-    executables: mongod
 
   # Don't judge. I got a brainwave this one time to ensure stuff like this is
   # correct; and kept that way.
   XCode:
-    if: {platform: Darwin}
+    if: { platform: Darwin }
     run_check:
       "CLI tools are installed":
         cmd: xcode-select -p
+        equal: "/Library/Developer/CommandLineTools"
 
   MacOS:
-    if: {platform: Darwin}
+    if: { platform: Darwin }
     executables: brew
     run_check:
       "Save Panels are expanded (1)":
@@ -76,7 +67,7 @@ things:
         equal: "png"
 
   Finder:
-    if: {platform: Darwin}
+    if: { platform: Darwin }
     run_check:
       "shows Status Bar":
         cmd: defaults read com.apple.finder ShowStatusBar
