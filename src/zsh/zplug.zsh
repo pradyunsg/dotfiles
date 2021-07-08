@@ -1,4 +1,4 @@
-export ZPLUG_HOME=${ZPLUG_HOME:="/usr/local/opt/zplug"}
+export ZPLUG_HOME=${ZPLUG_HOME:="/opt/homebrew/opt/zplug"}
 export ZPLUG_REPOS=${ZPLUG_REPOS:="$HOME/.zplug"}
 source $ZPLUG_HOME/init.zsh
 
