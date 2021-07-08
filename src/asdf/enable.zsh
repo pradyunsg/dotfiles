@@ -1,3 +1,6 @@
 if [[ "$OSTYPE" == darwin* ]]; then
-  . $HOME/.asdf/asdf.sh
+  if [[ -f $HOME/.asdf/asdf.sh ]]; then
+    source $HOME/.asdf/asdf.sh
+  fi
+  export ASDF_DIR=$(brew --prefix asdf)
 fi
