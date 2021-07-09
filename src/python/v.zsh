@@ -79,7 +79,7 @@ v::command::make() {
   fi
 
   echo "Creating virtualenv here..."
-  virtualenv .venv
+  python3 -m venv .venv
   v::command::activate
 }
 
