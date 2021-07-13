@@ -1,0 +1,52 @@
+#!python3
+
+import subprocess
+import sys
+
+
+def show_command(command):
+    print(f"\033[36m>\033[34m {command}\033[0m")
+
+
+def run(command, **kwargs):
+    try:
+        return subprocess.run(command, shell=True, check=True, text=True, **kwargs)
+    except subprocess.CalledProcessError as e:
+        if e.stdout or e.stderr:
+            print(e.stdout, file=sys.stderr, end="")
+            print(e.stderr, file=sys.stderr, end="")
+        print(f"\033[31m[FAILED] Exit code: {e.returncode}\033[0m", file=sys.stderr)
+        sys.exit(e.returncode)
+
+
+def main():
+    # Determine which make command to run.
+    make_args = sys.argv[1:]
+    if not make_args:
+        run("make help")
+        return
+
+    # Run make
+    result = run("make -n " + " ".join(make_args), capture_output=True)
+
+    # Determine the commands that need to be run.
+    commands_to_run = []
+    current_command = []
+    for line in result.stdout.splitlines():
+        current_command.append(line)
+
+        if line.endswith("\\"):
+            continue
+
+        commands_to_run.append("\n".join(current_command))
+        current_command[:] = []
+
+    # Run the commands
+    print(f"Will run {len(commands_to_run)} tasks.")
+    for command in commands_to_run:
+        show_command(command)
+        run(command)
+
+
+if __name__ == "__main__":
+    main()
