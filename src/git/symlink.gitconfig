@@ -36,6 +36,7 @@
   pushit = push -u origin HEAD
 
   whatadded = log --diff-filter=A  # which commit added this file
+  fixup = commit --fixup
 
 [apply]
   whitespace = error
