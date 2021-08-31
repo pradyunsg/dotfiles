@@ -12,6 +12,7 @@ if ! git remote get-url upstream >/dev/null 2>&1; then
 fi
 
 if ! git symbolic-ref refs/remotes/upstream/HEAD >/dev/null 2>&1; then
+  echo_git fetch upstream
   echo_git remote set-head upstream -a
 fi
 

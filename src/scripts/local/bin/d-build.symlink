@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+_my_image=$(basename "$(pwd)dev")
+echo "Infered image name from current folder: ${_my_image}"
+
+docker build -t "${_my_image}" ${1:-.}
