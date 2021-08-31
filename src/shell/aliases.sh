@@ -19,7 +19,7 @@ fi
 
 # Shorthands
 alias la='ls -a'
-alias ll='ls -l'
+alias ll='ls -lh'
 alias path='echo $PATH | tr -s ":" "\n"'
 alias gpg-test='echo "test" | gpg --clearsign'
 
