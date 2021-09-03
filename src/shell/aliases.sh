@@ -11,7 +11,7 @@ alias dotpath="cat ~/.dotfiles-dir; echo"
 # Be colorful!
 
 if [[ "$OSTYPE" == darwin* ]]; then
-  CLICOLOR=1
+  export CLICOLOR=1
 else
   alias ls='ls --color=auto'
   alias rm='rm -I --preserve-root'
@@ -19,7 +19,7 @@ fi
 
 # Shorthands
 alias la='ls -a'
-alias ll='ls -lh'
+alias ll='ls -lhF'
 alias path='echo $PATH | tr -s ":" "\n"'
 alias gpg-test='echo "test" | gpg --clearsign'
 
