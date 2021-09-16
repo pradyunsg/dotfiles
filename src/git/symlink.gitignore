@@ -3,6 +3,7 @@
 
 # Visual Studio Code
 .vscode
+.devcontainer
 
 # Ignore the file that specifies what virtualenv is to be used locally
 .venv
