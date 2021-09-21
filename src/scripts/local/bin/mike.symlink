@@ -1,51 +1,110 @@
 #!python3
 
-import subprocess
+import asyncio
+import asyncio.subprocess
+import os
+import shlex
 import sys
 
+# --------------------------------------------------------------------------------------
+# Figure out the invocations we want to "catch"
+# --------------------------------------------------------------------------------------
+known_tools = [
+    "black",
+    "clang-format",
+    "flake8",
+    "g++",
+    "gcc",
+    "git",
+    "find",
+    "rm",
+    "isort",
+    "make",
+    "mypy",
+    "pip",
+    "prettier",
+    "pylint",
+    "python",
+    "python2.7",
+    "python2",
+    "python3.10",
+    "python3.6",
+    "python3.7",
+    "python3.8",
+    "python3.9",
+    "python3",
+]
 
-def show_command(command):
-    print(f"\033[36m>\033[34m {command}\033[0m")
+# --------------------------------------------------------------------------------------
+# Presentation logic
+# --------------------------------------------------------------------------------------
+def limit(data, offset=2):
+    width = os.get_terminal_size()[0] - offset
+    return (data[: width - 3] + "...\n") if len(data) >= width else data
 
 
-def run(command, **kwargs):
-    try:
-        return subprocess.run(command, shell=True, check=True, text=True, **kwargs)
-    except subprocess.CalledProcessError as e:
-        if e.stdout or e.stderr:
-            print(e.stdout, file=sys.stderr, end="")
-            print(e.stderr, file=sys.stderr, end="")
-        print(f"\033[31m[FAILED] Exit code: {e.returncode}\033[0m", file=sys.stderr)
-        sys.exit(e.returncode)
+def present_tool(string):
+    return f"\033[36m> \033[34m{limit(string)}\033[0m"
+
+
+def show_make(command):
+    # print(f"\033[36m$ \033[34m{command}\033[0m")
+    pass
+
+
+# --------------------------------------------------------------------------------------
+# Dispatch logic
+# --------------------------------------------------------------------------------------
+def looks_like_command(string) -> bool:
+    return string.startswith(tuple(known_tools))
+
+
+def process_line(line: bytes) -> str:
+    original_string = line.decode()
+
+    if original_string[0] != " ":
+        # Trim environment variables, up to 4
+        parts = original_string.split(None, 5)
+
+        i = 0
+        for part in parts:
+            if "=" in part:
+                i += 1
+                continue
+            else:
+                break
+
+        # Present the line
+        if looks_like_command(" ".join(parts[i:])):
+            return present_tool(original_string)
+    return original_string
+
+
+async def make(args):
+    await run("make " + " ".join(shlex.quote(arg) for arg in args))
+
+
+async def watch(in_stream, out_stream):
+    async for line in in_stream:
+        out_stream.write(process_line(line))
+
+
+async def wrap(in_stream, out_stream):
+    async for line in in_stream:
+        out_stream.write(line.decode())
+
+
+async def run(cmd):
+    show_make(cmd)
+    p = await asyncio.create_subprocess_shell(cmd, stdout=asyncio.subprocess.PIPE)
+    await watch(p.stdout, sys.stdout)
 
 
 def main():
-    # Determine which make command to run.
-    make_args = sys.argv[1:]
-    if not make_args:
-        run("make help")
-        return
+    # Show help, by default.
+    make_args = list(sys.argv[1:] or ["help"])
 
-    # Run make
-    result = run("make -n " + " ".join(make_args), capture_output=True)
-
-    # Determine the commands that need to be run.
-    commands_to_run = []
-    current_command = []
-    for line in result.stdout.splitlines():
-        current_command.append(line)
-
-        if line.endswith("\\"):
-            continue
-
-        commands_to_run.append("\n".join(current_command))
-        current_command[:] = []
-
-    # Run the commands
-    print(f"Will run {len(commands_to_run)} tasks.")
-    for command in commands_to_run:
-        show_command(command)
-        run(command)
+    asyncio.get_event_loop().run_until_complete(make(make_args))
 
 
 if __name__ == "__main__":
