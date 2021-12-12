@@ -16,6 +16,7 @@
 /build/
 *.[oa]
 *.pyc
+*.egg-info/
 
 # Mac OS X
 *.DS_Store
