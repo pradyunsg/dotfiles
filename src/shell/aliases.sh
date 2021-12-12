@@ -37,3 +37,4 @@ fi
 # Because it's shorter
 # -----------------------------------------------------------------------------
 alias g="git"
+alias pip-pdb="python -m pdb -m pip --debug"
