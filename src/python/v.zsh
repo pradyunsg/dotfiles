@@ -133,7 +133,7 @@ v::command::wipe() {
 
   # Put output of pip freeze in a single location.
   temp_file=$(mktemp /tmp/XXXXXXXXX.requirements.txt)
-  pip freeze | egrep --color=auto -v '(distribute|wsgiref|appdirs|packaging|pyparsing|six)' > "$temp_file"
+  pip list --format=freeze | egrep --color=auto -v '(distribute|wsgiref|appdirs|packaging|pyparsing|six)' > "$temp_file"
 
   # Nothing to remove.
   if ! [ -n "$(cat "$temp_file")" ]; then
@@ -145,7 +145,7 @@ v::command::wipe() {
   line_count=$(cat "$temp_file" | wc -l | xargs)
   echo "Found ${line_count} packages."
 
-  pip uninstall -y $(cat "$temp_file" | grep -v '^-f' | sed 's/>|@/=/g' | cut -f1 -d=)
+  pip uninstall -y $(cat "$temp_file" | grep -ve '^pip' | grep -ve '^setuptools' | grep -ve '^wheel' | sed 's/>|@/=/g' | cut -f1 -d=)
 
   rm -f "$temp_file"
 }
