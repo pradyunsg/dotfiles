@@ -38,6 +38,7 @@ fi
 # -----------------------------------------------------------------------------
 alias g="git"
 alias pip-pdb="python -m pdb -m pip --debug"
+alias python-debug="python -m debugpy --listen 5678 --wait-for-client"
 
 # -----------------------------------------------------------------------------
 # Because it's nicer
