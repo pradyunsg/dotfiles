@@ -1,6 +1,10 @@
 #!/bin/bash
-# Cleanup branches that have been merged already.
 
-git branch --merged "${1-master}" | \
-  grep -v "${1-master}" | \
+base_branch="${1-master}"
+
+git branch --merged $base_branch | \
+  grep -v $base_branch | \
   xargs git branch -d
+
+# From https://discuss.python.org/t/871
+git checkout -q $base_branch && git for-each-ref refs/heads/ '--format=%(refname:short)' | while read branch; do mergeBase=$(git merge-base $base_branch $branch) && [[ $(git cherry $base_branch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == '-'* ]] && git branch -D $branch; done
