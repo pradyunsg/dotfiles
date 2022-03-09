@@ -1,6 +1,6 @@
 #!/bin/bash
 
-base_branch="${1-master}"
+base_branch="${1-main}"
 
 git branch --merged $base_branch | \
   grep -v $base_branch | \
