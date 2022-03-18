@@ -80,6 +80,7 @@ v::command::make() {
 
   echo "Creating virtualenv here..."
   python3 -m venv --upgrade-deps .venv
+  .venv/bin/pip install wheel
   v::command::activate
 }
 
