@@ -1,1 +1,0 @@
-compctl -/ -W ~/Developer p
