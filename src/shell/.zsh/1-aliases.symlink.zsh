@@ -35,6 +35,7 @@ fi
 alias g="git"
 alias pip-pdb="python -m pdb -m pip --debug"
 alias python-debug="python -m debugpy --listen 5678 --wait-for-client"
+alias dot-clean="find -L ~ -type l -maxdepth 3 -exec rm -i {} \;"
 
 # -----------------------------------------------------------------------------
 # Because it's nicer
