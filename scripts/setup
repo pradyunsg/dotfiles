@@ -78,7 +78,6 @@ class DotFile:
     comes_from: "Repository"
     source: Path
     destination: Path
-    symlink: bool
 
     def __post_init__(self):
         assert self.source.is_absolute()
@@ -103,22 +102,10 @@ class Repository:
                 # Figure out a good name, if it needs to be brought over.
                 if item.startswith("symlink."):
                     target_name = item[7:]
-                    symlink = True
                 elif item.endswith(".symlink"):
                     target_name = item[:-8]
-                    symlink = True
                 elif ".symlink." in item:
                     target_name = item.replace(".symlink", "")
-                    symlink = True
-                elif item.startswith("copy."):
-                    target_name = item[4:]
-                    symlink = False
-                elif item.endswith(".copy"):
-                    target_name = item[:-5]
-                    symlink = False
-                elif ".copy." in item:
-                    target_name = item.replace(".copy", "")
-                    symlink = False
                 else:
                     continue
 
@@ -131,7 +118,6 @@ class Repository:
                     comes_from=self,
                     source=source,
                     destination=destination,
-                    symlink=symlink,
                 )
 
     def compute_target(self, root: Path, target_name: str) -> Path:
@@ -211,19 +197,6 @@ def show_io(
         output.add_row(action_str, target_str)
 
     rich.print(output)
-
-
-def copy(src: Path, target: Path, *, comes_from: str, dry_run: bool) -> None:
-    assert src.is_file()
-    assert dry_run or not (target.exists() or target.is_symlink())
-
-    show_io("green", " copy ", target, src=src, comes_from=comes_from)
-
-    if dry_run:
-        return
-
-    os.makedirs(target.parent, exist_ok=True)
-    shutil.copy(src, target)
 
 
 def symlink(src: Path, target: Path, *, comes_from: str, dry_run: bool) -> None:
@@ -339,15 +312,14 @@ def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> Non
         target = target_dir / dotfile.destination
 
         # Don't try to overwrite a correct symlink.
-        if target.is_symlink() and dotfile.symlink:
-            if target.samefile(dotfile.source):
-                symlink(
-                    dotfile.source,
-                    target,
-                    dry_run=True,
-                    comes_from=comes_from,
-                )
-                continue
+        if target.is_symlink() and target.samefile(dotfile.source):
+            symlink(
+                dotfile.source,
+                target,
+                dry_run=True,
+                comes_from=comes_from,
+            )
+            continue
 
         if target.exists() or target.is_symlink():
             # TODO: Figure out how to sanity-check this situation.
@@ -359,20 +331,12 @@ def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> Non
             elif action == Action.BACKUP:
                 backup(target, dry_run=dry_run)
 
-        if not dotfile.symlink:
-            copy(
-                dotfile.source,
-                target,
-                dry_run=dry_run,
-                comes_from=comes_from,
-            )
-        else:
-            symlink(
-                dotfile.source,
-                target,
-                dry_run=dry_run,
-                comes_from=comes_from,
-            )
+        symlink(
+            dotfile.source,
+            target,
+            dry_run=dry_run,
+            comes_from=comes_from,
+        )
 
 
 if __name__ == "__main__":
