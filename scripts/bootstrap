@@ -84,3 +84,5 @@ CONFIG_FILE=~/.dotfiles.toml
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "[repositories]\npersonal = \"$DOTFILES_REPO_ROOT\"" > $CONFIG_FILE
 fi
+
+$DOTFILES_REPO_ROOT/scripts/setup
