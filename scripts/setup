@@ -334,6 +334,7 @@ def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> Non
 
 if __name__ == "__main__":
     import rich.traceback
+
     rich.traceback.install(show_locals=True, width=None, suppress=[rich])
 
     dry_run = "--dry-run" in sys.argv
