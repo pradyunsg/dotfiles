@@ -28,6 +28,7 @@ if grep -q docker /proc/1/cgroup 2> /dev/null; then
   echo "This is a Docker container!"
   echo
 
+  exit 1
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   echo "This is a MacBook!"
   echo
@@ -65,9 +66,7 @@ elif [[ "$(uname -s)" == "Linux" ]]; then
   echo "This is a Linux Machine!"
   echo
 
-
-
-
+  exit 1
 else
   echo -ne "\n\n\e[31mERROR: Not sure how to set up this machine!\e[0m\n\n"
   exit 1
