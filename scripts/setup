@@ -152,9 +152,13 @@ class Configuration:
         for conflict in data.get("conflicts", []):
             filepath = conflict["file"]
             use = conflict["use"]
+            assert isinstance(filepath, str)
+            assert isinstance(use, str)
 
             if filepath in self.conflicts:
                 raise ValueError(f"Got duplicate file in config: {filepath}")
+            if use not in self.repositories:
+                raise ValueError(f"Got unknown repository ({use}) for {filepath}")
 
             self.conflicts[Path(filepath)] = use
 
@@ -282,20 +286,9 @@ def _compute_final_file_set(config: Configuration) -> Iterable[Tuple[str, DotFil
             f"{config_conflict_targets} != {all_conflicting_targets}"
         )
 
-    for target, repo_names in config.conflicts.items():
-        assert isinstance(repo_names, list)
-        if not repo_names:
-            continue
-
-        if len(repo_names) == 1:
-            name = repo_names[0]
-            resolved_dotfiles[target] = repositories[name][target]
-            source_repository[target] = name
-            continue
-
-        raise Exception(
-            "I do not know how to combine a file from multiple repositories yet. Sorry!"
-        )
+    for target, name in config.conflicts.items():
+        resolved_dotfiles[target] = repositories[name][target]
+        source_repository[target] = name
 
     for dotfile in resolved_dotfiles.values():
         yield source_repository[dotfile.destination], dotfile

@@ -54,11 +54,11 @@ If two repositories provide the same dotfile, you can set up an override using t
 ```
 [[conflicts]]
 file = ".bashrc"
-use = ["work"]
+use = "work"
 
 [[conflicts]]
 file = ".zshrc"
-use = ["personal"]
+use = "personal"
 ```
 
 ## License
