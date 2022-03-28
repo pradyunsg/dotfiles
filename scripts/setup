@@ -17,7 +17,7 @@ import os
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Dict, Iterable, Optional, Tuple
 
 import rich
 import tomli as toml
@@ -32,7 +32,9 @@ _ACTION: Optional[str] = None
 
 @enum.unique
 class Action(enum.Enum):
-    NOTHING = ""
+    UP_TO_DATE = enum.auto()
+    CREATE = enum.auto()
+
     SKIP = "s"
     UPDATE = "u"
     BACKUP = "b"
@@ -135,7 +137,7 @@ class Configuration:
     filepath: Path
 
     repositories: Dict[str, Repository] = field(init=False, default_factory=dict)
-    conflicts: Dict[Path, List[str]] = field(init=False, default_factory=dict)
+    conflicts: Dict[Path, str] = field(init=False, default_factory=dict)
 
     def __post_init__(self):
         with open(self.filepath, "rb") as f:
@@ -174,7 +176,14 @@ def show_io(
     src: Optional[Path] = None,
     comes_from: str = "unset",
 ):
-    if target.is_relative_to(Path.home()):
+    def is_relative(this, *, to):
+        try:
+            this.relative_to(*to.parts)
+            return True
+        except ValueError:
+            return False
+
+    if is_relative(target, to=Path.home()):
         target = Path("~") / target.relative_to(Path.home())
 
     action_str = f"\\[{action}]"
@@ -206,7 +215,7 @@ def show_io(
 def symlink(src: Path, target: Path, *, comes_from: str, dry_run: bool) -> None:
     assert src.exists()
 
-    show_io("cyan", " link ", target, src=src, comes_from=comes_from)
+    show_io("cyan", "   link   ", target, src=src, comes_from=comes_from)
 
     if dry_run:
         return
@@ -219,7 +228,7 @@ def symlink(src: Path, target: Path, *, comes_from: str, dry_run: bool) -> None:
 def backup(path: Path, *, dry_run: bool) -> None:
     assert path.is_file()
 
-    show_io("magenta", "backup", path)
+    show_io("magenta", "  backup  ", path)
 
     if dry_run:
         return
@@ -227,7 +236,7 @@ def backup(path: Path, *, dry_run: bool) -> None:
     target = path.with_suffix(path.suffix + ".backup")
     assert not (target.exists() or target.is_symlink())
 
-    os.makedirs(target.parent)
+    os.makedirs(target.parent, exist_ok=True)
     shutil.copy(path, target)
     os.remove(path)
 
@@ -235,7 +244,7 @@ def backup(path: Path, *, dry_run: bool) -> None:
 def remove(target: Path, *, dry_run: bool) -> None:
     assert target.exists() or target.is_symlink()
 
-    show_io("red", "remove", target)
+    show_io("red", "  remove  ", target)
 
     if dry_run:
         return
@@ -258,7 +267,9 @@ def _compute_final_file_set(config: Configuration) -> Iterable[Tuple[str, DotFil
         ), f"{name} has duplicates!"
 
     all_dotfiles = set(
-        *itertools.chain(repo_dotfiles for repo_dotfiles in repositories.values())
+        itertools.chain(
+            *(repo_dotfiles.keys() for repo_dotfiles in repositories.values())
+        )
     )
 
     resolved_dotfiles: Dict[Path, DotFile] = dict()
@@ -294,6 +305,17 @@ def _compute_final_file_set(config: Configuration) -> Iterable[Tuple[str, DotFil
         yield source_repository[dotfile.destination], dotfile
 
 
+def determine_action(*, target: Path, source: Path) -> Action:
+    if target.is_symlink() and target.samefile(source):
+        return Action.UP_TO_DATE
+
+    if target.is_symlink() or target.exists():
+        # TODO: Figure out how to sanity-check this situation.
+        return Action.get_user_choice(source=source, target=target)
+
+    return Action.CREATE
+
+
 def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> None:
     assert target_dir.is_absolute()
     # Generate a merged set of files to copy over
@@ -302,27 +324,19 @@ def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> Non
     for comes_from, dotfile in sorted(
         resolved_dotfiles, key=lambda x: x[1].destination
     ):
+        source = dotfile.source
         target = target_dir / dotfile.destination
+        action = determine_action(source=source, target=target)
 
-        # Don't try to overwrite a correct symlink.
-        if target.is_symlink() and target.samefile(dotfile.source):
-            symlink(
-                dotfile.source,
-                target,
-                dry_run=True,
-                comes_from=comes_from,
-            )
+        if action == Action.UPDATE:
+            remove(target, dry_run=dry_run)
+        elif action == Action.BACKUP:
+            backup(target, dry_run=dry_run)
+        elif action == Action.UP_TO_DATE:
+            show_io("yellow", "up to date", target, src=source, comes_from=comes_from)
             continue
-
-        if target.exists() or target.is_symlink():
-            # TODO: Figure out how to sanity-check this situation.
-            action = Action.get_user_choice(source=dotfile.source, target=target)
-            if action == Action.UPDATE:
-                remove(target, dry_run=dry_run)
-            elif action == Action.SKIP:
-                continue
-            elif action == Action.BACKUP:
-                backup(target, dry_run=dry_run)
+        elif action == Action.SKIP:
+            continue
 
         symlink(
             dotfile.source,
@@ -337,7 +351,7 @@ if __name__ == "__main__":
 
     rich.traceback.install(show_locals=True, width=None, suppress=[rich])
 
-    dry_run = "--dry-run" in sys.argv
+    _dry_run = "--dry-run" in sys.argv
 
     config_file = Path.home() / ".dotfiles.toml"
     if not config_file.exists():
@@ -352,9 +366,9 @@ if __name__ == "__main__":
         rich.print("[green]" + escape(Path("sample.config.toml").read_text()) + "[/]")
         sys.exit(1)
 
-    config = Configuration(config_file)
+    _config = Configuration(config_file)
     sync_files(
-        config=config,
+        config=_config,
         target_dir=Path.home(),
-        dry_run=dry_run,
+        dry_run=_dry_run,
     )

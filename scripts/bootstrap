@@ -22,7 +22,7 @@ function brew_install_cask_if_not_installed() {
   echo "✅ $app_name"
 }
 
-DOTFILES_REPO_ROOT="$(dirname "$(dirname "$(realpath "$0")")")"
+DOTFILES_REPO_ROOT="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" &> /dev/null && pwd)"
 
 if grep -q docker /proc/1/cgroup 2> /dev/null; then
   echo "This is a Docker container!"
@@ -74,7 +74,7 @@ fi
 
 # Create Python virtual environment for running `scripts/setup`.
 if [[ ! -d .venv ]]; then
-  python3 -m venv .venv --upgrade
+  /usr/bin/python3 -m venv .venv --upgrade
   .venv/bin/pip install wheel
   .venv/bin/pip install -r $DOTFILES_REPO_ROOT/requirements.txt
 fi
@@ -82,7 +82,7 @@ fi
 # Create a ~/.dotfiles.toml, if it doesn't exist.
 CONFIG_FILE=~/.dotfiles.toml
 if [[ ! -f "$CONFIG_FILE" ]]; then
-  echo "[repositories]\npersonal = \"$DOTFILES_REPO_ROOT\"" > $CONFIG_FILE
+  echo -e "[repositories]\npersonal = \"$(realpath $DOTFILES_REPO_ROOT)\"" > $CONFIG_FILE
 fi
 
 $DOTFILES_REPO_ROOT/scripts/setup
