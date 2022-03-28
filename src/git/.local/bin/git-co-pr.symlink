@@ -1,0 +1,23 @@
+#!/bin/bash
+# Checking out PRs should be easy.
+
+echo_git() {
+  echo -e "\033[34m> git $@\033[0m"
+  git $@
+}
+
+if [ -z "$2" ]; then
+  echo "Not enough arguments. Need 2"
+  echo "Usage: git co-pr remote PR-number"
+  exit 1
+fi
+
+if ! echo_git remote get-url $1; then
+  exit 2
+fi
+
+if echo_git fetch $1 "pull/$2/head:pr/$2"; then
+  echo_git checkout "pr/$2"
+else
+  exit 3
+fi
