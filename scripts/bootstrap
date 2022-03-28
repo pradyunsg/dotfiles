@@ -38,21 +38,9 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
-  echo "✅ Homebrew"
+  echo -e "\033[32mHomebrew is installed!\033[0m"
 
-  for pkg in coreutils moreutils git pinentry-mac gnupg gh zplug asdf tree curl wget httpie hugo cloc; do
-    if ! brew ls --version "$pkg" > /dev/null; then
-      echo "Installing $pkg..."
-      brew install "$pkg"
-    fi
-    echo "✅ $pkg"
-  done
-
-  brew_install_cask_if_not_installed "Scroll Reverser.app" "scroll-reverser"
-  brew_install_cask_if_not_installed "Firefox.app" "firefox"
-  brew_install_cask_if_not_installed "balenaEtcher.app" "balenaetcher"
-  brew_install_cask_if_not_installed "Meld.app" "meld"
-  brew_install_cask_if_not_installed "Visual Studio Code.app" "visual-studio-code"
+  brew bundle --file $DOTFILES_REPO_ROOT/Brewfile --no-lock
 
   code \
     --install-extension ms-python.python \
@@ -60,7 +48,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     --install-extension ms-vsliveshare.vsliveshare \
     --install-extension matklad.rust-analyzer \
     --install-extension sdras.night-owl
-  echo "✅ Visual Studio Code extensions are installed!"
+  echo -e "\033[32mVisual Studio Code extensions are installed!\033[0m"
 
 elif [[ "$(uname -s)" == "Linux" ]]; then
   echo "This is a Linux Machine!"
