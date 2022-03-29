@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-_my_image=$(basename "$(pwd)dev")
-echo "Infered image name from current folder: ${_my_image}"
+if [ -n "$1" ]; then
+    image_name=$1
+else
+    echo "Inferred image name: ${image_name}"
+    image_name=$(basename "$(pwd)dev")
+fi
 
-docker build -t "${_my_image}" ${1:-.}
+set -x
+docker build -t "${image_name}" .
