@@ -306,14 +306,16 @@ def _compute_final_file_set(config: Configuration) -> Iterable[Tuple[str, DotFil
 
 
 def determine_action(*, target: Path, source: Path) -> Action:
-    if target.is_symlink() and target.samefile(source):
-        return Action.UP_TO_DATE
+    if target.is_symlink():
+        if not target.exists():
+            return Action.get_user_choice(source=source, target=target)
+        if target.samefile(source):
+            return Action.UP_TO_DATE
 
-    if target.is_symlink() or target.exists():
-        # TODO: Figure out how to sanity-check this situation.
-        return Action.get_user_choice(source=source, target=target)
+    if not target.exists():
+        return Action.CREATE
 
-    return Action.CREATE
+    return Action.get_user_choice(source=source, target=target)
 
 
 def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> None:
