@@ -32,7 +32,7 @@
   amend = commit --amend        # amend your last commit
 
   diffc = diff --cached
-  pushf = push --force
+  pushf = push --force-with-lease
   pushit = push -u origin HEAD
 
   whatadded = log --diff-filter=A  # which commit added this file
