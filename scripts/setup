@@ -24,6 +24,11 @@ import tomli as toml
 from rich.markup import escape
 from rich.table import Table
 
+EXAMPLE_TOML = f"""
+[repositories]
+personal = "{os.getcwd()}"
+"""
+
 # --------------------------------------------------------------------------------------
 # For dealing with files that already exist
 # --------------------------------------------------------------------------------------
@@ -350,6 +355,7 @@ def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> Non
 
 if __name__ == "__main__":
     import rich.traceback
+    from rich.markup import escape
 
     rich.traceback.install(show_locals=True, width=None, suppress=[rich])
 
@@ -364,8 +370,7 @@ if __name__ == "__main__":
         )
         rich.print()
         rich.print("You might want to create that file contents like:")
-        rich.print()
-        rich.print("[green]" + escape(Path("sample.config.toml").read_text()) + "[/]")
+        rich.print(escape(EXAMPLE_TOML))
         sys.exit(1)
 
     _config = Configuration(config_file)
