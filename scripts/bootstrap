@@ -54,7 +54,10 @@ elif [[ "$(uname -s)" == "Linux" ]]; then
   echo "This is a Linux Machine!"
   echo
 
-  exit 1
+  git clone https://github.com/zplug/zplug "$HOME/.zplug-repo"
+  echo
+  echo "You'll have to setup editors manually."
+  echo
 else
   echo -ne "\n\n\e[31mERROR: Not sure how to set up this machine!\e[0m\n\n"
   exit 1
