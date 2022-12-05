@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+
+import subprocess
+import sys
+
+print("sys.executable:", sys.executable)
+
+try:
+    import tomllib
+except ImportError:
+    import tomli as tomllib
+
+from pathlib import Path
+
+file_path = Path.home() / ".dotfiles.toml"
+data = tomllib.loads(file_path.read_text())
+target = Path(data["repositories"]["personal"]) / "scripts" / "setup"
+
+print(f"Running {target}")
+subprocess.run([target], check=True)
