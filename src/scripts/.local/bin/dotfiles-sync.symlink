@@ -1,20 +1,36 @@
 #!/usr/bin/env python3
 
-import subprocess
 import sys
 
-print("sys.executable:", sys.executable)
+if sys.base_prefix == sys.prefix:
+    print("[INFO ] Not in a virtual environment.")
 
-try:
-    import tomllib
-except ImportError:
-    import tomli as tomllib
+print("[INFO ] sys.executable:", sys.executable)
+print("[INFO ] sys.version_info:", sys.version_info)
 
+import subprocess
 from pathlib import Path
 
 file_path = Path.home() / ".dotfiles.toml"
-data = tomllib.loads(file_path.read_text())
-target = Path(data["repositories"]["personal"]) / "scripts" / "setup"
+with file_path.open() as file:
+    for line in file:
+        if line.startswith("personal = "):
+            break
+    else:
+        print(
+            (
+                "\033[31m[ERROR] "
+                "Did not find a line starting with `personal =` in {file_path}"
+                "\033[0m"
+            ),
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
-print(f"Running {target}")
-subprocess.run([target], check=True)
+personal_root = Path(line[len("personal = ") + 1 : -2])
+
+target = personal_root / "scripts" / "setup"
+executable = personal_root / ".venv" / "bin" / "python"
+
+print(f"Running {executable} {target}")
+subprocess.run([executable, target], check=True)
