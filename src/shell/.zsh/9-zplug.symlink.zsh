@@ -9,10 +9,6 @@ zplug "zsh-users/zsh-syntax-highlighting", from:github
 zplug "romkatv/zsh-prompt-benchmark", from:github
 zplug "romkatv/powerlevel10k", as:theme, depth:1
 
-# If the plugins are not installed, install them
-if ! zplug check; then
-    zplug install
+if zplug check || zplug install; then
+  zplug load --verbose
 fi
-
-# Load the plugins
-zplug load
