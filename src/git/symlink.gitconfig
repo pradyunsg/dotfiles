@@ -11,7 +11,7 @@
   # Two Character Shorthands
   cl = clone                    # clone
   br = branch                   # branch
-  co = switch                   # checkout, but only to branches
+  co = checkout                 # checkout things
   nb = checkout -b              # new branch
   st = status -sb               # status in a concise manner
   cp = cherry-pick              # cherry-pick is very log
