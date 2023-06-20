@@ -41,3 +41,7 @@ alias dot-clean="find -L ~ -type l -maxdepth 3 -exec rm -i {} \;"
 # Because it's nicer
 # -----------------------------------------------------------------------------
 alias make="mike"
+
+function long() {
+  $@ && say $1 succeeded || say $1 failed
+}
