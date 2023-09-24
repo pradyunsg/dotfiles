@@ -41,6 +41,9 @@
 [apply]
   whitespace = error
 
+[blame]
+	ignoreRevsFile = .git-blame-ignore-revs
+
 [commit]
   gpgsign = true
 
