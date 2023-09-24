@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+all_pythons=$(asdf list all python)
+
+function log_info() {
+  echo -e "\033[34m[info]\033[0m $@"
+}
+
+function echo_asdf() {
+  echo -e "\033[32m[run]\033[35m asdf $@\033[0m"
+  PIP_REQUIRE_VENV=0 asdf $@
+}
+
+function determine_latest_patch_for_minor() {
+  echo "$all_pythons" | grep "^$1\." | tail -1
+}
+
+function relevant_minor_versions() {
+  # Determine "relevant" Python versions from date.
+  # Python has annual releases in September/October, and each release is
+  # supported for 5 years. This means 5 releases are supported at any
+  # given time and they are "relevant" for development.
+  #
+  # This function also considers the upcoming release as "relevant" for
+  # development.
+  #
+  # Expect 6 Python minor versions to be printed.
+
+  year=$(date +%Y)
+  month=$(date +%m)
+
+  # Python 3.7.0 was released in Oct 2018.
+  years_since_3_7_0=$(expr $year - 2018)
+  after_october=$(test $month -gt 10 && echo 1 || echo 0)
+  oldest_supported_minor=$(expr $years_since_3_7_0 + $after_october - 5 + 7)
+  latest_supported_minor=$(expr $years_since_3_7_0 + $after_october + 7)
+
+  seq $latest_supported_minor $oldest_supported_minor | xargs -I{} echo 3.{}
+}
+
+function find_tool_versions_referencing_python() {
+  log_info ".tool-versions files referencing \033[35mpython\033[0m..."
+  for file in $(find ~/Developer -maxdepth 3 -type f -name .tool-versions) ~/.tool-versions; do
+    if grep -E '^python\s' $file > /dev/null; then
+      lineno_line=$(grep -nE '^python\s' $file)
+      lineno=$(echo $lineno_line | cut -d: -f1)
+      line=$(echo $lineno_line | cut -d: -f2)
+
+      echo -e "\033[32m$file\033[0m:\033[34m$lineno\033[0m"
+      echo "  $line"
+    fi
+  done
+}
+
+function find_virtual_environments() {
+  log_info "Python virtual environments that might need updating..."
+  find ~/Developer -maxdepth 5 -type f -name pyvenv.cfg | xargs dirname | sort
+}
+
+latest_relevant_versions=$(for i in $(relevant_minor_versions); do determine_latest_patch_for_minor "$i"; done)
+log_info "Currently latest minor versions: $(echo $latest_relevant_versions | tr '\n' ' ')"
+
+echo_asdf list python
+for version in $latest_relevant_versions; do
+  echo_asdf install python $version
+done
+
+echo_asdf list python
+find_virtual_environments
+find_tool_versions_referencing_python
