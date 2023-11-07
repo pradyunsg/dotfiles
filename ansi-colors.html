@@ -135,11 +135,7 @@
 
         applyForeground(previewGrid, 0);
       }
-      document.onreadystatechange = function () {
-        if (document.readyState === "complete") {
-          main();
-        }
-      };
+      document.addEventListener("DOMContentLoaded", main);
     </script>
     <style>
       .ansi-256-grid {
