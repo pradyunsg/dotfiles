@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 bit ANSI color picker</title>
+
+    <script>
+      var ansi_colors = [
+        "#2d3139", "#e06c75", "#98c379", "#e5c07b",
+        "#528bff", "#c678dd", "#56b6c2", "#d7dae0",
+        "#7f848e", "#f44747", "#98c379", "#e5c07b",
+        "#528bff", "#7e0097", "#56b6c2", "#d7dae0",
+        "#000000", "#00005f", "#000087", "#0000af", "#0000d7", "#0000ff",
+        "#005f00", "#005f5f", "#005f87", "#005faf", "#005fd7", "#005fff",
+        "#008700", "#00875f", "#008787", "#0087af", "#0087d7", "#0087ff",
+        "#00af00", "#00af5f", "#00af87", "#00afaf", "#00afd7", "#00afff",
+        "#00d700", "#00d75f", "#00d787", "#00d7af", "#00d7d7", "#00d7ff",
+        "#00ff00", "#00ff5f", "#00ff87", "#00ffaf", "#00ffd7", "#00ffff",
+        "#5f0000", "#5f005f", "#5f0087", "#5f00af", "#5f00d7", "#5f00ff",
+        "#5f5f00", "#5f5f5f", "#5f5f87", "#5f5faf", "#5f5fd7", "#5f5fff",
+        "#5f8700", "#5f875f", "#5f8787", "#5f87af", "#5f87d7", "#5f87ff",
+        "#5faf00", "#5faf5f", "#5faf87", "#5fafaf", "#5fafd7", "#5fafff",
+        "#5fd700", "#5fd75f", "#5fd787", "#5fd7af", "#5fd7d7", "#5fd7ff",
+        "#5fff00", "#5fff5f", "#5fff87", "#5fffaf", "#5fffd7", "#5fffff",
+        "#870000", "#87005f", "#870087", "#8700af", "#8700d7", "#8700ff",
+        "#875f00", "#875f5f", "#875f87", "#875faf", "#875fd7", "#875fff",
+        "#878700", "#87875f", "#878787", "#8787af", "#8787d7", "#8787ff",
+        "#87af00", "#87af5f", "#87af87", "#87afaf", "#87afd7", "#87afff",
+        "#87d700", "#87d75f", "#87d787", "#87d7af", "#87d7d7", "#87d7ff",
+        "#87ff00", "#87ff5f", "#87ff87", "#87ffaf", "#87ffd7", "#87ffff",
+        "#af0000", "#af005f", "#af0087", "#af00af", "#af00d7", "#af00ff",
+        "#af5f00", "#af5f5f", "#af5f87", "#af5faf", "#af5fd7", "#af5fff",
+        "#af8700", "#af875f", "#af8787", "#af87af", "#af87d7", "#af87ff",
+        "#afaf00", "#afaf5f", "#afaf87", "#afafaf", "#afafd7", "#afafff",
+        "#afd700", "#afd75f", "#afd787", "#afd7af", "#afd7d7", "#afd7ff",
+        "#afff00", "#afff5f", "#afff87", "#afffaf", "#afffd7", "#afffff",
+        "#d70000", "#d7005f", "#d70087", "#d700af", "#d700d7", "#d700ff",
+        "#d75f00", "#d75f5f", "#d75f87", "#d75faf", "#d75fd7", "#d75fff",
+        "#d78700", "#d7875f", "#d78787", "#d787af", "#d787d7", "#d787ff",
+        "#d7af00", "#d7af5f", "#d7af87", "#d7afaf", "#d7afd7", "#d7afff",
+        "#d7d700", "#d7d75f", "#d7d787", "#d7d7af", "#d7d7d7", "#d7d7ff",
+        "#d7ff00", "#d7ff5f", "#d7ff87", "#d7ffaf", "#d7ffd7", "#d7ffff",
+        "#ff0000", "#ff005f", "#ff0087", "#ff00af", "#ff00d7", "#ff00ff",
+        "#ff5f00", "#ff5f5f", "#ff5f87", "#ff5faf", "#ff5fd7", "#ff5fff",
+        "#ff8700", "#ff875f", "#ff8787", "#ff87af", "#ff87d7", "#ff87ff",
+        "#ffaf00", "#ffaf5f", "#ffaf87", "#ffafaf", "#ffafd7", "#ffafff",
+        "#ffd700", "#ffd75f", "#ffd787", "#ffd7af", "#ffd7d7", "#ffd7ff",
+        "#ffff00", "#ffff5f", "#ffff87", "#ffffaf", "#ffffd7", "#ffffff",
+        "#080808", "#121212", "#1c1c1c", "#262626", "#303030", "#3a3a3a",
+        "#444444", "#4e4e4e", "#585858", "#626262", "#6c6c6c", "#767676",
+        "#808080", "#8a8a8a", "#949494", "#9e9e9e", "#a8a8a8", "#b2b2b2",
+        "#bcbcbc", "#c6c6c6", "#d0d0d0", "#dadada", "#e4e4e4", "#eeeeee",
+      ];
+
+      function bestContrastText(hexcolor) {
+        var r = parseInt(hexcolor.substr(1, 2), 16);
+        var g = parseInt(hexcolor.substr(3, 2), 16);
+        var b = parseInt(hexcolor.substr(5, 2), 16);
+        var y = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (y >= 128) ? "#000000" : "#ffffff";
+      }
+
+
+      function computeContrast(hexcolor1, hexcolor2) {
+        var rgbcolor1 = hexToRgb(hexcolor1);
+        var rgbcolor2 = hexToRgb(hexcolor2);
+        var lum1 = luminanace(rgbcolor1);
+        var lum2 = luminanace(rgbcolor2);
+        var brightest = Math.max(lum1, lum2);
+        var darkest = Math.min(lum1, lum2);
+        var contrast = (brightest + 0.05) / (darkest + 0.05);
+        return contrast;
+      }
+
+      function luminanace(rgbcolor) {
+        var a = [rgbcolor.r, rgbcolor.g, rgbcolor.b].map(function (v) {
+          v /= 255;
+          return v <= 0.03928
+            ? v / 12.92
+            : Math.pow((v + 0.055) / 1.055, 2.4);
+        });
+        return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+      }
+
+      function hexToRgb(hexcolor) {
+        var r = parseInt(hexcolor.substr(1, 2), 16);
+        var g = parseInt(hexcolor.substr(3, 2), 16);
+        var b = parseInt(hexcolor.substr(5, 2), 16);
+        return { r, g, b };
+      }
+
+      function applyBackgroundAndText(gridElement) {
+        var elements = gridElement.querySelectorAll("[data-bg]");
+        for (elem of elements) {
+          var index = elem.getAttribute("data-bg");
+          elem.style.backgroundColor = ansi_colors[index];
+          elem.style.color = bestContrastText(ansi_colors[index]);
+          elem.innerHTML = index;
+        }
+      }
+
+      function applyForeground(gridElement, index) {
+        var elements = document.getElementById("background-preview").querySelectorAll("[data-bg]");
+        for (elem of elements) {
+          elem.style.color = ansi_colors[index];
+          let this_elem_bg_index = elem.getAttribute("data-bg");
+          let contrast = computeContrast(
+            ansi_colors[index],
+            ansi_colors[this_elem_bg_index]
+          );
+          elem.title = contrast;
+          // Green: AAA (4.5)
+          // Yellow: AA (3)
+          // Red: Fail
+          elem.style.borderColor = contrast >= 4.5 ? "#00ff00" : contrast >= 3 ? "#ffff00" : "#ff0000";
+
+        }
+      }
+
+      function main() {
+        let previewGrid = document.getElementById("background-preview");
+        document.querySelectorAll(".ansi-256-grid").forEach(applyBackgroundAndText);
+
+        document
+          .getElementById("foreground-select")
+          .querySelectorAll("[data-bg]")
+          .forEach(function (elem) {
+            elem.addEventListener("click", function (event) {
+              var index = event.target.getAttribute("data-bg");
+              applyForeground(previewGrid, index);
+            });
+          })
+
+        applyForeground(previewGrid, 0);
+      }
+      document.onreadystatechange = function () {
+        if (document.readyState === "complete") {
+          main();
+        }
+      };
+    </script>
+    <style>
+      .ansi-256-grid {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 1px;
+        font-family: monospace;
+      }
+
+      #foreground-select>div>div {
+        cursor: pointer;
+      }
+
+      .ansi-256-grid>div>div {
+        height: 1rem;
+      }
+
+      .base-colors,
+      .grayscale-colors {
+        display: flex;
+        flex-direction: row;
+        gap: 1px;
+      }
+
+      .base-colors>div,
+      .grayscale-colors>div {
+        width: 100%;
+      }
+
+      .cube-colors {
+        display: grid;
+        grid-template-columns: repeat(36, 1fr);
+        gap: 1px;
+      }
+
+      [data-bg] {
+        padding: 0.25rem;
+        text-align: center;
+        border: 3px solid transparent;
+        border-left-width: 2px;
+        border-right-width: 2px;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <h2>Select the foreground here</h2>
+    <div id="foreground-select" class="ansi-256-grid">
+      <div class="base-colors">
+        <div data-bg="0"></div>
+        <div data-bg="1"></div>
+        <div data-bg="2"></div>
+        <div data-bg="3"></div>
+        <div data-bg="4"></div>
+        <div data-bg="5"></div>
+        <div data-bg="6"></div>
+        <div data-bg="7"></div>
+        <div data-bg="8"></div>
+        <div data-bg="9"></div>
+        <div data-bg="10"></div>
+        <div data-bg="11"></div>
+        <div data-bg="12"></div>
+        <div data-bg="13"></div>
+        <div data-bg="14"></div>
+        <div data-bg="15"></div>
+      </div>
+      <div class="cube-colors">
+        <div data-bg="16"></div>
+        <div data-bg="17"></div>
+        <div data-bg="18"></div>
+        <div data-bg="19"></div>
+        <div data-bg="20"></div>
+        <div data-bg="21"></div>
+        <div data-bg="22"></div>
+        <div data-bg="23"></div>
+        <div data-bg="24"></div>
+        <div data-bg="25"></div>
+        <div data-bg="26"></div>
+        <div data-bg="27"></div>
+        <div data-bg="28"></div>
+        <div data-bg="29"></div>
+        <div data-bg="30"></div>
+        <div data-bg="31"></div>
+        <div data-bg="32"></div>
+        <div data-bg="33"></div>
+        <div data-bg="34"></div>
+        <div data-bg="35"></div>
+        <div data-bg="36"></div>
+        <div data-bg="37"></div>
+        <div data-bg="38"></div>
+        <div data-bg="39"></div>
+        <div data-bg="40"></div>
+        <div data-bg="41"></div>
+        <div data-bg="42"></div>
+        <div data-bg="43"></div>
+        <div data-bg="44"></div>
+        <div data-bg="45"></div>
+        <div data-bg="46"></div>
+        <div data-bg="47"></div>
+        <div data-bg="48"></div>
+        <div data-bg="49"></div>
+        <div data-bg="50"></div>
+        <div data-bg="51"></div>
+        <div data-bg="52"></div>
+        <div data-bg="53"></div>
+        <div data-bg="54"></div>
+        <div data-bg="55"></div>
+        <div data-bg="56"></div>
+        <div data-bg="57"></div>
+        <div data-bg="58"></div>
+        <div data-bg="59"></div>
+        <div data-bg="60"></div>
+        <div data-bg="61"></div>
+        <div data-bg="62"></div>
+        <div data-bg="63"></div>
+        <div data-bg="64"></div>
+        <div data-bg="65"></div>
+        <div data-bg="66"></div>
+        <div data-bg="67"></div>
+        <div data-bg="68"></div>
+        <div data-bg="69"></div>
+        <div data-bg="70"></div>
+        <div data-bg="71"></div>
+        <div data-bg="72"></div>
+        <div data-bg="73"></div>
+        <div data-bg="74"></div>
+        <div data-bg="75"></div>
+        <div data-bg="76"></div>
+        <div data-bg="77"></div>
+        <div data-bg="78"></div>
+        <div data-bg="79"></div>
+        <div data-bg="80"></div>
+        <div data-bg="81"></div>
+        <div data-bg="82"></div>
+        <div data-bg="83"></div>
+        <div data-bg="84"></div>
+        <div data-bg="85"></div>
+        <div data-bg="86"></div>
+        <div data-bg="87"></div>
+        <div data-bg="88"></div>
+        <div data-bg="89"></div>
+        <div data-bg="90"></div>
+        <div data-bg="91"></div>
+        <div data-bg="92"></div>
+        <div data-bg="93"></div>
+        <div data-bg="94"></div>
+        <div data-bg="95"></div>
+        <div data-bg="96"></div>
+        <div data-bg="97"></div>
+        <div data-bg="98"></div>
+        <div data-bg="99"></div>
+        <div data-bg="100"></div>
+        <div data-bg="101"></div>
+        <div data-bg="102"></div>
+        <div data-bg="103"></div>
+        <div data-bg="104"></div>
+        <div data-bg="105"></div>
+        <div data-bg="106"></div>
+        <div data-bg="107"></div>
+        <div data-bg="108"></div>
+        <div data-bg="109"></div>
+        <div data-bg="110"></div>
+        <div data-bg="111"></div>
+        <div data-bg="112"></div>
+        <div data-bg="113"></div>
+        <div data-bg="114"></div>
+        <div data-bg="115"></div>
+        <div data-bg="116"></div>
+        <div data-bg="117"></div>
+        <div data-bg="118"></div>
+        <div data-bg="119"></div>
+        <div data-bg="120"></div>
+        <div data-bg="121"></div>
+        <div data-bg="122"></div>
+        <div data-bg="123"></div>
+        <div data-bg="124"></div>
+        <div data-bg="125"></div>
+        <div data-bg="126"></div>
+        <div data-bg="127"></div>
+        <div data-bg="128"></div>
+        <div data-bg="129"></div>
+        <div data-bg="130"></div>
+        <div data-bg="131"></div>
+        <div data-bg="132"></div>
+        <div data-bg="133"></div>
+        <div data-bg="134"></div>
+        <div data-bg="135"></div>
+        <div data-bg="136"></div>
+        <div data-bg="137"></div>
+        <div data-bg="138"></div>
+        <div data-bg="139"></div>
+        <div data-bg="140"></div>
+        <div data-bg="141"></div>
+        <div data-bg="142"></div>
+        <div data-bg="143"></div>
+        <div data-bg="144"></div>
+        <div data-bg="145"></div>
+        <div data-bg="146"></div>
+        <div data-bg="147"></div>
+        <div data-bg="148"></div>
+        <div data-bg="149"></div>
+        <div data-bg="150"></div>
+        <div data-bg="151"></div>
+        <div data-bg="152"></div>
+        <div data-bg="153"></div>
+        <div data-bg="154"></div>
+        <div data-bg="155"></div>
+        <div data-bg="156"></div>
+        <div data-bg="157"></div>
+        <div data-bg="158"></div>
+        <div data-bg="159"></div>
+        <div data-bg="160"></div>
+        <div data-bg="161"></div>
+        <div data-bg="162"></div>
+        <div data-bg="163"></div>
+        <div data-bg="164"></div>
+        <div data-bg="165"></div>
+        <div data-bg="166"></div>
+        <div data-bg="167"></div>
+        <div data-bg="168"></div>
+        <div data-bg="169"></div>
+        <div data-bg="170"></div>
+        <div data-bg="171"></div>
+        <div data-bg="172"></div>
+        <div data-bg="173"></div>
+        <div data-bg="174"></div>
+        <div data-bg="175"></div>
+        <div data-bg="176"></div>
+        <div data-bg="177"></div>
+        <div data-bg="178"></div>
+        <div data-bg="179"></div>
+        <div data-bg="180"></div>
+        <div data-bg="181"></div>
+        <div data-bg="182"></div>
+        <div data-bg="183"></div>
+        <div data-bg="184"></div>
+        <div data-bg="185"></div>
+        <div data-bg="186"></div>
+        <div data-bg="187"></div>
+        <div data-bg="188"></div>
+        <div data-bg="189"></div>
+        <div data-bg="190"></div>
+        <div data-bg="191"></div>
+        <div data-bg="192"></div>
+        <div data-bg="193"></div>
+        <div data-bg="194"></div>
+        <div data-bg="195"></div>
+        <div data-bg="196"></div>
+        <div data-bg="197"></div>
+        <div data-bg="198"></div>
+        <div data-bg="199"></div>
+        <div data-bg="200"></div>
+        <div data-bg="201"></div>
+        <div data-bg="202"></div>
+        <div data-bg="203"></div>
+        <div data-bg="204"></div>
+        <div data-bg="205"></div>
+        <div data-bg="206"></div>
+        <div data-bg="207"></div>
+        <div data-bg="208"></div>
+        <div data-bg="209"></div>
+        <div data-bg="210"></div>
+        <div data-bg="211"></div>
+        <div data-bg="212"></div>
+        <div data-bg="213"></div>
+        <div data-bg="214"></div>
+        <div data-bg="215"></div>
+        <div data-bg="216"></div>
+        <div data-bg="217"></div>
+        <div data-bg="218"></div>
+        <div data-bg="219"></div>
+        <div data-bg="220"></div>
+        <div data-bg="221"></div>
+        <div data-bg="222"></div>
+        <div data-bg="223"></div>
+        <div data-bg="224"></div>
+        <div data-bg="225"></div>
+        <div data-bg="226"></div>
+        <div data-bg="227"></div>
+        <div data-bg="228"></div>
+        <div data-bg="229"></div>
+        <div data-bg="230"></div>
+        <div data-bg="231"></div>
+      </div>
+      <div class="grayscale-colors">
+        <div data-bg="232"></div>
+        <div data-bg="233"></div>
+        <div data-bg="234"></div>
+        <div data-bg="235"></div>
+        <div data-bg="236"></div>
+        <div data-bg="237"></div>
+        <div data-bg="238"></div>
+        <div data-bg="239"></div>
+        <div data-bg="240"></div>
+        <div data-bg="241"></div>
+        <div data-bg="242"></div>
+        <div data-bg="243"></div>
+        <div data-bg="244"></div>
+        <div data-bg="245"></div>
+        <div data-bg="246"></div>
+        <div data-bg="247"></div>
+        <div data-bg="248"></div>
+        <div data-bg="249"></div>
+        <div data-bg="250"></div>
+        <div data-bg="251"></div>
+        <div data-bg="252"></div>
+        <div data-bg="253"></div>
+        <div data-bg="254"></div>
+        <div data-bg="255"></div>
+      </div>
+    </div>
+    <h2>Preview against various backgrounds here</h2>
+    <div id="background-preview" class="ansi-256-grid">
+      <div class="base-colors">
+        <div data-bg="0"></div>
+        <div data-bg="1"></div>
+        <div data-bg="2"></div>
+        <div data-bg="3"></div>
+        <div data-bg="4"></div>
+        <div data-bg="5"></div>
+        <div data-bg="6"></div>
+        <div data-bg="7"></div>
+        <div data-bg="8"></div>
+        <div data-bg="9"></div>
+        <div data-bg="10"></div>
+        <div data-bg="11"></div>
+        <div data-bg="12"></div>
+        <div data-bg="13"></div>
+        <div data-bg="14"></div>
+        <div data-bg="15"></div>
+      </div>
+      <div class="cube-colors">
+        <div data-bg="16"></div>
+        <div data-bg="17"></div>
+        <div data-bg="18"></div>
+        <div data-bg="19"></div>
+        <div data-bg="20"></div>
+        <div data-bg="21"></div>
+        <div data-bg="22"></div>
+        <div data-bg="23"></div>
+        <div data-bg="24"></div>
+        <div data-bg="25"></div>
+        <div data-bg="26"></div>
+        <div data-bg="27"></div>
+        <div data-bg="28"></div>
+        <div data-bg="29"></div>
+        <div data-bg="30"></div>
+        <div data-bg="31"></div>
+        <div data-bg="32"></div>
+        <div data-bg="33"></div>
+        <div data-bg="34"></div>
+        <div data-bg="35"></div>
+        <div data-bg="36"></div>
+        <div data-bg="37"></div>
+        <div data-bg="38"></div>
+        <div data-bg="39"></div>
+        <div data-bg="40"></div>
+        <div data-bg="41"></div>
+        <div data-bg="42"></div>
+        <div data-bg="43"></div>
+        <div data-bg="44"></div>
+        <div data-bg="45"></div>
+        <div data-bg="46"></div>
+        <div data-bg="47"></div>
+        <div data-bg="48"></div>
+        <div data-bg="49"></div>
+        <div data-bg="50"></div>
+        <div data-bg="51"></div>
+        <div data-bg="52"></div>
+        <div data-bg="53"></div>
+        <div data-bg="54"></div>
+        <div data-bg="55"></div>
+        <div data-bg="56"></div>
+        <div data-bg="57"></div>
+        <div data-bg="58"></div>
+        <div data-bg="59"></div>
+        <div data-bg="60"></div>
+        <div data-bg="61"></div>
+        <div data-bg="62"></div>
+        <div data-bg="63"></div>
+        <div data-bg="64"></div>
+        <div data-bg="65"></div>
+        <div data-bg="66"></div>
+        <div data-bg="67"></div>
+        <div data-bg="68"></div>
+        <div data-bg="69"></div>
+        <div data-bg="70"></div>
+        <div data-bg="71"></div>
+        <div data-bg="72"></div>
+        <div data-bg="73"></div>
+        <div data-bg="74"></div>
+        <div data-bg="75"></div>
+        <div data-bg="76"></div>
+        <div data-bg="77"></div>
+        <div data-bg="78"></div>
+        <div data-bg="79"></div>
+        <div data-bg="80"></div>
+        <div data-bg="81"></div>
+        <div data-bg="82"></div>
+        <div data-bg="83"></div>
+        <div data-bg="84"></div>
+        <div data-bg="85"></div>
+        <div data-bg="86"></div>
+        <div data-bg="87"></div>
+        <div data-bg="88"></div>
+        <div data-bg="89"></div>
+        <div data-bg="90"></div>
+        <div data-bg="91"></div>
+        <div data-bg="92"></div>
+        <div data-bg="93"></div>
+        <div data-bg="94"></div>
+        <div data-bg="95"></div>
+        <div data-bg="96"></div>
+        <div data-bg="97"></div>
+        <div data-bg="98"></div>
+        <div data-bg="99"></div>
+        <div data-bg="100"></div>
+        <div data-bg="101"></div>
+        <div data-bg="102"></div>
+        <div data-bg="103"></div>
+        <div data-bg="104"></div>
+        <div data-bg="105"></div>
+        <div data-bg="106"></div>
+        <div data-bg="107"></div>
+        <div data-bg="108"></div>
+        <div data-bg="109"></div>
+        <div data-bg="110"></div>
+        <div data-bg="111"></div>
+        <div data-bg="112"></div>
+        <div data-bg="113"></div>
+        <div data-bg="114"></div>
+        <div data-bg="115"></div>
+        <div data-bg="116"></div>
+        <div data-bg="117"></div>
+        <div data-bg="118"></div>
+        <div data-bg="119"></div>
+        <div data-bg="120"></div>
+        <div data-bg="121"></div>
+        <div data-bg="122"></div>
+        <div data-bg="123"></div>
+        <div data-bg="124"></div>
+        <div data-bg="125"></div>
+        <div data-bg="126"></div>
+        <div data-bg="127"></div>
+        <div data-bg="128"></div>
+        <div data-bg="129"></div>
+        <div data-bg="130"></div>
+        <div data-bg="131"></div>
+        <div data-bg="132"></div>
+        <div data-bg="133"></div>
+        <div data-bg="134"></div>
+        <div data-bg="135"></div>
+        <div data-bg="136"></div>
+        <div data-bg="137"></div>
+        <div data-bg="138"></div>
+        <div data-bg="139"></div>
+        <div data-bg="140"></div>
+        <div data-bg="141"></div>
+        <div data-bg="142"></div>
+        <div data-bg="143"></div>
+        <div data-bg="144"></div>
+        <div data-bg="145"></div>
+        <div data-bg="146"></div>
+        <div data-bg="147"></div>
+        <div data-bg="148"></div>
+        <div data-bg="149"></div>
+        <div data-bg="150"></div>
+        <div data-bg="151"></div>
+        <div data-bg="152"></div>
+        <div data-bg="153"></div>
+        <div data-bg="154"></div>
+        <div data-bg="155"></div>
+        <div data-bg="156"></div>
+        <div data-bg="157"></div>
+        <div data-bg="158"></div>
+        <div data-bg="159"></div>
+        <div data-bg="160"></div>
+        <div data-bg="161"></div>
+        <div data-bg="162"></div>
+        <div data-bg="163"></div>
+        <div data-bg="164"></div>
+        <div data-bg="165"></div>
+        <div data-bg="166"></div>
+        <div data-bg="167"></div>
+        <div data-bg="168"></div>
+        <div data-bg="169"></div>
+        <div data-bg="170"></div>
+        <div data-bg="171"></div>
+        <div data-bg="172"></div>
+        <div data-bg="173"></div>
+        <div data-bg="174"></div>
+        <div data-bg="175"></div>
+        <div data-bg="176"></div>
+        <div data-bg="177"></div>
+        <div data-bg="178"></div>
+        <div data-bg="179"></div>
+        <div data-bg="180"></div>
+        <div data-bg="181"></div>
+        <div data-bg="182"></div>
+        <div data-bg="183"></div>
+        <div data-bg="184"></div>
+        <div data-bg="185"></div>
+        <div data-bg="186"></div>
+        <div data-bg="187"></div>
+        <div data-bg="188"></div>
+        <div data-bg="189"></div>
+        <div data-bg="190"></div>
+        <div data-bg="191"></div>
+        <div data-bg="192"></div>
+        <div data-bg="193"></div>
+        <div data-bg="194"></div>
+        <div data-bg="195"></div>
+        <div data-bg="196"></div>
+        <div data-bg="197"></div>
+        <div data-bg="198"></div>
+        <div data-bg="199"></div>
+        <div data-bg="200"></div>
+        <div data-bg="201"></div>
+        <div data-bg="202"></div>
+        <div data-bg="203"></div>
+        <div data-bg="204"></div>
+        <div data-bg="205"></div>
+        <div data-bg="206"></div>
+        <div data-bg="207"></div>
+        <div data-bg="208"></div>
+        <div data-bg="209"></div>
+        <div data-bg="210"></div>
+        <div data-bg="211"></div>
+        <div data-bg="212"></div>
+        <div data-bg="213"></div>
+        <div data-bg="214"></div>
+        <div data-bg="215"></div>
+        <div data-bg="216"></div>
+        <div data-bg="217"></div>
+        <div data-bg="218"></div>
+        <div data-bg="219"></div>
+        <div data-bg="220"></div>
+        <div data-bg="221"></div>
+        <div data-bg="222"></div>
+        <div data-bg="223"></div>
+        <div data-bg="224"></div>
+        <div data-bg="225"></div>
+        <div data-bg="226"></div>
+        <div data-bg="227"></div>
+        <div data-bg="228"></div>
+        <div data-bg="229"></div>
+        <div data-bg="230"></div>
+        <div data-bg="231"></div>
+      </div>
+      <div class="grayscale-colors">
+        <div data-bg="232"></div>
+        <div data-bg="233"></div>
+        <div data-bg="234"></div>
+        <div data-bg="235"></div>
+        <div data-bg="236"></div>
+        <div data-bg="237"></div>
+        <div data-bg="238"></div>
+        <div data-bg="239"></div>
+        <div data-bg="240"></div>
+        <div data-bg="241"></div>
+        <div data-bg="242"></div>
+        <div data-bg="243"></div>
+        <div data-bg="244"></div>
+        <div data-bg="245"></div>
+        <div data-bg="246"></div>
+        <div data-bg="247"></div>
+        <div data-bg="248"></div>
+        <div data-bg="249"></div>
+        <div data-bg="250"></div>
+        <div data-bg="251"></div>
+        <div data-bg="252"></div>
+        <div data-bg="253"></div>
+        <div data-bg="254"></div>
+        <div data-bg="255"></div>
+      </div>
+    </div>
+  </body>
+
+</html>
