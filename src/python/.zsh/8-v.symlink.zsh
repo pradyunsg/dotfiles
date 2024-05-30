@@ -79,8 +79,7 @@ v::command::make() {
   fi
 
   echo "Creating virtualenv here..."
-  python3 -m venv --upgrade-deps .venv
-  .venv/bin/pip install wheel
+  uv venv
   v::command::activate
 }
 
