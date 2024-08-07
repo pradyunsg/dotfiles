@@ -18,7 +18,7 @@ if [[ ! -f '/tmp/pipx-dotfiles.pyz' ]]; then
   echo "Downloading pipx..."
   curl --proto '=https' --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
 fi
-python3 /tmp/pipx-dotfiles.pyz run -vv "$0" -- "$@"
+${PYTHON:-python3} /tmp/pipx-dotfiles.pyz run -vv "$0" -- "$@"
 exit
 """
 
