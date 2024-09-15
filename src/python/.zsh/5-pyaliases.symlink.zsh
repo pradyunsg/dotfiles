@@ -1,7 +1,7 @@
 # Sometimes, you need a package quickly
 function mkpkg() {
     if [ -z "$2" ]; then
-        echo "Need two arguments"
+        echo "Need two arguments: [name] [version]"
         return 1
     fi
     mkdir -p "./$1/$1"
