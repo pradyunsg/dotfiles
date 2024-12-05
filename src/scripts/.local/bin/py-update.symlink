@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-all_pythons=$(asdf list all python)
 
 function log_info() {
   echo -e "\033[34m[info]\033[0m $@"
@@ -54,9 +53,12 @@ function find_tool_versions_referencing_python() {
 
 function find_virtual_environments() {
   log_info "Python virtual environments that might need updating..."
-  find ~/Developer -maxdepth 5 -type f -name pyvenv.cfg | xargs dirname | sort
+  find ~/Developer -maxdepth 5 -type f -name pyvenv.cfg -print0 | xargs -0 dirname | sort
 }
 
+echo_asdf plugin update python
+
+all_pythons=$(asdf list all python)
 latest_relevant_versions=$(for i in $(relevant_minor_versions); do determine_latest_patch_for_minor "$i"; done)
 log_info "Currently latest minor versions: $(echo $latest_relevant_versions | tr '\n' ' ')"
 
