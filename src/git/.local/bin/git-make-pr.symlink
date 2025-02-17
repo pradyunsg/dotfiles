@@ -1,0 +1,3 @@
+#!/bin/bash
+
+git push -u origin HEAD --force-with-lease && gh pr create --repo $(git remote get-url upstream) -b "" -a @me
