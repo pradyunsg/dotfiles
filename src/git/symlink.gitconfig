@@ -1,118 +1,118 @@
 [alias]
-  # One Character Shorthands
-  b = "!f() { git for-each-ref --color=always --sort='-committerdate:iso8601' --format='%(committerdate:relative)|%(objectname:short)|%(color:green)%(HEAD)%(color:reset) %(refname:short) %(color:magenta)%(upstream:track)%(color:reset)' refs/heads | column -s '|' -t; }; f"
-  c = commit
-  d = diff  --color-words
-  g = graph
-  k = !gitk
-  l = log --graph --date=short
-  s = !git st
+	# One Character Shorthands
+	b = "!f() { git for-each-ref --color=always --sort='-committerdate:iso8601' --format='%(committerdate:relative)|%(objectname:short)|%(color:green)%(HEAD)%(color:reset) %(refname:short) %(color:magenta)%(upstream:track)%(color:reset)' refs/heads | column -s '|' -t; }; f"
+	c = commit
+	d = diff  --color-words
+	g = graph
+	k = !gitk
+	l = log --graph --date=short
+	s = !git st
 
-  # Two Character Shorthands
-  cl = clone                    # clone
-  br = branch                   # branch
-  co = checkout                 # checkout things
-  nb = checkout -b              # new branch
-  st = status -sb               # status in a concise manner
-  cp = cherry-pick              # cherry-pick is very log
-  # history of current HEAD
-  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	# Two Character Shorthands
+	cl = clone                    # clone
+	br = branch                   # branch
+	co = checkout                 # checkout things
+	nb = checkout -b              # new branch
+	st = status -sb               # status in a concise manner
+	cp = cherry-pick              # cherry-pick is very log
+	# history of current HEAD
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 
-  # Nice log graph
-  graph = log --graph --oneline
+	# Nice log graph
+	graph = log --graph --oneline
 
-  # git-tools should open through git
-  visual = cola
+	# git-tools should open through git
+	visual = cola
 
-  # I forget too easily.
-  stage = add
-  unstage = reset HEAD --
+	# I forget too easily.
+	stage = add
+	unstage = reset HEAD --
 
-  undo = reset --soft HEAD~1    # undo your last commit
-  amend = commit --amend        # amend your last commit
+	undo = reset --soft HEAD~1    # undo your last commit
+	amend = commit --amend        # amend your last commit
 
-  diffc = diff --cached
-  pushf = push --force-with-lease
-  pushit = push -u origin HEAD
+	diffc = diff --cached
+	pushf = push --force-with-lease
+	pushit = push -u origin HEAD
 
-  whatadded = log --diff-filter=A  # which commit added this file
-  fixup = commit --fixup
+	whatadded = log --diff-filter=A  # which commit added this file
+	fixup = commit --fixup
 
 [apply]
-  whitespace = error
+	whitespace = error
 
 [blame]
-  ignoreRevsFile = .git-blame-ignore-revs
+	ignoreRevsFile = .git-blame-ignore-revs
 
 [branch]
-  sort = -committerdate
+	sort = -committerdate
 
 [column]
-  ui = auto
+	ui = auto
 
 [commit]
-  gpgsign = true
-  verbose = true
+	gpgsign = true
+	verbose = true
 
 [core]
-  attributesFile = ~/.gitattributes
-  excludesFile = ~/.gitignore
-  autocrlf = input
-  editor = code -w
-  whitespace = trailing-space,cr-at-eol
+	attributesFile = ~/.gitattributes
+	excludesFile = ~/.gitignore
+	autocrlf = input
+	editor = code -w
+	whitespace = trailing-space,cr-at-eol
 
 [diff]
-  algorithm = histogram
-  tool = meld
-  colorMoved = plain
-  mnemonicPrefix = true
-  renames = true
+	algorithm = histogram
+	tool = meld
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 
 [fetch]
-  prune = true
-  pruneTags = true
-  all = true
+	prune = true
+	pruneTags = true
+	all = true
 
 [grep]
-  patternType = perl
+	patternType = perl
 
 [gui]
-  editor = code -w
+	editor = code -w
 
 [help]
-  autoCorrect = 20
+	autoCorrect = 20
 
 [init]
-  defaultBranch = main
+	defaultBranch = main
 
 [merge]
-  tool = meld
-  conflictStyle = diff3
+	tool = meld
+	conflictStyle = diff3
 
 [push]
-  default = simple
-  autoSetupRemote = true
-  followTags = true
+	default = simple
+	autoSetupRemote = true
+	followTags = true
 
 [pull]
-  ff = only
+	ff = only
 
 [rebase]
-  autoSquash = true
-  autoStash = true
+	autoSquash = true
+	autoStash = true
 
 [rerere]
-  enabled = true
-  autoUpdate = true
+	enabled = true
+	autoUpdate = true
 
 [tag]
-  sort = version:refname
+	sort = version:refname
 
 [user]
-  useConfigOnly = true
+	useConfigOnly = true
 
 [include]
-  path = ~/.gitconfig.local
+	path = ~/.gitconfig.local
 
 # Pro-tip: Makes life with submodules easier.
 # [url "git@github.com:yourname/"]
