@@ -42,14 +42,14 @@
   whitespace = error
 
 [blame]
-	ignoreRevsFile = .git-blame-ignore-revs
+  ignoreRevsFile = .git-blame-ignore-revs
 
 [commit]
   gpgsign = true
 
 [core]
-  attributesfile = ~/.gitattributes
-  excludesfile = ~/.gitignore
+  attributesFile = ~/.gitattributes
+  excludesFile = ~/.gitignore
   autocrlf = input
   editor = code -w
   whitespace = trailing-space,cr-at-eol
@@ -65,14 +65,14 @@
   editor = code -w
 
 [help]
-  autocorrect = 20
+  autoCorrect = 20
 
 [init]
   defaultBranch = main
 
 [merge]
   tool = meld
-  conflictstyle = diff3
+  conflictStyle = diff3
 
 [push]
   default = simple
