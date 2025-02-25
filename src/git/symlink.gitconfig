@@ -44,8 +44,15 @@
 [blame]
   ignoreRevsFile = .git-blame-ignore-revs
 
+[branch]
+  sort = -committerdate
+
+[column]
+  ui = auto
+
 [commit]
   gpgsign = true
+  verbose = true
 
 [core]
   attributesFile = ~/.gitattributes
@@ -55,11 +62,19 @@
   whitespace = trailing-space,cr-at-eol
 
 [diff]
-  algorithm = patience
+  algorithm = histogram
   tool = meld
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
 
 [fetch]
   prune = true
+  pruneTags = true
+  all = true
+
+[grep]
+  patternType = perl
 
 [gui]
   editor = code -w
@@ -76,12 +91,22 @@
 
 [push]
   default = simple
+  autoSetupRemote = true
+  followTags = true
 
 [pull]
   ff = only
 
+[rebase]
+  autoSquash = true
+  autoStash = true
+
 [rerere]
   enabled = true
+  autoUpdate = true
+
+[tag]
+  sort = version:refname
 
 [user]
   useConfigOnly = true
