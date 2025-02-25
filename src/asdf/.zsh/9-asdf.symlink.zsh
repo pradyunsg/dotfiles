@@ -1,3 +1,2 @@
-if [[ "$OSTYPE" == darwin* ]]; then
-  source "$(brew --prefix asdf)/libexec/asdf.sh"
-fi
+export ASDF_DATA_DIR="$HOME/.asdf"
+export PATH="$ASDF_DATA_DIR/shims:$PATH"
