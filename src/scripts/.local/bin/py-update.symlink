@@ -11,7 +11,13 @@ function echo_asdf() {
 }
 
 function determine_latest_patch_for_minor() {
-  echo "$all_pythons" | grep "^$1\." | tail -1
+  python_version=$(echo "$all_pythons" | grep "^$1\." | tail -1)
+  # If the Python version ends with a `t`, we should include the non-t version
+  # in the output.
+  if [[ $python_version == *t ]]; then
+    echo $python_version | sed 's/t$//'
+  fi
+  echo $python_version
 }
 
 function relevant_minor_versions() {
@@ -34,7 +40,7 @@ function relevant_minor_versions() {
   oldest_supported_minor=$(expr $years_since_3_7_0 + $after_october - 5 + 7)
   latest_supported_minor=$(expr $years_since_3_7_0 + $after_october + 7)
 
-  seq $latest_supported_minor $oldest_supported_minor | xargs -I{} echo 3.{}
+  seq $latest_supported_minor $oldest_supported_minor | sort --version-sort | xargs -I{} echo 3.{}
 }
 
 function find_tool_versions_referencing_python() {
@@ -60,7 +66,12 @@ echo_asdf plugin update python
 
 all_pythons=$(asdf list all python)
 latest_relevant_versions=$(for i in $(relevant_minor_versions); do determine_latest_patch_for_minor "$i"; done)
-log_info "Currently latest minor versions: $(echo $latest_relevant_versions | tr '\n' ' ')"
+log_info "Currently latest Python versions:"
+for version in $latest_relevant_versions; do
+  echo "- $version"
+done
+
+read -p "Press any key to continue... [^C to interrupt]" -n 1 -r
 
 echo_asdf list python
 for version in $latest_relevant_versions; do
