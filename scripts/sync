@@ -24,7 +24,7 @@ import os
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, Iterable, Optional, Tuple
+from typing import Dict, Iterable, Optional, Tuple, cast
 
 import rich
 import tomli as toml
@@ -274,9 +274,9 @@ def _compute_final_file_set(config: Configuration) -> Iterable[Tuple[str, DotFil
         for name, repository in config.repositories.items()
     }
     for name, repository in config.repositories.items():
-        assert len(repositories[name]) == len(
-            list(repository.get_targets())
-        ), f"{name} has duplicates!"
+        assert len(repositories[name]) == len(list(repository.get_targets())), (
+            f"{name} has duplicates!"
+        )
 
     all_dotfiles = set(
         itertools.chain(
@@ -361,12 +361,12 @@ def sync_files(config: Configuration, *, target_dir: Path, dry_run: bool) -> Non
 
 
 if __name__ == "__main__":
+    import argparse
+
     import rich.traceback
     from rich.markup import escape
 
     rich.traceback.install(show_locals=True, width=None, suppress=[rich])
-
-    _dry_run = "--dry-run" in sys.argv
 
     config_file = Path.home() / ".dotfiles.toml"
     if not config_file.exists():
@@ -381,8 +381,27 @@ if __name__ == "__main__":
         sys.exit(1)
 
     _config = Configuration(config_file)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Do not actually perform any changes.",
+    )
+    parser.add_argument(
+        "--default-action",
+        choices=[a.name for a in Action],
+        help="Default action to take when a file already exists.",
+        default=None,
+    )
+    args = parser.parse_args()
+
+    if args.default_action is not None:
+        assert isinstance(args.default_action, str)
+        _ACTION = args.default_action
+
     sync_files(
         config=_config,
         target_dir=Path.home(),
-        dry_run=_dry_run,
+        dry_run=args.dry_run,
     )
