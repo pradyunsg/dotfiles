@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
-#
-# This is a Python script that has a string at the top that allows it to be run as a
-# bash script as well. When run with Bash (which is what the shebang line specifies),
-# the bash code will fetch pipx to run this Python script (reusing a fetched copy if
-# available).
-#
+#!/usr/bin/env -S uv run --no-project --script
+"""Dotfile synchroniser.
+
+- read from ~/.dotfiles.toml
+- locate and "load" the repositories declared there
+- synchronise the dotfiles, using the repository file trees as "source of truth"
+"""
 # /// script
 # requires-python = ">=3.8"
 # dependencies = [
@@ -12,23 +12,6 @@
 #   "tomli",
 # ]
 # ///
-#
-""""true
-if [[ ! -f '/tmp/pipx-dotfiles.pyz' ]]; then
-  echo "Downloading pipx..."
-  curl --proto '=https' --tlsv1.2 -sSLf https://github.com/pypa/pipx/releases/latest/download/pipx.pyz -o /tmp/pipx-dotfiles.pyz
-fi
-${PYTHON:-python3} /tmp/pipx-dotfiles.pyz run -vv "$0" -- "$@"
-exit
-"""
-
-#
-# Dotfile synchroniser.
-#
-# - read from ~/.dotfiles.toml
-# - locate and "load" the repositories declared there
-# - synchronise the dotfiles, using the repository file trees as "source of truth"
-#
 
 import sys
 
