@@ -12,6 +12,6 @@ fi
 
 clear
 docker run -it --rm --privileged \
-    -v "`pwd`:/src" \
+    -v "$(pwd):/src" \
     "${_my_image}" \
     bash -c "echo \"export PS1='🐳 \[\033[37m\]${_my_image}\[\033[0m\] \[\033[34m\]\w\[\033[0m\]\n\[\\\$([[ \\\$? == 0 ]] && printf '\\\\\\033[032m' || printf '\\\\\\033[031m')\]\\$ \[\e[0m\]'\" >> ~/.bashrc && bash"
