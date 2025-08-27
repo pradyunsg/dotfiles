@@ -19,13 +19,13 @@ fi
 MAIN_BRANCH=$(git symbolic-ref refs/remotes/upstream/HEAD | sed 's@^refs/remotes/upstream/@@')
 INITIAL_BRANCH=$(git symbolic-ref --short HEAD)
 
-if [[ "$INITIAL_BRANCH" != $MAIN_BRANCH ]]; then
+if [[ "$INITIAL_BRANCH" != "$MAIN_BRANCH" ]]; then
   echo_git checkout "$MAIN_BRANCH"
 fi
 
 echo_git pull upstream "$MAIN_BRANCH" --ff-only
 echo_git push --no-verify
 
-if [[ "$INITIAL_BRANCH" != $MAIN_BRANCH ]]; then
+if [[ "$INITIAL_BRANCH" != "$MAIN_BRANCH" ]]; then
   echo_git checkout "$INITIAL_BRANCH"
 fi
