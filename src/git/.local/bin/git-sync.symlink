@@ -1,6 +1,8 @@
 #!/bin/bash
 # Syncing with upstream branches should be easy.
 
+set -euo pipefail
+
 function echo_git() {
   echo -e "> \033[34mgit $@\033[0m"
   git $@
