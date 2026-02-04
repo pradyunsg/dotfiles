@@ -42,7 +42,7 @@
 	whitespace = error
 
 [blame]
-	ignoreRevsFile = .git-blame-ignore-revs
+	ignoreRevsFile = :(optional).git-blame-ignore-revs
 
 [branch]
 	sort = -committerdate
@@ -92,7 +92,7 @@
 [push]
 	default = simple
 	autoSetupRemote = true
-	followTags = true
+	# followTags = true
 
 [pull]
 	ff = only

@@ -13,9 +13,6 @@
 *.ignore
 *.ignore.*
 
-# Avoid accidentally committing an empty blame ignore file
-.git-blame-ignore-revs
-
 # Generated files
 /build/
 *.[oa]
