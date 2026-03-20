@@ -1,5 +1,4 @@
 tap "homebrew/bundle"
-brew "asdf"
 brew "bitwarden-cli"
 brew "cloc"
 brew "cowsay"
