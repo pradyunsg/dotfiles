@@ -1,0 +1,155 @@
+add_newline = false
+format = """
+$username\
+$hostname\
+$os\
+$python
+$status\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$cmd_duration
+$jobs\
+$character"""
+
+palette = "pradyunsg"
+
+[palettes.pradyunsg]
+surface-muted = "#333333"
+surface = "#282828"
+surface-highlight = "#1c1c1c"
+
+text = "#ececec"
+subtext = "#afafaf"
+
+red = "#ff8ab7"
+amber = "#ff9173"
+yellow = "#e0a71f"
+lime = "#bbb326"
+green = "#7dc05c"
+emerald = "#27c68e"
+cyan = "#00c4c4"
+blue = "#5cb6ff"
+violet = "#b2a3ff"
+fuchsia = "#db95f4"
+
+[os]
+format = '[ $symbol ]($style)'
+style = "bg:surface fg:text"
+disabled = false
+
+[os.symbols]
+AIX = "aix"
+Alpaquita = "alpaquita"
+AlmaLinux = "alma"
+Alpine = "alpine"
+Amazon = "amazon"
+Android = "android"
+Arch = "arch"
+Artix = "artix"
+Bluefin = "bluefin"
+CachyOS = "cachyOS"
+CentOS = "centOS"
+Debian = "debian"
+DragonFly = "dragonfly"
+Emscripten = "emscripten"
+EndeavourOS = "endeavourOS"
+Fedora = "fedora"
+FreeBSD = "freeBSD"
+Garuda = "garuda"
+Gentoo = "gentoo"
+HardenedBSD = "hardenedBSD"
+Illumos = "illumos"
+Kali = "kali"
+Linux = "linux"
+Mabox = "mabox"
+Macos = "macOS"
+Manjaro = "manjaro"
+Mariner = "mariner"
+MidnightBSD = "midnightBSD"
+Mint = "mint"
+NetBSD = "netBSD"
+NixOS = "nixOS"
+Nobara = "nobara"
+OpenBSD = "openBSD"
+OpenCloudOS = "opencloudOS"
+openEuler = "openeuler"
+openSUSE = "openSUSE"
+OracleLinux = "oracle"
+Pop = "pop"
+Raspbian = "raspbian"
+Redhat = "redhat"
+RedHatEnterprise = "rhel"
+RockyLinux = "rocky"
+Redox = "redox"
+Solus = "solus"
+SUSE = "suse"
+Ubuntu = "ubuntu"
+Ultramarine = "ultramarine"
+Unknown = "unknown"
+Uos = "uos"
+Void = "void"
+Windows = "windows"
+
+[status]
+failure_style = "bg:surface fg:red"
+success_style = "bg:surface fg:green"
+format = '[ (SIG$signal_name)$common_meaning\($int\) ]($style)'
+pipestatus = true
+pipestatus_format = '[$pipestatus]($style)'
+map_symbol = false
+disabled = false
+
+[directory]
+style = "bg:surface fg:text"
+format = '[ $path ]($style)'
+repo_root_style = "bg:surface bold fg:blue"
+repo_root_format = '[ [$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) ]($style)'
+truncation_length = 0
+truncate_to_repo = false
+[python]
+style = "bg:surface fg:green"
+version_format = "${raw}"
+format = '[│ ](bg:surface fg:subtext)[py:](bg:surface fg:subtext)[${version}( \($virtualenv\)) ]($style)'
+detect_folders = [".venv"]
+
+[git_branch]
+style = "bg:surface fg:green"
+format = '[│ ](bg:surface fg:subtext)[$branch(:$remote_branch)]($style)'
+truncation_length = 32
+
+[git_commit]
+style = "bg:surface fg:subtext"
+only_detached = false
+format = '[@$hash( \($tag\))]($style)'
+
+[git_state]
+style = "bg:surface fg:yellow"
+format = '[ \[$state( $progress_current/$progress_total)\] ]($style)'
+
+[git_status]
+style = "bg:surface fg:subtext"
+format = '[$diverged$behind$ahead$stashed$conflicted$staged$modified$renamed$deleted$untracked ]($style)'
+
+behind = '[ ⇠${count}](bg:surface fg:subtext)'
+ahead = '[ ⇢${count}](bg:surface fg:subtext)'
+diverged = '[ ⇠${behind_count}⇢${ahead_count}](bg:surface fg:subtext)'
+stashed = '[  ${count}](bg:surface fg:subtext)'
+
+staged = '[ 󰸩 ${count}](bg:surface fg:green)'
+conflicted = '[ 󰩌 ${count}](bg:surface fg:amber)'
+modified = '[ 󱇨 ${count}](bg:surface fg:yellow)'
+renamed = '[ 󰬳 ${count}](bg:surface fg:cyan)'
+deleted = '[ 󱪢 ${count}](bg:surface fg:red)'
+untracked = '[  ${count}](bg:surface fg:violet)'
+up_to_date = ''
+
+[cmd_duration]
+style = "bg:surface fg:subtext"
+format = '[│ ](bg:surface fg:subtext)[⏱ $duration ](bg:surface fg:subtext)'
+show_milliseconds = true
+min_time = 0
+show_notifications = true
+min_time_to_notify = 30000
