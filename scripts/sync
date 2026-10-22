@@ -6,7 +6,7 @@
 - synchronise the dotfiles, using the repository file trees as "source of truth"
 """
 # /// script
-# requires-python = ">=3.8"
+# requires-python = ">=3.11"
 # dependencies = [
 #   "rich",
 #   "tomli",
@@ -15,8 +15,8 @@
 
 import sys
 
-if sys.version_info[:2] < (3, 7):
-    raise EnvironmentError("Need Python 3.7+")
+if sys.version_info[:2] < (3, 11):
+    raise EnvironmentError("Need Python 3.11+")
 
 import enum
 import itertools
