@@ -1,0 +1,19 @@
+repos:
+- repo: https://github.com/rhysd/actionlint
+  rev: v1.7.12
+  hooks:
+  - id: actionlint
+- repo: https://github.com/zizmorcore/zizmor-pre-commit
+  rev: v1.31.1
+  hooks:
+  - id: zizmor
+- repo: https://github.com/python-jsonschema/check-jsonschema
+  rev: 0.38.2
+  hooks:
+  - id: check-github-workflows
+  - id: check-dependabot
+  - id: check-readthedocs
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.17.1
+  hooks:
+    - id: ruff-format
